@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ScheduleActivity">
+
+    <item
+        android:id="@+id/action_days"
+        android:icon="@drawable/ic_launcher"
+        android:title="hehe"
+        android:actionProviderClass="com.socialmap.yy.travelbox.ScheduleActivity$MyActionProvider"
+        android:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/action_aaa"
+        android:icon="@drawable/ic_launcher"
+        android:title="baba"
+        android:showAsAction="always" />
+
+</menu>
