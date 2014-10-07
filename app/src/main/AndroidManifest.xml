@@ -16,13 +16,12 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <!-- 百度地图需要的权限 -->
+    <!-- 高德地图需要的权限 -->
     <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <!-- <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> -->
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -30,8 +29,13 @@
     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+
+
+
+
+
+
 
 
     <application
@@ -41,7 +45,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="4b817e4acf60f23ac121bd695072dd41" />
+            android:value="31fc7831156d07f6d9b3349692bb4724" />
 
         <activity
             android:name=".WelcomeActivity"

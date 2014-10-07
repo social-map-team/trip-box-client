@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.MyLocationStyle;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -133,6 +135,13 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
         }
     }
     private void setUpMap() {
+        MyLocationStyle myLocationStyle = new MyLocationStyle();
+        myLocationStyle.myLocationIcon(BitmapDescriptorFactory.
+                fromResource(R.drawable.anchor_mao));
+        myLocationStyle.strokeColor(Color.BLUE);
+        myLocationStyle.strokeWidth(10);
+        aMap.setMyLocationStyle(myLocationStyle);
+        mAMapLocationManager = LocationManagerProxy.getInstance(this);
         aMap.setLocationSource(this);// 设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
