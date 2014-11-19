@@ -12,6 +12,9 @@
         android:id="@+id/action_my_schedule"
         android:title="@string/action_my_schedule"/>
     <item
+        android:id="@+id/action_allteam"
+        android:title="团队"/>
+    <item
         android:id="@+id/action_message"
         android:title="@string/action_message"/>
     <item android:id="@+id/action_shop"

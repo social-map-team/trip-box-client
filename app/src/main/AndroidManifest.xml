@@ -62,6 +62,9 @@
         <activity
             android:name=".ScheduleActivity"
             android:label="@string/app_name" />
+        <activity
+            android:name=".AllTeamActivity"
+            android:label="@string/app_name"/>
         <activity android:name=".MainActivity"></activity>
 
         <service android:name=".AccountService">

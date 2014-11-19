@@ -252,6 +252,9 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
             case R.id.action_message:
                 startActivity(new Intent(this, MessageActivity.class));
                 break;
+            case R.id.action_allteam:
+                startActivity(new Intent(this, AllTeamActivity.class));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
