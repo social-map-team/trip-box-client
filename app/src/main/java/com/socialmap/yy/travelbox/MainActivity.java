@@ -226,9 +226,6 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_login:
-                startActivity(new Intent(this, LoginActivity.class));
-                break;
             case R.id.action_my_schedule:
                 startActivity(new Intent(this, ScheduleActivity.class));
                 break;

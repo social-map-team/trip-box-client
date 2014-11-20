@@ -9,25 +9,15 @@
         android:scaleType="center"
         android:src="@drawable/blur" />
 
-    <FrameLayout
+
+    <ImageView
         android:id="@+id/avatar_wrapper"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
         android:background="@drawable/circle"
-        android:padding="5dp">
-
-        <com.socialmap.yy.travelbox.ui.RoundedImageView
-            android:id="@+id/avatar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:scaleType="center"
-            android:src="@drawable/tesla" />
-    </FrameLayout>
-
-
+        android:padding="5dp"/>
     <TextView
         android:id="@+id/nickname"
         android:layout_width="wrap_content"
