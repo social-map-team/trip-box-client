@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ScheduleActivity extends Activity {
+    ImageButton backbutton;
 
     private ListView list;
 
@@ -110,6 +111,7 @@ public class ScheduleActivity extends Activity {
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
         mTitleTextView.setText("World in 7 Days");
 
+        backbutton = (ImageButton)findViewById(R.id.backbutton);
         ImageButton imageButton = (ImageButton) mCustomView
                 .findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +120,16 @@ public class ScheduleActivity extends Activity {
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "Refresh Clicked!",
                         Toast.LENGTH_LONG).show();
+            }
+        });
+        backbutton.setOnClickListener(new ImageButton.OnClickListener(){
+            //TODO 跳转
+            public void onClick(View view){
+                Intent intent = new Intent();
+                intent.setClass(ScheduleActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+
             }
         });
 
@@ -190,9 +202,6 @@ public class ScheduleActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_login:
-                startActivity(new Intent(this, LoginActivity.class));
-                break;
             case R.id.action_my_schedule:
                 startActivity(new Intent(this, ScheduleActivity.class));
                 break;
