@@ -122,8 +122,8 @@ public class ScheduleActivity extends Activity {
                         Toast.LENGTH_LONG).show();
             }
         });
-        backbutton.setOnClickListener(new ImageButton.OnClickListener(){
-            //TODO 跳转
+        /*backbutton.setOnClickListener(new ImageButton.OnClickListener(){
+            //TODO 跳转 具体什么问题不清楚，第125行报错，应该是返回按钮和其他东西冲突
             public void onClick(View view){
                 Intent intent = new Intent();
                 intent.setClass(ScheduleActivity.this,MainActivity.class);
@@ -132,7 +132,7 @@ public class ScheduleActivity extends Activity {
 
             }
         });
-
+*/
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
         //custom actionbar end
