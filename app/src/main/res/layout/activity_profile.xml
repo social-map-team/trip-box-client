@@ -28,14 +28,37 @@
         android:text="Никола Тесла"
         android:layout_margin="5dp"
         android:textSize="20sp"/>
+   <LinearLayout
+       android:layout_width="fill_parent"
+       android:layout_height="match_parent"
+       android:orientation="horizontal"
+       android:layout_below="@+id/nickname">
 
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/nickname">
+   <ImageButton
+       android:layout_width="fill_parent"
+       android:layout_weight="1"
+       android:layout_height="wrap_content"
+       android:id="@+id/friends"/>
+    <ImageButton
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:id="@+id/history"
+        android:layout_toRightOf="@+id/friends"/>
+    <ImageButton
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:id="@+id/LocationManager"
+        android:layout_toRightOf="@+id/zuji"/>
+    <ImageButton
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:id="@+id/Settings"
+        android:layout_toRightOf="@+id/LocationManager"/>
+   </LinearLayout>
 
-    </ListView>
 </RelativeLayout>
 
 

@@ -2,6 +2,7 @@ package com.socialmap.yy.travelbox;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.MotionEvent;
@@ -18,6 +19,7 @@ import android.widget.RelativeLayout;
  * Created by yy on 7/24/14.
  */
 public class ProfileActivity extends Activity implements View.OnTouchListener {
+    ImageButton friends,LocationManager,Settings,history;
     ImageView button;
     private static final int XSPEED_MIN = 200;
     private static final int XDISTANCE_MIN = 150;
@@ -31,6 +33,10 @@ public class ProfileActivity extends Activity implements View.OnTouchListener {
         setContentView(R.layout.activity_profile);
         ListView list = (ListView) findViewById(R.id.list);
         button = (ImageView)findViewById(R.id.avatar_wrapper);
+        friends = (ImageButton)findViewById(R.id.friends);
+        LocationManager = (ImageButton)findViewById(R.id.LocationManager);
+        Settings = (ImageButton)findViewById(R.id.Settings);
+        history = (ImageButton)findViewById(R.id.history);
         button.setOnClickListener(new ImageButton.OnClickListener(){
             //TODO 跳转
             public void onClick(View view){
@@ -41,7 +47,18 @@ public class ProfileActivity extends Activity implements View.OnTouchListener {
 
             }
         });
-        String[] profile = new String[]{
+        Settings.setOnClickListener(new ImageButton.OnClickListener(){
+
+            public void onClick(View view){
+                Intent intent = new Intent();
+                intent.setClass(ProfileActivity.this,SettingsActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+
+        });
+      /*  String[] profile = new String[]{
                 "用户名：bitdancer",
                 "身份证号：XXXXXXXXXXXXXXXXXX",
                 "真实姓名：杨阳",
@@ -51,6 +68,7 @@ public class ProfileActivity extends Activity implements View.OnTouchListener {
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, profile);
         list.setAdapter(adapter);
+        */
         RelativeLayout ll = (RelativeLayout) findViewById(R.id.ll);
         ll.setOnTouchListener(this);
     }
