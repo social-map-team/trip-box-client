@@ -1,15 +1,38 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <com.amap.api.maps.MapView
         android:id="@+id/map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="560dp" />
 
-</LinearLayout>
+    <Button
+            android:id="@+id/sos"
+            android:layout_width="53dp"
+            android:layout_height="wrap_content"
+            android:background="#492b61cc"
+            android:text="@string/sos"
+            android:textColor="#ffeff2ff"
+            android:layout_marginBottom="189dp"
+        android:layout_gravity="right|top" />
+
+    <EditText
+            android:id="@+id/find"
+            style="@style/TravelBox.main.EditText.Style"
+            android:layout_width="273dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/find"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="10dp"
+
+        android:layout_gravity="center_horizontal|top" />
+
+
+</FrameLayout>
 
 
 

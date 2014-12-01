@@ -1,6 +1,6 @@
 package com.socialmap.yy.travelbox;
 
-import android.app.Activity;
+import  android.app.Activity;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -32,7 +32,7 @@ public class LoginActivity extends Activity {
 
         }
     };
-
+/**/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +67,16 @@ public class LoginActivity extends Activity {
                 }
             }
         });
+
         Button register = (Button) findViewById(R.id.register);
         register.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent =new Intent(LoginActivity.this,RegisterActivity.class);
                 startActivity(intent);
-            }
-        });
-    }
+}
+});
+        }
 
 }
 

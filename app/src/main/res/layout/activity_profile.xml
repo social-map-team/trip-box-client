@@ -38,24 +38,33 @@
        android:layout_width="fill_parent"
        android:layout_weight="1"
        android:layout_height="wrap_content"
-       android:id="@+id/friends"/>
+       android:id="@+id/friends"
+       android:text="@string/friends"
+       android:src="@drawable/haoyou"
+       android:focusableInTouchMode="false" />
     <ImageButton
         android:layout_width="fill_parent"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:id="@+id/history"
-        android:layout_toRightOf="@+id/friends"/>
+        android:text="@string/history"
+        android:src="@drawable/zuji"
+        android:layout_toRightOf="@+id/friends" />
     <ImageButton
         android:layout_width="fill_parent"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:id="@+id/LocationManager"
-        android:layout_toRightOf="@+id/zuji"/>
+        android:text="@string/LocationManager"
+        android:src="@drawable/weizhi"
+        android:layout_toRightOf="@+id/history"/>
     <ImageButton
         android:layout_width="fill_parent"
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:id="@+id/Settings"
+        android:text="@string/action_settings"
+        android:src="@drawable/gexinghua"
         android:layout_toRightOf="@+id/LocationManager"/>
    </LinearLayout>
 

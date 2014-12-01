@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import android.widget.RelativeLayout;
 public class ProfileActivity extends Activity implements View.OnTouchListener {
     ImageButton friends,LocationManager,Settings,history;
     ImageView button;
+
     private static final int XSPEED_MIN = 200;
     private static final int XDISTANCE_MIN = 150;
     private float xDown;
@@ -42,6 +44,36 @@ public class ProfileActivity extends Activity implements View.OnTouchListener {
             public void onClick(View view){
                 Intent intent = new Intent();
                 intent.setClass(ProfileActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+        friends.setOnClickListener(new ImageButton.OnClickListener(){
+            //TODO 跳转
+            public void onClick(View view){
+                Intent intent = new Intent();
+                intent.setClass(ProfileActivity.this,FriendsActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+        history.setOnClickListener(new ImageButton.OnClickListener(){
+            //TODO 跳转
+            public void onClick(View view){
+                Intent intent = new Intent();
+                intent.setClass(ProfileActivity.this,historyActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+        LocationManager.setOnClickListener(new ImageButton.OnClickListener(){
+            //TODO 跳转
+            public void onClick(View view){
+                Intent intent = new Intent();
+                intent.setClass(ProfileActivity.this,LocationManagerActivity.class);
                 startActivity(intent);
                 finish();
 
@@ -72,6 +104,24 @@ public class ProfileActivity extends Activity implements View.OnTouchListener {
         RelativeLayout ll = (RelativeLayout) findViewById(R.id.ll);
         ll.setOnTouchListener(this);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public boolean onTouch(View v,MotionEvent event){
         createVelocityTracker(event);

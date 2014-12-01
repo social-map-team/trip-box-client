@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.PreferenceFragment;
+import android.view.Menu;
 
 /**
  * Created by yy on 7/30/14.
@@ -37,5 +38,31 @@ public class SettingsActivity extends Activity {
             EditTextPreference serverAddr = (EditTextPreference) findPreference("pref_server_addr");
             serverAddr.setSummary(serverAddr.getText());
         }
+   }
+
+    /*@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.settingmain, menu);
+        return true;
     }
+*/
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

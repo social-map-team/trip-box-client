@@ -12,9 +12,9 @@
     <item
         android:id="@+id/action_allteam"
         android:title="团队"/>
-    <item android:id="@+id/action_shop"
+    <item android:id="@+id/action_nearby"
         android:title="附近"/>
-    <item
+<!--    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings" />
@@ -22,4 +22,5 @@
         android:title="@string/action_sos"/>
     <item android:id="@+id/action_feedback"
         android:title="@string/action_feedback"/>
+-->
 </menu>

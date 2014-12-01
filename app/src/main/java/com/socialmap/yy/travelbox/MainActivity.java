@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View.OnClickListener;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -71,8 +72,20 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_main);
+        Button sos = (Button) findViewById(R.id.sos);
 
-        //绑定账户服务
+
+        sos.setOnClickListener(new Button.OnClickListener(){//创建监听
+            public void onClick(View v) {
+                        SOSDialogFragment sos = new SOSDialogFragment();
+                        sos.show(getFragmentManager(), "SOSDialog");
+                    }
+                });
+
+
+
+
+                //绑定账户服务
         bindService(new Intent("com.socialmap.yy.travelbox.ACCOUNT_SERVICE"),
                 conn,
                 Service.BIND_AUTO_CREATE);
@@ -99,8 +112,8 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
 
             @Override
             public View getInfoContents(Marker marker) {
-                View root = getLayoutInflater().inflate(R.layout.activity_main_info_windows,null);
-                TextView content = (TextView)root.findViewById(R.id.content);
+                View root = getLayoutInflater().inflate(R.layout.activity_main_info_windows, null);
+                TextView content = (TextView) root.findViewById(R.id.content);
                 content.setText("同志们好，同志们辛苦了！");
                 Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/mao.ttf");
                 content.setTypeface(typeFace);
@@ -113,20 +126,22 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
         aMap.setOnInfoWindowClickListener(new AMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Toast.makeText(MainActivity.this,"毛主席万岁,万岁，万万岁！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "毛主席万岁,万岁，万万岁！", Toast.LENGTH_SHORT).show();
             }
         });
 
         aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Toast.makeText(MainActivity.this,"毛主席万岁！",Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "毛主席万岁！", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
 
 
     }
+
+
 
     private void init() {
         if (aMap == null) {
@@ -198,9 +213,10 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
             //在定位结束后，在合适的生命周期调用destroy()方法
             //其中如果间隔时间为-1，则定位只定一次
             mAMapLocationManager.requestLocationData(
-                    LocationProviderProxy.AMapNetwork, 5000, 10,this);
+                    LocationProviderProxy.AMapNetwork, 5000, 10, this);
         }
     }
+
 
 
     /**
@@ -221,6 +237,8 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
         return true;
     }
 
+
+
     //主界面中菜单点击事件响应
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
@@ -229,13 +247,13 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
             case R.id.action_my_schedule:
                 startActivity(new Intent(this, ScheduleActivity.class));
                 break;
-            case R.id.action_shop:
-                startActivity(new Intent(this, ShopActivity.class));
+            case R.id.action_nearby:
+                startActivity(new Intent(this, NearbyActivity.class));
                 break;
             case R.id.action_account:
                 startActivity(new Intent(this, ProfileActivity.class));
                 break;
-            case R.id.action_settings:
+          /*  case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.action_sos:
@@ -245,7 +263,7 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
                 break;
             case R.id.action_feedback:
                 startActivity(new Intent(this, ComplainActivity.class));
-                break;
+                break;  */
             case R.id.action_message:
                 startActivity(new Intent(this, MessageActivity.class));
                 break;
@@ -276,12 +294,24 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
 
     }
 
-    public static class SOSDialogFragment extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            // Get the layout inflater
-            LayoutInflater inflater = getActivity().getLayoutInflater();
+
+//TODO SOS
+
+
+
+
+
+
+
+          class SOSDialogFragment extends DialogFragment {
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                // Get the layout inflater
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+
+
+
 
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
@@ -350,7 +380,7 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
         private Timer timer = new Timer();
         private int maxCount = 5;
         private int count = 0;
-        private static int UPDATE_BUTTON_TEXT = 1;
+        private  int UPDATE_BUTTON_TEXT = 1;
         private TimerTask timerTask = new TimerTask() {
 
             @Override

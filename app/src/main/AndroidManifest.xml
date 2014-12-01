@@ -73,12 +73,25 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ShopActivity" />
+        <activity android:name=".NearbyActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ComplainActivity" />
         <activity android:name=".MessageActivity" />
         <activity android:name=".RegisterActivity" />
+        <activity android:name=".FriendsActivity" />
+        <activity android:name=".historyActivity" />
+        <activity android:name=".LocationManagerActivity" />
+        <activity android:name=".TeamDetailActivity" />
+        <activity android:name=".TeamFindActivity" />
+
+
+
+
+
+
+
+
     </application>
 
 

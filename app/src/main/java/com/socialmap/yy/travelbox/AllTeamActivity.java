@@ -3,13 +3,17 @@ package com.socialmap.yy.travelbox;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -19,6 +23,7 @@ import android.widget.ListView;
 public class AllTeamActivity extends Activity implements View.OnTouchListener{
     ImageButton backbutton;
     ListView listView;
+    ImageView button;
     private static final int XSPEED_MIN = 200;
     private static final int XDISTANCE_MIN = 150;
     private float xDown;
@@ -30,7 +35,7 @@ public class AllTeamActivity extends Activity implements View.OnTouchListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_team);
-
+        button = (ImageView)findViewById(R.id.team_pic);
         backbutton = (ImageButton)findViewById(R.id.backbutton);
         listView = (ListView)findViewById(R.id.listView);
         backbutton.setOnClickListener(new ImageButton.OnClickListener(){
@@ -52,11 +57,61 @@ public class AllTeamActivity extends Activity implements View.OnTouchListener{
                 "状态：",
                 "日程：",
         };
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, AllTeam);
         listView.setAdapter(adapter);
         LinearLayout ll = (LinearLayout) findViewById(R.id.ll);
         ll.setOnTouchListener(this);
+
+        button.setOnClickListener(new ImageButton.OnClickListener(){
+            //TODO 跳转
+            public void onClick(View view){
+                Intent intent = new Intent();
+                intent.setClass(AllTeamActivity.this,TeamDetailActivity.class);
+                startActivity(intent);
+                finish();
+            }});
+        }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.teammain, menu);
+        return true;
     }
+
+    //主界面中菜单点击事件响应
+    @Override
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.team_find:
+                startActivity(new Intent(this, TeamFindActivity.class));
+                break;
+            case R.id.team_history:
+                startActivity(new Intent(this, TeamHistoryActivity.class));
+                break;
+            case R.id.team_gather:
+                startActivity(new Intent(this, TeamGatherActivity.class));
+                break;
+            case R.id.team_schedule:
+                startActivity(new Intent(this, TeamScheduleHistory.class));
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public boolean onTouch(View v,MotionEvent event){

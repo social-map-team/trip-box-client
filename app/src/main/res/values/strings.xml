@@ -8,10 +8,10 @@
     <string name="register">注册账号</string>
     <string name="login_failed">登陆失败</string>
     <string name="login_title">登陆</string>
-    <string name="action_settings">设置</string>
+    <string name="action_settings">个性化</string>
     <string name="action_login">登陆</string>
     <string name="action_my_schedule">日程</string>
-    <string name="action_message">消息</string>
+    <string name="action_message">NEWS</string>
     <string name="pref_share_position">位置共享</string>
     <string name="pref_share_position_summ">打开位置共享可以让您的好友看见您的实时位置</string>
     <string name="pref_server_addr">服务器地址</string>
@@ -30,6 +30,16 @@
     <string name="action_feedback">投诉或建议</string>
     <string name="login_register">注册新账号</string>
     <string name="welcome_title">Travel Box</string>
+    <string name="sos">sos</string>
+    <string name="app_name2">TimelineText</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">设置</string>
+    <string name="find">搜一搜</string>
+    <string name="history">我的足迹</string>
+    <string name="friends">我的好友</string>
+    <string name="LocationManager">位置管理</string>
+    <string name="app_name1">好友列表</string>
+
 
     <string-array name="seven_days">
         <item>And the Spirit of God moved upon the face of the waters. And God said, Let there be light: and there was light. And God saw the light, that it was good: and God divided the light from the darkness. And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day. </item>

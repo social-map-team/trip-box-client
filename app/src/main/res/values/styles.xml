@@ -15,5 +15,27 @@
         <item name="android:textColor">#ffefefef</item>
         <item name="android:textColorHint">#ffd6d2af</item>
     </style>
+    <style name="TravelBox.main.EditText.Style" parent="@android:style/Widget.EditText">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/rounded_rectangle</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:textColor">#ffefefef</item>
+        <item name="android:textColorHint">#ffd6d2af</item>
+    </style>
+
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+    </style>
+
+
+    <style name="historyAppTheme" parent="AppBaseTheme">
+    </style>
+
+    <style name="CustomChannelItem">
+        <item name="android:background">@drawable/channel_bar</item>
+    </style>
+
 
 </resources>

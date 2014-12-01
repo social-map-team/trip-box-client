@@ -205,15 +205,13 @@ public class ScheduleActivity extends Activity {
             case R.id.action_my_schedule:
                 startActivity(new Intent(this, ScheduleActivity.class));
                 break;
-            case R.id.action_shop:
-                startActivity(new Intent(this, ShopActivity.class));
+            case R.id.action_nearby:
+                startActivity(new Intent(this, NearbyActivity.class));
                 break;
             case R.id.action_account:
                 startActivity(new Intent(this, ProfileActivity.class));
                 break;
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
+
         }
         return super.onOptionsItemSelected(item);
     }

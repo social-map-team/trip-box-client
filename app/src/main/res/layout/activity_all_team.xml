@@ -12,7 +12,7 @@
         />
     <FrameLayout
         android:text="团队头像位置"
-        android:id="@+id/avatar_wrapper"
+        android:id="@+id/team_pic"
         android:layout_width="170dp"
         android:layout_height="170dp"
         android:layout_centerHorizontal="true"

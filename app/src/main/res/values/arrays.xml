@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="groups">
+        <item>海绵宝宝</item>
+        <item>派大星</item>
+        <item>桑迪</item>
+    </string-array>
+    
+    <string-array name="spongebob">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    
+    <string-array name="spongebob_detail">
+        <item>我准备好了</item>
+        <item>我准备好了</item>
+        <item>我准备好了</item>
+    </string-array>
+    
+    <string-array name="patrick">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+    
+    <string-array name="patrick_detail">
+        <item>我们去抓水母吧</item>
+        <item>我们去抓水母吧</item>
+        <item>我们去抓水母吧</item>
+        <item>我们去抓水母吧</item>
+        <item>我们去抓水母吧</item>
+        <item>我们去抓水母吧</item>
+        <item>我们去抓水母吧</item>
+    </string-array>
+    
+    <string-array name="sandy">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    
+    <string-array name="sandy_detail">
+        <item>谁是钉子拉里</item>
+        <item>谁是钉子拉里</item>
+    </string-array>
+    
+</resources>
