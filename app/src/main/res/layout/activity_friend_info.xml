@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="center"
+        android:src="@drawable/blur" />
+
+
+    <ImageView
+        android:id="@+id/avatar_wrapper"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/circle"
+        android:padding="5dp"/>
+    <TextView
+        android:id="@+id/nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/avatar_wrapper"
+        android:layout_centerHorizontal="true"
+        android:text="好友昵称（或者显示备注）"
+        android:layout_margin="5dp"
+        android:textSize="20sp"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_below="@+id/nickname">
+
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/delete"
+            android:focusableInTouchMode="false" />
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/Talk"
+            />
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/LocationShare"/>
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:id="@+id/history"
+         />
+    </LinearLayout>
+
+</RelativeLayout>
+
+
+

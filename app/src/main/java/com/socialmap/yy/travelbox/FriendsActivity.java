@@ -3,19 +3,18 @@
  * Created by gxyzw_000 on 2014/11/29.
  */
 package com.socialmap.yy.travelbox;
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
-        import android.app.Activity;
-        import android.app.AlertDialog;
-        import android.content.ClipData;
-        import android.content.DialogInterface;
-        import android.content.DialogInterface.OnClickListener;
-        import android.os.Bundle;
-        import android.view.View;
-        import android.view.ViewGroup.LayoutParams;
-        import android.widget.ExpandableListView;
-        import android.widget.ExpandableListView.OnChildClickListener;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 
 public class FriendsActivity extends Activity implements OnChildClickListener {
 
