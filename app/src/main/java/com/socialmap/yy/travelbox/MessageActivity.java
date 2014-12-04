@@ -19,6 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 
 /**
  * Created by yy on 8/3/14.
@@ -32,6 +35,9 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
 
 
 
+    private String[] Messagetype = new String[]{"全部","好友", "SOS", "系统", "团队", "系统" };
+    private ListView MessageCheckListView;
+    private boolean[] State=new boolean[]{true, false, false, false, false, false,false };
 
 
 
@@ -67,14 +73,14 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
             }
 
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                if(convertView == null){
-                    convertView = inflater.inflate(R.layout.activity_message_list_item, null);
-                }
-
-                return convertView;
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if(convertView == null){
+                convertView = inflater.inflate(R.layout.activity_message_list_item, null);
             }
-        };
+
+            return convertView;
+        }
+    };
         list.setAdapter(adapter);
         LinearLayout ll = (LinearLayout) findViewById(R.id.ll);
         ll.setOnTouchListener(this);
@@ -141,6 +147,20 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
 */
 
 
+class AlertClickListener implements OnClickListener{
+    private String[] Messagetype = new String[]{"全部","好友", "SOS", "系统", "团队", "系统" };
+
+    MessageActivity M = new MessageActivity();
+    public void onClick(View v) {
+        new AlertDialog.Builder(M).setTitle("选择区域").setItems(Messagetype,new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                Toast.makeText(M, "您已经选择了: " + which + ":" + Messagetype[which],Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+            }
+        }).show();
+    }
+}
+
 
 
 
@@ -149,16 +169,16 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
 
 class  CheckBoxClickListener implements  OnClickListener{
 
+
+    MessageActivity M = new MessageActivity();
+
     private String[] Messagetype = new String[]{"全部","好友", "SOS", "系统", "团队", "系统" };
     private ListView MessageCheckListView;
     private boolean[] State=new boolean[]{true, false, false, false, false, false,false };
 
-    MessageActivity M = new MessageActivity();
-
-
-
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+                  {
         AlertDialog ad = new AlertDialog.Builder(M)
                 .setTitle("选择消息类型")
                 .setMultiChoiceItems(Messagetype,State,new DialogInterface.OnMultiChoiceClickListener(){

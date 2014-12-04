@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -75,6 +76,8 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
         Button sos = (Button) findViewById(R.id.sos);
 
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
+
         sos.setOnClickListener(new Button.OnClickListener(){//创建监听
             public void onClick(View v) {
                         SOSDialogFragment sos = new SOSDialogFragment();
@@ -114,7 +117,7 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
             public View getInfoContents(Marker marker) {
                 View root = getLayoutInflater().inflate(R.layout.activity_main_info_windows, null);
                 TextView content = (TextView) root.findViewById(R.id.content);
-                content.setText("同志们好，同志们辛苦了！");
+                content.setText("！");
                 Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/mao.ttf");
                 content.setTypeface(typeFace);
                 return root;
@@ -126,14 +129,14 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
         aMap.setOnInfoWindowClickListener(new AMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-                Toast.makeText(MainActivity.this, "毛主席万岁,万岁，万万岁！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "！", Toast.LENGTH_SHORT).show();
             }
         });
 
         aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Toast.makeText(MainActivity.this, "毛主席万岁！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "！", Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
