@@ -63,16 +63,20 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
 
         }
     };
-    MapView mapView;
-    AMap aMap;
-    private LocationSource.OnLocationChangedListener mListener;
+    private AMap aMap;
+    private MapView mapView;
+    private OnLocationChangedListener mListener;
     private LocationManagerProxy mAMapLocationManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         setContentView(R.layout.activity_main);
+        //初始化高德地图
+        mapView = (MapView) findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        init();
+
         Button sos = (Button) findViewById(R.id.sos);
 
 
@@ -93,14 +97,10 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
                 conn,
                 Service.BIND_AUTO_CREATE);
 
-        //初始化高德地图
-        mapView = (MapView) findViewById(R.id.map);
-        mapView.onCreate(savedInstanceState);
-        init();
 
         //测试添加地图标记
         //TODO 实现日程中地点点击后跳转到地图上面显示具体地点
-        MarkerOptions mo = new MarkerOptions();
+       /* MarkerOptions mo = new MarkerOptions();
         mo.title("This is title.");
         mo.position(new LatLng(39.9073, 116.3911));
         mo.snippet("This is snippet");
@@ -141,7 +141,7 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
             }
         });
 
-
+*/
     }
 
 
@@ -157,9 +157,9 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
         myLocationStyle.myLocationIcon(BitmapDescriptorFactory.
                 fromResource(R.drawable.anchor_mao));
         myLocationStyle.strokeColor(Color.BLUE);
-        myLocationStyle.strokeWidth(10);
+        myLocationStyle.strokeWidth(5);
         aMap.setMyLocationStyle(myLocationStyle);
-        mAMapLocationManager = LocationManagerProxy.getInstance(this);
+        mAMapLocationManager = LocationManagerProxy.getInstance(MainActivity.this);
         aMap.setLocationSource(this);// 设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
@@ -207,16 +207,18 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
      * 激活定位
      */
     @Override
-    public void activate(LocationSource.OnLocationChangedListener listener) {
+    public void activate(OnLocationChangedListener listener) {
         mListener = listener;
         if (mAMapLocationManager == null) {
             mAMapLocationManager = LocationManagerProxy.getInstance(this);
             //此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
-            //注意设置合适的定位时间的间隔，并且在合适时间调用removeUpdates()方法来取消定位请求
+            //注意设置合适的定位时间的间隔（最小间隔支持为2000ms），并且在合适时间调用removeUpdates()方法来取消定位请求
             //在定位结束后，在合适的生命周期调用destroy()方法
             //其中如果间隔时间为-1，则定位只定一次
+            //在单次定位情况下，定位无论成功与否，都无需调用removeUpdates()方法移除请求，定位sdk内部会移除
             mAMapLocationManager.requestLocationData(
-                    LocationProviderProxy.AMapNetwork, 5000, 10, this);
+                    LocationProviderProxy.AMapNetwork, 60*1000, 10, this);
+
         }
     }
 

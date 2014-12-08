@@ -40,7 +40,7 @@
        android:layout_height="wrap_content"
        android:id="@+id/friends"
        android:text="@string/friends"
-       android:src="@drawable/haoyou"
+       android:src="@drawable/friendslist"
        android:focusableInTouchMode="false" />
     <ImageButton
         android:layout_width="fill_parent"
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/history"
         android:text="@string/history"
-        android:src="@drawable/zuji"
+        android:src="@drawable/history"
         android:layout_toRightOf="@+id/friends" />
     <ImageButton
         android:layout_width="fill_parent"
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/LocationManager"
         android:text="@string/LocationManager"
-        android:src="@drawable/weizhi"
+        android:src="@drawable/locationmanager"
         android:layout_toRightOf="@+id/history"/>
     <ImageButton
         android:layout_width="fill_parent"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/Settings"
         android:text="@string/action_settings"
-        android:src="@drawable/gexinghua"
+        android:src="@drawable/settings"
         android:layout_toRightOf="@+id/LocationManager"/>
    </LinearLayout>
 
