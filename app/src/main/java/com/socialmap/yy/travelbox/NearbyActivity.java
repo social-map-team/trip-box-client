@@ -1,26 +1,26 @@
 package com.socialmap.yy.travelbox;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.view.VelocityTracker;
-import android.view.View;
-import android.widget.LinearLayout;
-import java.util.List;
-import java.util.Map;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.VelocityTracker;
+import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yy on 7/24/14.
@@ -131,7 +131,7 @@ public class NearbyActivity extends Activity{
 
                     }
                     else
-                    {
+                        {
 
                         holder = (ViewHolder) convertView.getTag();
                     }

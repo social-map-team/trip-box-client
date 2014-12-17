@@ -1,24 +1,23 @@
 package com.socialmap.yy.travelbox;
 
 
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-
 public class SettingTabActivity extends Activity implements OnItemClickListener{
     
-    private CornerListView cornerListView = null;
+    private ListView ListView = null;
     
     private List<Map<String,String>> listData = null;
     private SimpleAdapter adapter = null;
@@ -29,12 +28,12 @@ public class SettingTabActivity extends Activity implements OnItemClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_tab_setting);
         
-        cornerListView = (CornerListView)findViewById(R.id.setting_list);
+       ListView = (ListView)findViewById(R.id.setting_list);
         setListData();
         
         adapter = new SimpleAdapter(getApplicationContext(), listData, R.layout.main_tab_setting_list_item , new String[]{"text"}, new int[]{R.id.setting_list_item_text});
-        cornerListView.setAdapter(adapter);
-        cornerListView.setOnItemClickListener(this);
+        ListView.setAdapter(adapter);
+        ListView.setOnItemClickListener(this);
     }
     
 

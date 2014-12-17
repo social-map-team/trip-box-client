@@ -10,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,9 +24,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -37,9 +34,6 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 
 import java.util.Timer;
@@ -48,7 +42,7 @@ import java.util.TimerTask;
 /**
  * Created by yy on 7/22/14.
  */
-public class MainActivity extends Activity implements AMapLocationListener, LocationSource {
+ public class MainActivity extends Activity implements AMapLocationListener, LocationSource {
 
     // Service
     private AccountService.MyBinder binder;
@@ -77,7 +71,7 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
         mapView.onCreate(savedInstanceState);
         init();
 
-        Button sos = (Button) findViewById(R.id.sos);
+        ImageButton sos = (ImageButton) findViewById(R.id.sos);
 
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
@@ -308,7 +302,7 @@ public class MainActivity extends Activity implements AMapLocationListener, Loca
 
 
 
-          class SOSDialogFragment extends DialogFragment {
+             class SOSDialogFragment extends DialogFragment {
             @Override
             public Dialog onCreateDialog(Bundle savedInstanceState) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

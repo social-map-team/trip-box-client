@@ -13,8 +13,13 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets{
+        main{
+            jniLibs.srcDirs = ['libs']
         }
     }
     compileOptions {
@@ -28,4 +33,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:19.+'
     compile files('libs/Android_Location_V1.3.0.jar')
     compile files('libs/android-support-v4.jar')
+    compile files('libs/AMap_3DMap_V2.3.0.jar')
 }

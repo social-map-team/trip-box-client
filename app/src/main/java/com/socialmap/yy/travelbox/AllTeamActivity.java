@@ -3,15 +3,12 @@ package com.socialmap.yy.travelbox;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,7 +32,7 @@ public class AllTeamActivity extends Activity implements View.OnTouchListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_team);
-        button = (ImageView)findViewById(R.id.team_pic);
+        button = (ImageView)findViewById(R.id.avatar);
         backbutton = (ImageButton)findViewById(R.id.backbutton);
         listView = (ListView)findViewById(R.id.listView);
         backbutton.setOnClickListener(new ImageButton.OnClickListener(){
