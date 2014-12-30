@@ -4,15 +4,15 @@ package com.socialmap.yy.travelbox;
  * Created by gxyzw_000 on 2014/11/30.
  */
 
-        import java.util.List;
-        import java.util.Map;
-
         import android.content.Context;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.BaseAdapter;
-        import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
+
+import java.util.List;
+import java.util.Map;
 
 public class TimelineAdapter extends BaseAdapter {
 
@@ -47,7 +47,7 @@ public class TimelineAdapter extends BaseAdapter {
         ViewHolder viewHolder = null;
         if (convertView == null) {
             inflater = LayoutInflater.from(parent.getContext());
-            convertView = inflater.inflate(R.layout.history_list, null);
+            convertView = inflater.inflate(R.layout.activity_history, null);
             viewHolder = new ViewHolder();
 
             viewHolder.title = (TextView) convertView.findViewById(R.id.title);

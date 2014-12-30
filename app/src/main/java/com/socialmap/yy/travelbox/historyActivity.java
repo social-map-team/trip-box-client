@@ -5,14 +5,14 @@ package com.socialmap.yy.travelbox;
  */
 
 
-    import java.util.ArrayList;
-    import java.util.HashMap;
-    import java.util.List;
-    import java.util.Map;
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.ListView;
 
-    import android.app.Activity;
-    import android.os.Bundle;
-    import android.widget.ListView;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
     public class historyActivity extends Activity {
 
@@ -23,10 +23,10 @@ package com.socialmap.yy.travelbox;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_history);
+            setContentView(R.layout.history_list);
 
             listView = (ListView) this.findViewById(R.id.listview);
-            //listView.setDividerHeight(0);
+            listView.setDividerHeight(0);
             timelineAdapter = new TimelineAdapter(this, getData());
             listView.setAdapter(timelineAdapter);
 
@@ -36,19 +36,19 @@ package com.socialmap.yy.travelbox;
             List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("title", "这是第1行测试数据");
+            map.put("title", "常州恐龙园");
             list.add(map);
 
             map = new HashMap<String, Object>();
-            map.put("title", "这是第2行测试数据");
+            map.put("title", "春秋淹城");
             list.add(map);
 
             map = new HashMap<String, Object>();
-            map.put("title", "这是第3行测试数据");
+            map.put("title", "天目山");
             list.add(map);
 
             map = new HashMap<String, Object>();
-            map.put("title", "这是第4行测试数据");
+            map.put("title", "嬉戏谷");
             list.add(map);
             return list;
         }

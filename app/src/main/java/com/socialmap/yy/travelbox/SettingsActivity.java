@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.PreferenceFragment;
-import android.view.Menu;
 
 /**
  * Created by yy on 7/30/14.

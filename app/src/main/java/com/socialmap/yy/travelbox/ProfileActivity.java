@@ -2,17 +2,12 @@ package com.socialmap.yy.travelbox;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -83,7 +78,7 @@ public class ProfileActivity extends Activity implements View.OnTouchListener {
 
             public void onClick(View view){
                 Intent intent = new Intent();
-                intent.setClass(ProfileActivity.this,SettingsActivity.class);
+                intent.setClass(ProfileActivity.this,SettingTabActivity.class);
                 startActivity(intent);
                 finish();
             }

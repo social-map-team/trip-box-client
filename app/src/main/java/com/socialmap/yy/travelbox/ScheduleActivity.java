@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ActionProvider;

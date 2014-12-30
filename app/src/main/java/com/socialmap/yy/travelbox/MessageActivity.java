@@ -3,25 +3,20 @@ package com.socialmap.yy.travelbox;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.view.View.OnClickListener;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by yy on 8/3/14.
@@ -32,7 +27,7 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
     private float xDown;
     private float xMove;
     public VelocityTracker mVelocityTracker;
-
+    private TextView myTV;
 
 
     private String[] Messagetype = new String[]{"全部","好友", "SOS", "系统", "团队", "系统" };
@@ -50,9 +45,79 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         ListView list = (ListView) findViewById(R.id.list);
-
+        myTV = (TextView)findViewById(R.id.TextView01);
         checkBoxButton=(Button)findViewById(R.id.checkBoxButton);
-        checkBoxButton.setOnClickListener(new CheckBoxClickListener());
+
+
+
+
+
+
+
+        checkBoxButton.setOnClickListener(new OnClickListener() {
+                                              public void onClick(View v) {
+                                                  final ArrayList mSelectedItems = new ArrayList();  // Where we track the selected items
+                                                  AlertDialog.Builder builder = new AlertDialog.Builder(MessageActivity.this);
+                                                  // Set the dialog title
+                                                  builder.setTitle("Pick your toppings")
+                                                          // Specify the list array, the items to be selected by default (null for none),
+                                                          // and the listener through which to receive callbacks when items are selected
+                                                          .setMultiChoiceItems(R.array.toppings, null,
+                                                                  new DialogInterface.OnMultiChoiceClickListener() {
+                                                                      @Override
+                                                                      public void onClick(DialogInterface dialog, int which,
+                                                                                          boolean isChecked) {
+                                                                          if (isChecked) {
+                                                                              // If the user checked the item, add it to the selected items
+                                                                              mSelectedItems.add(which);
+                                                                          } else if (mSelectedItems.contains(which)) {
+                                                                              // Else, if the item is already in the array, remove it
+                                                                              mSelectedItems.remove(Integer.valueOf(which));
+                                                                          }
+                                                                      }
+                                                                  })
+                                                                  // Set the action buttons
+                                                          .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                                              @Override
+                                                              public void onClick(DialogInterface dialog, int id) {
+                                                                  // User clicked OK, so save the mSelectedItems results somewhere
+                                                                  // or return them to the component that opened the dialog
+                                                                  myTV.setText(mSelectedItems.toString());
+                                                              }
+                                                          })
+                                                          .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                                                              @Override
+                                                              public void onClick(DialogInterface dialog, int id) {
+
+                                                              }
+                                                          });
+
+                                                  AlertDialog ad = builder.create();
+                                                  ad.show();
+
+                                              }
+                                          }
+        );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         BaseAdapter adapter = new BaseAdapter() {
             private LayoutInflater inflater = getLayoutInflater();
@@ -147,24 +212,7 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
 */
 
 
-class AlertClickListener implements OnClickListener{
-    private String[] Messagetype = new String[]{"全部","好友", "SOS", "系统", "团队", "系统" };
-
-    MessageActivity M = new MessageActivity();
-    public void onClick(View v) {
-        new AlertDialog.Builder(M).setTitle("选择区域").setItems(Messagetype,new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which){
-                Toast.makeText(M, "您已经选择了: " + which + ":" + Messagetype[which],Toast.LENGTH_LONG).show();
-                dialog.dismiss();
-            }
-        }).show();
-    }
-}
-
-
-
-
-
+/*
 
 
 class  CheckBoxClickListener implements  OnClickListener{
@@ -207,3 +255,26 @@ class  CheckBoxClickListener implements  OnClickListener{
         ad.show();
     }
 }
+
+
+
+*/
+
+
+
+
+//单击button4按钮创建多选checkbox对话框
+
+
+
+
+
+
+
+
+
+
+
+
+
+

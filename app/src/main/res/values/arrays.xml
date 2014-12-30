@@ -48,5 +48,22 @@
         <item>谁是钉子拉里</item>
         <item>谁是钉子拉里</item>
     </string-array>
-    
+
+
+
+
+
+        <string-array name="toppings">
+            <item>全部</item>
+            <item>好友</item>
+            <item>SOS</item>
+            <item>系统</item>
+            <item>团队</item>
+        </string-array>
+
+
+
+
+
+
 </resources>

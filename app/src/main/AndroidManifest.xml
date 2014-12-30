@@ -34,7 +34,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="31fc7831156d07f6d9b3349692bb4724" />
+            android:value="735eb0f14a5ab8fe23a646435e68f798" />
 
         <activity
             android:name=".WelcomeActivity"
@@ -66,7 +66,7 @@
 
         <activity android:name=".NearbyActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity android:name=".SettingTabActivity" />
         <activity android:name=".ComplainActivity" />
         <activity android:name=".MessageActivity" />
         <activity android:name=".RegisterActivity" />
@@ -75,7 +75,19 @@
         <activity android:name=".LocationManagerActivity" />
         <activity android:name=".TeamDetailActivity" />
         <activity android:name=".TeamFindActivity" />
+        <activity android:name=".TeamGatherActivity" />
+        <activity android:name=".TeamHistoryActivity" />
 
+
+
+
+        <activity android:name=".Setting1Activity" />
+        <activity android:name=".Setting2Activity" />
+        <activity android:name=".Setting3Activity" />
+        <activity android:name=".Setting4Activity" />
+        <activity android:name=".Setting5Activity" />
+        <activity android:name=".Setting6Activity" />
+        <activity android:name=".Setting7Activity" />
 
 
 

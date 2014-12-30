@@ -3,9 +3,6 @@
  * Created by gxyzw_000 on 2014/11/29.
  */
 package com.socialmap.yy.travelbox;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FriendsActivity extends Activity implements OnChildClickListener {
 
@@ -77,6 +77,8 @@ public class FriendsActivity extends Activity implements OnChildClickListener {
                 .setTitle(item.getName())
                 .setMessage(item.getDetail())
                 .setIcon(android.R.drawable.ic_menu_more)
+                .setItems(new String[] {"聊天","位置分享"}, null)
+                //TODO 缺少跳转事件
                 .setNegativeButton(android.R.string.cancel,
                         new OnClickListener() {
                             @Override

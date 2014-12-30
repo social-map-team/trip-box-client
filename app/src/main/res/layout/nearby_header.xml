@@ -20,7 +20,7 @@
         android:background="@drawable/search_panel_background"
         >
 
-        <Button
+        <EditText
             android:textAppearance="?android:textAppearanceMedium"
             android:gravity="left|center"
             android:background="@android:drawable/edit_text"

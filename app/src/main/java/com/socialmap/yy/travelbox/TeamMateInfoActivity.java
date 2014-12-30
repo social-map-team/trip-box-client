@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.ImageButton;
 
 /**
- * Created by LZY on 2014/12/4.  图标从左往右为添加好友、聊天、位置分享、举报
+ * Created by LZY on 2014/12/4.  此为团队成员信息界面,图标从左往右为添加好友、聊天、位置分享、举报
  */
 public class TeamMateInfoActivity  extends Activity {
     ImageButton add,Talk,LocationShare,jubao;

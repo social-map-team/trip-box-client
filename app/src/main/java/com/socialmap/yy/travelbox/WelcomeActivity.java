@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.socialmap.yy.travelbox.utils.DimensionUtils;
-import com.socialmap.yy.travelbox.utils.ImageHelper;
 
 /**
  * Created by yy on 7/22/14.

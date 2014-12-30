@@ -1,7 +1,6 @@
 package com.socialmap.yy.travelbox;
 
 
-import com.socialmap.yy.travelbox.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

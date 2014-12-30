@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <TextView
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:gravity="center" android:text="选择集合时间地点"
+         />
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+        <EditText android:id="@+id/showdate" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_weight="1"/>
+        <Button android:id="@+id/pickdate" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="选择日期"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+        <EditText android:id="@+id/showtime" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_weight="1"/>
+        <Button android:id="@+id/picktime" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="选择时间"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:orientation="horizontal"
+        android:layout_width="fill_parent" android:layout_height="wrap_content">
+
+        <EditText android:id="@+id/location_text" android:layout_width="fill_parent"
+            android:layout_height="wrap_content" android:layout_weight="1"/>
+        <Button android:id="@+id/location_button" android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text="选择地点"/>
+
+    </LinearLayout>
+
+    <Button android:id="@+id/start_button" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:text="确认"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>

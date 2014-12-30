@@ -55,7 +55,6 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:id="@+id/LocationManager"
-        android:text="@string/LocationManager"
         android:src="@drawable/locationmanager"
         android:layout_toRightOf="@+id/history"/>
     <ImageButton

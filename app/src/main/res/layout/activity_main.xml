@@ -21,13 +21,11 @@
 
         android:layout_gravity="center_horizontal|top" />
 
-    <Button
+    <ImageButton
             android:id="@+id/sos"
-            android:layout_width="53dp"
+            android:layout_width="72dp"
             android:layout_height="wrap_content"
-            android:background="#492b61cc"
-            android:text="@string/sos"
-            android:textColor="#ffeff2ff"
+            android:src="@drawable/sos"
         android:layout_gravity="left|bottom" />
 
 

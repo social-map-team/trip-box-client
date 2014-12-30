@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".MainActivity">
+        <item
+            android:id="@+id/team_find"
+            android:title="搜索团队"/>
+        <item
+            android:id="@+id/team_history"
+            android:title="团队历史"/>
+        <item android:id="@+id/team_gather"
+            android:title="团队集合"/>
+        <item
+            android:id="@+id/team_schedule"
+            android:title="团队日程"/>
 
 </menu>
