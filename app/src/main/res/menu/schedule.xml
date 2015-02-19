@@ -10,12 +10,12 @@
         android:icon="@drawable/ic_launcher"
         android:title="hehe"
         android:actionProviderClass="com.socialmap.yy.travelbox.ScheduleActivity$MyActionProvider"
-        android:showAsAction="ifRoom|withText" />
+        app:showAsAction="ifRoom|withText" />
 
     <item
         android:id="@+id/action_aaa"
         android:icon="@drawable/ic_launcher"
         android:title="baba"
-        android:showAsAction="always" />
+        app:showAsAction="always" />
 
 </menu>

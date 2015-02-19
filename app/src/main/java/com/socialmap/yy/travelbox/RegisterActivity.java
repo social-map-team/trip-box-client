@@ -1,27 +1,192 @@
 package com.socialmap.yy.travelbox;
 
 import android.app.Activity;
-import android.os.AsyncTask;
+
+import android.content.Intent;
+
+import android.database.Cursor;
+
 import android.os.Bundle;
-import android.text.InputType;
+
 import android.view.View;
+
 import android.widget.Button;
-import android.widget.CompoundButton;
+
 import android.widget.EditText;
-import android.widget.Switch;
+
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
 
-/**
- * Created by yy on 8/7/14.
- */
+
+public class RegisterActivity extends Activity {
+
+    private RegisterHelper dbHelper;
+
+    EditText edtext;
+
+    EditText edpwd;
+
+    EditText edpwd2;
+
+    protected void onCreate(Bundle savedInstanceState)
+
+    {
+
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_register);
+
+
+        Button btnsub=(Button)findViewById(R.id.register);
+
+        edtext=(EditText)findViewById(R.id.telnum);
+
+        edpwd=(EditText)findViewById(R.id.password);
+
+        edpwd2=(EditText)findViewById(R.id.password2);
+        dbHelper = new RegisterHelper(this, "register.db", null, 1);
+
+
+        btnsub.setOnClickListener(new View.OnClickListener() {
+
+
+
+            @Override
+
+            public void onClick(View v) {
+
+                // TODO Auto-generated method stub
+
+                setUser();
+
+            }
+
+        });
+
+
+
+
+    }
+
+    private void setUser()
+
+    {
+
+
+
+
+
+
+        if(edtext.getText().toString().length()<=0||edpwd.getText().toString().length()<=0||edpwd2.getText().toString().length()<=0)
+
+        {
+
+            Toast.makeText(this, "用户名或密码不能为空", Toast.LENGTH_LONG).show();
+
+            return;
+
+        }
+
+        if(edtext.getText().toString().length()>0)
+
+        {
+
+            String sql="select * from user where userid=?";
+
+            Cursor cursor=dbHelper.getWritableDatabase().rawQuery(sql, new String[]{edtext.getText().toString()});
+
+            if(cursor.moveToFirst())
+
+            {
+
+                Toast.makeText(this, "用户名已经存在", Toast.LENGTH_LONG).show();
+
+                return;
+
+            }
+
+        }
+
+        if(!edpwd.getText().toString().equals(edpwd2.getText().toString()))
+
+        {
+
+            Toast.makeText(this, "两次输入的密码不同", Toast.LENGTH_LONG).show();
+
+            return;
+
+        }
+
+        if(dbHelper.AddUser(edtext.getText().toString(), edpwd.getText().toString()))
+
+        {
+
+            Toast.makeText(this, "用户注册成功", Toast.LENGTH_LONG).show();
+
+            Intent intent=new Intent();
+
+            intent.setClass(this, MainActivity.class);
+
+            startActivity(intent);
+
+        }
+
+        else
+
+        {
+
+            Toast.makeText(this, "用户注册失败", Toast.LENGTH_LONG).show();
+
+        }
+
+        dbHelper.close();
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 public class RegisterActivity extends Activity implements StandardRequest, StandardResponse {
     private EditText email;
     private CheckEmailAvailableTask emailTask = new CheckEmailAvailableTask();
+
+    private RegisterHelper dbHelper;
 
     private void setEmailError(String err) {
         email.setError(err);
@@ -31,6 +196,10 @@ public class RegisterActivity extends Activity implements StandardRequest, Stand
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        dbHelper = new RegisterHelper(this, "register.db", null, 1);
+
+
         email = (EditText) findViewById(R.id.email);
         email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -65,10 +234,47 @@ public class RegisterActivity extends Activity implements StandardRequest, Stand
             public void onClick(View v) {
                 String emailText = email.getText().toString();
                 String passwordText = password.getText().toString();
-                Toast.makeText(RegisterActivity.this, "You registered with emial " + emailText + "and password " + passwordText, Toast.LENGTH_LONG).show();
+
+
+
+                 SQLiteDatabase db = dbHelper.getWritableDatabase();
+                 ContentValues values = new ContentValues();// 开始组装第一条数据
+                 values.put("num", emailText);
+                 values.put("pass", passwordText);
+                 db.insert("Register", null, values); // 插入第一条数据
+                 values.clear();
+
+
+
+
+
+
+
+
+                Toast.makeText(RegisterActivity.this, "You registered with ID " + emailText + "and password " + passwordText, Toast.LENGTH_LONG).show();
             }
         });
-    }
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//TODO 查emil存在
 
     private class CheckEmailAvailableTask extends AsyncTask<String, Void, Void> {
         @Override
@@ -89,10 +295,11 @@ public class RegisterActivity extends Activity implements StandardRequest, Stand
                 if (r == FAIL) {
                     setEmailError(getString(R.string.register_error_email_registered));
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
         }
-    }
-}
+    }*/
+

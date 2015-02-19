@@ -6,9 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-/**
- * Created by yy on 8/3/14.
- */
+
 public class ComplainActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {

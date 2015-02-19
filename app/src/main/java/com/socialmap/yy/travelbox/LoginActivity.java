@@ -14,6 +14,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.socialmap.yy.travelbox.utils.Global;
+
+import com.socialmap.yy.travelbox.service.AccountService;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -52,12 +56,14 @@ public class LoginActivity extends Activity {
         final TextView username = (TextView) findViewById(R.id.username);
         final TextView password = (TextView) findViewById(R.id.password);
         Button login = (Button) findViewById(R.id.login);
+       final String str1=username.getText().toString();
+       final String str2= password.getText().toString();
         login.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 //调用账户服务中的登录验证
                 //TODO 要开启单独的线程，避免主线程失去响应
-                int r = binder.login(username.getText().toString(), password.getText().toString());
+                int r = binder.login(str1,str2 );
                 switch (r) {
                     case Global.SUCCESS:
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));

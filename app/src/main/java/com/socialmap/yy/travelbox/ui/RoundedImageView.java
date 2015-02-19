@@ -12,7 +12,6 @@ import com.socialmap.yy.travelbox.utils.ImageHelper;
 
 /**
  * 自定义的圆形ImageView
- * Created by yy on 7/24/14.
  */
 public class RoundedImageView extends ImageView {
 

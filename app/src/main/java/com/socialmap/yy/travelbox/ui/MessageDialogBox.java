@@ -12,7 +12,6 @@ import com.socialmap.yy.travelbox.utils.DimensionUtils;
 
 /**
  * 自定义的圆形ImageView
- * Created by yy on 7/24/14.
  */
 public class MessageDialogBox extends View {
 

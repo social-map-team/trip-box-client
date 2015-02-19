@@ -1,8 +1,6 @@
-package com.socialmap.yy.travelbox;
+package com.socialmap.yy.travelbox.utils;
 
-/**
- * Created by yy on 7/22/14.
- */
+
 public class Global {
     public static final int SUCCESS = 0;
     public static final int ERROR = 1;

@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 /**
- * Created by LZY on 2014/11/19.  对应“团队”界面 开发组21号拿到UI设计，根据对应功能进行扩充
+  对应“团队”界面 开发组21号拿到UI设计，根据对应功能进行扩充
  */
 public class AllTeamActivity extends Activity implements View.OnTouchListener{
     ImageButton backbutton;

@@ -3,6 +3,7 @@ package com.socialmap.yy.travelbox;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,9 +23,7 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by yy on 7/24/14.
- */
+
 public class NearbyActivity extends Activity{
     private static final int XSPEED_MIN = 200;
     private static final int XDISTANCE_MIN = 150;
@@ -74,14 +73,46 @@ public class NearbyActivity extends Activity{
             }
 
             private AdapterView.OnItemClickListener mOnClickListener = new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v, int position, long id)
-                {
-                    Intent intent = new Intent();
-                    intent.setClass(NearbyActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-            };
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                    if (position == 1) {
+                        Uri uri1 = Uri.parse("http://lvyou.baidu.com/scene/t-meishi/");
+                        Intent intent1 = new Intent(Intent.ACTION_VIEW, uri1);
+                        startActivity(intent1);}
 
+                        if (position == 2) {
+                            Uri uri2 = Uri.parse("http://www.baidu.com");
+                            Intent intent2 = new Intent(Intent.ACTION_VIEW, uri2);
+                            startActivity(intent2);
+
+                        }
+                        if (position == 3) {
+                            Uri uri3 = Uri.parse("http://www.baidu.com");
+                            Intent intent3 = new Intent(Intent.ACTION_VIEW, uri3);
+                            startActivity(intent3);
+                        }
+
+
+                        if (position == 4) {
+                            Uri uri4 = Uri.parse("http://www.baidu.com");
+                            Intent intent4 = new Intent(Intent.ACTION_VIEW, uri4);
+                            startActivity(intent4);
+                        }
+
+                        if (position == 5) {
+                            Uri uri5 = Uri.parse("http://www.baidu.com");
+                            Intent intent5 = new Intent(Intent.ACTION_VIEW, uri5);
+                            startActivity(intent5);
+                        }
+                        if (position == 6) {
+                            Uri uri6 = Uri.parse("http://www.baidu.com");
+                            Intent intent6 = new Intent(Intent.ACTION_VIEW, uri6);
+                            startActivity(intent6);
+                        }
+
+
+                    }
+
+            };
 
             public final class ViewHolder {
                 public ImageView img;

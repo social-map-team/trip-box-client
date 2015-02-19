@@ -1,4 +1,4 @@
-package com.socialmap.yy.travelbox;
+package com.socialmap.yy.travelbox.adpater;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.socialmap.yy.travelbox.model.Item;
+import com.socialmap.yy.travelbox.R;
 
 import java.util.List;
 
