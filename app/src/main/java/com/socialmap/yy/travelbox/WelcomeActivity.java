@@ -9,9 +9,7 @@ import android.widget.TextView;
 
 import com.socialmap.yy.travelbox.utils.DimensionUtils;
 
-/**
- * Created by yy on 7/22/14.
- */
+
 public class WelcomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -2,9 +2,7 @@ package com.socialmap.yy.travelbox.model;
 
 import java.util.Date;
 
-/**
- * Created by yy on 6/29/14.
- */
+
 public class TravelSchedule {
     private Date start;
     private Date end;

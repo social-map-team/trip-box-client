@@ -1,30 +1,21 @@
 package com.socialmap.yy.travelbox;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.Service;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -35,14 +26,12 @@ import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.socialmap.yy.travelbox.arclibrary.ArcMenu;
+import com.socialmap.yy.travelbox.fragment.SOSDialogFragment;
+import com.socialmap.yy.travelbox.service.AccountService;
 
-import java.util.Timer;
-import java.util.TimerTask;
 
-/**
- * Created by yy on 7/22/14.
- */
- public class MainActivity extends Activity implements AMapLocationListener, LocationSource {
+public class MainActivity extends Activity implements AMapLocationListener, LocationSource {
 
     // Service
     private AccountService.MyBinder binder;
@@ -61,6 +50,8 @@ import java.util.TimerTask;
     private MapView mapView;
     private OnLocationChangedListener mListener;
     private LocationManagerProxy mAMapLocationManager;
+    private static final int[] ITEM_DRAWABLES = { R.drawable.composer_thought, R.drawable.composer_camera,
+             R.drawable.composer_with,R.drawable.composer_sleep,R.drawable.composer_place };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +67,27 @@ import java.util.TimerTask;
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
 
+
+
+        ArcMenu arcMenu2 = (ArcMenu) findViewById(R.id.arc_menu_2);
+
+        initArcMenu(arcMenu2, ITEM_DRAWABLES);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         sos.setOnClickListener(new Button.OnClickListener(){//创建监听
             public void onClick(View v) {
                         SOSDialogFragment sos = new SOSDialogFragment();
@@ -90,6 +102,22 @@ import java.util.TimerTask;
         bindService(new Intent("com.socialmap.yy.travelbox.ACCOUNT_SERVICE"),
                 conn,
                 Service.BIND_AUTO_CREATE);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //测试添加地图标记
@@ -296,113 +324,58 @@ import java.util.TimerTask;
 
 //TODO SOS
 
+    private void initArcMenu(ArcMenu menu, int[] itemDrawables) {
+        final int itemCount = itemDrawables.length;
+        for (int i = 0; i < itemCount; i++) {
+            ImageView item = new ImageView(this);
+            item.setImageResource(itemDrawables[i]);
 
-
-
-
-
-
-             class SOSDialogFragment extends DialogFragment {
-            @Override
-            public Dialog onCreateDialog(Bundle savedInstanceState) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                // Get the layout inflater
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-
-
-
-
-            // Inflate and set the layout for the dialog
-            // Pass null as the parent view because its going in the dialog layout
-            View v = inflater.inflate(R.layout.dialog_sos, null);
-            EditText message = (EditText) v.findViewById(R.id.message);
-            message.addTextChangedListener(new TextWatcher() {
-
-
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    count = 0;
-                }
-            });
-
-            //TODO first use EditText, now I use OnClickListener to detect it.
-            message.setOnClickListener(new View.OnClickListener() {
-                boolean firstChange = true;
+            final int position = i;
+            menu.addItem(item, new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
-                    if (firstChange) {
-                        maxCount = 300;
-                        count = 0;
-                        firstChange = false;
-                    }
+                    choose(position);
+                   // Toast.makeText(MainActivity.this, "position:" + position, Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
+
+
                 }
             });
-
-            builder.setView(v)
-                    // Add action buttons
-                    .setPositiveButton(R.string.sos_send, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            timer.cancel();
-                            //TODO send sos message
-                        }
-                    })
-                    .setNegativeButton(R.string.sos_cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            timer.cancel();
-                            SOSDialogFragment.this.getDialog().cancel();
-                        }
-                    });
-            return builder.create();
-        }
-
-
-
-
-        private Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if (msg.what >= 0) {
-                    Button send = ((AlertDialog) SOSDialogFragment.this.getDialog()).getButton(DialogInterface.BUTTON_POSITIVE);
-                    send.setText(getString(R.string.sos_send) + "(" + msg.what + ")");
-                }
-            }
-        };
-        private Timer timer = new Timer();
-        private int maxCount = 5;
-        private int count = 0;
-        private  int UPDATE_BUTTON_TEXT = 1;
-        private TimerTask timerTask = new TimerTask() {
-
-            @Override
-            public void run() {
-                if (count <= maxCount) {
-                    handler.sendEmptyMessage(maxCount - count);
-                    count++;
-                } else {
-                    timer.cancel();
-                    //TODO auto send sos
-                    //close dialog
-                    SOSDialogFragment.this.getDialog().cancel();
-                }
-            }
-        };
-
-        @Override
-        public void onStart() {
-            super.onStart();
-            timer.schedule(timerTask, 0, 1000);
         }
     }
+
+
+   public void choose(int position) {
+       switch (position) {
+           case 0:
+               startActivity(new Intent(this, MessageActivity.class));
+               break;
+           case 1:
+               startActivity(new Intent(this, ScheduleActivity.class));
+               break;
+           case 2:
+               startActivity(new Intent(this, ProfileActivity.class));
+               break;
+           case 3:
+               startActivity(new Intent(this, AllTeamActivity.class));
+               break;
+           case 4:
+               startActivity(new Intent(this, NearbyActivity.class));
+               break;
+
+
+       }
+
+
+   }
+
+
+
+
 }

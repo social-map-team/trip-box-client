@@ -15,9 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 
-/**
- * Created by gxyzw_000 on 2014/12/29.
- */
+
 public class Setting1Activity extends Activity implements OnItemClickListener {
     private android.widget.ListView ListView = null;
 

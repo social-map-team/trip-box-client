@@ -1,4 +1,4 @@
-package com.socialmap.yy.travelbox;
+package com.socialmap.yy.travelbox.model;
 
 public class Item {
     

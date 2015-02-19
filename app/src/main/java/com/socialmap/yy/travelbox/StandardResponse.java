@@ -1,8 +1,6 @@
 package com.socialmap.yy.travelbox;
 
-/**
- * Created by yy on 8/12/14.
- */
+
 public interface StandardResponse {
     public int SUCCESS = 0;
     public int FAIL = 1;

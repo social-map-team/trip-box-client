@@ -40,6 +40,21 @@
     <string name="LocationManager">位置管理</string>
     <string name="app_name1">好友列表</string>
 
+    <string-array name="profile_array">
+        <item>我的好友</item>
+        <item>我的足迹</item>
+        <item>位置管理</item>
+        <item>个性化</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_pic">更换背景</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+
+
+
+
+
 
     <string-array name="seven_days">
         <item>And the Spirit of God moved upon the face of the waters. And God said, Let there be light: and there was light. And God saw the light, that it was good: and God divided the light from the darkness. And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day. </item>

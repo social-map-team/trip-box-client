@@ -84,11 +84,9 @@
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
-    <orderEntry type="library" exported="" name="AMap_3DMap_V2.2.1" level="project" />
     <orderEntry type="library" exported="" name="AMap_3DMap_V2.3.0" level="project" />
     <orderEntry type="library" exported="" name="android-support-v4" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-19.1.0" level="project" />
-    <orderEntry type="library" exported="" name="so" level="project" />
     <orderEntry type="library" exported="" name="Android_Location_V1.3.0" level="project" />
   </component>
 </module>

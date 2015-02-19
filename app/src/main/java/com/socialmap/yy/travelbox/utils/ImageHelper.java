@@ -9,11 +9,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
 
-/**
- * Created by yy on 7/24/14.
- */
+
 //关于图像处理的辅助类
 public class ImageHelper {
 

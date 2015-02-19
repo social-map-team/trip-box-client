@@ -1,8 +1,5 @@
-package com.socialmap.yy.travelbox;
+package com.socialmap.yy.travelbox.adpater;
 
-/**
- * Created by gxyzw_000 on 2014/11/30.
- */
 
         import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +8,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.List;
+        import com.socialmap.yy.travelbox.R;
+
+        import java.util.List;
 import java.util.Map;
 
 public class TimelineAdapter extends BaseAdapter {
@@ -48,18 +47,23 @@ public class TimelineAdapter extends BaseAdapter {
         if (convertView == null) {
             inflater = LayoutInflater.from(parent.getContext());
             convertView = inflater.inflate(R.layout.activity_history, null);
-            viewHolder = new ViewHolder();
 
+            viewHolder = new ViewHolder();
             viewHolder.title = (TextView) convertView.findViewById(R.id.title);
             convertView.setTag(viewHolder);
+
+            viewHolder.show_time = (TextView) convertView.findViewById(R.id.show_time);
+            convertView.setTag(viewHolder);
+
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
         String titleStr = list.get(position).get("title").toString();
-
+        String timeStr = list.get(position).get("show_time").toString();
 
         viewHolder.title.setText(titleStr);
+        viewHolder.show_time.setText(timeStr);
 
         return convertView;
     }
@@ -68,7 +72,19 @@ public class TimelineAdapter extends BaseAdapter {
         public TextView year;
         public TextView month;
         public TextView title;
+        public TextView show_time;
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

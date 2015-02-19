@@ -13,6 +13,9 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
+import com.socialmap.yy.travelbox.adpater.ExpandAdapter;
+import com.socialmap.yy.travelbox.model.Item;
+
 import java.util.ArrayList;
 import java.util.List;
 

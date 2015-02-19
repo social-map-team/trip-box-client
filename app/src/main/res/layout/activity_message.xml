@@ -5,15 +5,6 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/checkBoxButton"
-        android:layout_width="44dp"
-        android:layout_height="21dp"
-        android:background="#000000"
-        android:text="筛选"
-        android:textColor="#ffeff2ff"
-        android:layout_gravity="right" />
-
     <TextView android:id="@+id/TextView01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

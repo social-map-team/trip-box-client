@@ -11,9 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by gxyzw_000 on 2014/12/29.
- */
+
 public class Setting4Activity  extends Activity implements AdapterView.OnItemClickListener {
 
 

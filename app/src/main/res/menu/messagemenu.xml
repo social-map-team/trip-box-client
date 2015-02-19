@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MessageActivity" >
+<item
+    android:id="@+id/search_message"
+    android:title="搜索 "
+    android:actionViewClass="android.widget.SearchView"
+    android:showAsAction="ifRoom|withText"
+    />
+<item
+    android:id="@+id/check_message"
+    android:title="筛选"
+    android:showAsAction="ifRoom|withText"
+     />
+
+
+</menu>

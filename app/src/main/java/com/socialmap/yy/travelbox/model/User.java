@@ -1,12 +1,8 @@
 package com.socialmap.yy.travelbox.model;
 
-import android.media.Image;
-
 import java.util.Date;
 
-/**
- * Created by yy on 7/21/14.
- */
+
 public class User {
     public enum Gender{
         MALE,

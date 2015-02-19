@@ -1,4 +1,4 @@
-package com.socialmap.yy.travelbox;
+package com.socialmap.yy.travelbox.listview;
 
 
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.socialmap.yy.travelbox.R;
 
 /**
  * Բ��ListView

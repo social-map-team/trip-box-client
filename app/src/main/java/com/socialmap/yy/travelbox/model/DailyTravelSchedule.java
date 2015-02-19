@@ -4,9 +4,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by yy on 7/23/14.
- */
 public class DailyTravelSchedule {
     private List<TravelSchedule> schedules = new LinkedList<>();
     private Date date;
