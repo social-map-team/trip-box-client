@@ -84,6 +84,13 @@
     <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="support-v4-19.1.0" level="project" />
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    <orderEntry type="library" exported="" name="AMap_3DMap_V2.2.1" level="project" />
+=======
+>>>>>>> origin/master
+>>>>>>> f6a0d4d484ce710e5cc11c3f8f247c5f0e289ecd
     <orderEntry type="library" exported="" name="AMap_3DMap_V2.3.0" level="project" />
     <orderEntry type="library" exported="" name="android-support-v4" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-19.1.0" level="project" />
