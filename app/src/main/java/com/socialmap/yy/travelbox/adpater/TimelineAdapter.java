@@ -50,7 +50,6 @@ public class TimelineAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
             viewHolder.title = (TextView) convertView.findViewById(R.id.title);
-            convertView.setTag(viewHolder);
 
             viewHolder.show_time = (TextView) convertView.findViewById(R.id.show_time);
             convertView.setTag(viewHolder);
@@ -60,9 +59,9 @@ public class TimelineAdapter extends BaseAdapter {
         }
 
         String titleStr = list.get(position).get("title").toString();
-        // String timeStr = list.get(position).get("show_time").toString();
+        String timeStr = list.get(position).get("show_time").toString();
         //TODO 注释掉上面这段代码的原因是获取不到show_time对应的View，换上下面这行代码代替
-        String timeStr = "10.1";
+        //String timeStr = "10.1";
 
         viewHolder.title.setText(titleStr);
         viewHolder.show_time.setText(timeStr);

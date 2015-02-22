@@ -85,23 +85,56 @@ public class historyActivity extends Activity {
                                 new DialogInterface.OnClickListener() {
 
                                     public void onClick(DialogInterface dialoginterface, int i) {
-                                        EditText inputEditString = (EditText) layout
-                                                .findViewById(R.id.input_edit_string);
+
 
                                         // 用户输入修改的足迹内容
-                                        String editStr = inputEditString.getText()
-                                                .toString();
+
+
+
+                                        EditText inputString = (EditText) layout
+                                                .findViewById(R.id.input_add_string);
+
+                                        // 获取用户添加足迹的输入内容
+                                        String str = inputString.getText().toString();
+
+                                        // 验证用户输入
+                                        if (str == null || str.equals("")) {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "请输入修改", Toast.LENGTH_SHORT)
+                                                    .show();
+                                        } else {
+                                            if (str.contains(" ")) {
+                                                String[] temp = str.split(" ");
+                                                String str1 = temp[0];
+                                                String str2 = temp[1];
+
+                                                Log.e("yy", str1 + " " + str2);
+                                                HashMap<String, Object> map = new HashMap<String, Object>();
+                                                map.put("title", str1);
+                                                map.put("show_time", str2);
+                                                dataSource.set(currentPosition, map);
+                                                timelineAdapter.notifyDataSetChanged();
+
+                                                Toast.makeText(
+                                                        historyActivity.this,
+                                                        "修改的数据为:" + str + "",
+                                                        Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(historyActivity.this,
+                                                        "输入格式应该为“地点+空格+时间”", Toast.LENGTH_SHORT)
+                                                        .show();
+                                            }
+
+
+      /*
 
                                         // 下面这行是错误的根本：你改变这个新建的list，然后通知listView数据源改变了
                                         // （数据源的list根本没变）
                                         // List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-                                        Map<String, Object> map = new HashMap<String, Object>();
+                                       // Map<String, Object> map = new HashMap<String, Object>();
 
                                         // 验证用户输入
-                                        if (editStr == null) {
-                                            Toast.makeText(getApplicationContext(),
-                                                    "请输入修改", Toast.LENGTH_SHORT)
-                                                    .show();
+
                                         } else {
                                             map.put("title", editStr);
                                             dataSource.set(currentPosition, map);
@@ -113,7 +146,8 @@ public class historyActivity extends Activity {
                                                     "数据修改为:" + editStr + "",
                                                     Toast.LENGTH_SHORT).show();
                                         }
-
+*/
+                                        }
                                     }
                                 })
 
@@ -274,6 +308,5 @@ public class historyActivity extends Activity {
     }
 }
 
-/* 还有很多改进空间，加油！ */
 
 
