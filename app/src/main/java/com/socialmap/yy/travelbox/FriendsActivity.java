@@ -7,11 +7,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ImageButton;
 
 import com.socialmap.yy.travelbox.adpater.ExpandAdapter;
 import com.socialmap.yy.travelbox.model.Item;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsActivity extends Activity implements OnChildClickListener {
+    private ImageButton phonelistview;
 
     private ExpandableListView mListView = null;
     private ExpandAdapter mAdapter = null;
@@ -64,6 +67,15 @@ public class FriendsActivity extends Activity implements OnChildClickListener {
         mAdapter = new ExpandAdapter(this, mData);
         mListView.setAdapter(mAdapter);
         mListView.setOnChildClickListener(this);
+
+        phonelistview = (ImageButton)findViewById(R.id.phonelistview);
+        phonelistview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(FriendsActivity.this,PhoneListview.class));
+                finish();
+            }
+        });
     }
 
     /* <span style="color:#ff0000;">
