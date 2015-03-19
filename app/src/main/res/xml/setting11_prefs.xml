@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2010 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="个人资料"
+        xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
+        <EditTextPreference
+            android:key="username"
+            android:title="请输入你的昵称"
+            android:defaultValue="123">
+        </EditTextPreference>
+    <EditTextPreference
+        android:key="realname"
+        android:title="请输入你的真实姓名">
+    </EditTextPreference>
+    <EditTextPreference
+    android:key="idcard"
+    android:title="请输入你的身份证号">
+</EditTextPreference>
+        <EditTextPreference
+            android:key="phone"
+            android:title="请输入你的手机号码">
+        </EditTextPreference>
+        <EditTextPreference
+            android:key="birthday"
+            android:title="请输入你的生日">
+        </EditTextPreference>
+        <EditTextPreference
+            android:key="email"
+            android:title="请输入你的电子邮箱">
+        </EditTextPreference>
+        <ListPreference
+            android:key="gender"
+            android:title="性别"
+            android:entries="@array/gender"
+            android:entryValues="@array/gender"
+            android:dialogTitle="选择你的性别" />
+        <Preference
+            android:key="submit"
+            android:title="提交">
+        </Preference>
+
+
+
+
+
+</PreferenceScreen>

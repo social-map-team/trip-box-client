@@ -4,12 +4,7 @@
     android:id="@+id/ll"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/backbutton"
-        android:text="返回按钮,需要图标"
-        />
+
     <FrameLayout
         android:text="团队头像位置"
         android:id="@+id/team_pic"

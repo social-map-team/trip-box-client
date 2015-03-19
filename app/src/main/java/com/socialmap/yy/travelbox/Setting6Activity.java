@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,10 +48,6 @@ public class Setting6Activity  extends Activity implements AdapterView.OnItemCli
         map.put("text", "检查更新");
         listData.add(map);
 
-        map = new HashMap<String, String>();
-        map.put("text", "其它信息");
-        listData.add(map);
-
 
         map = new HashMap<String, String>();
         map.put("text", "意见反馈");
@@ -63,12 +60,12 @@ public class Setting6Activity  extends Activity implements AdapterView.OnItemCli
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         switch (position) {
             case 0:
+                startActivity(new Intent(this, AboutActivity.class));
                 break;
             case 1:
+                Toast.makeText(getApplicationContext(), "暂无可用最新", Toast.LENGTH_LONG).show();
                 break;
             case 2:
-                break;
-            case 3:
                 startActivity(new Intent(this, ComplainActivity.class));
                 break;
 

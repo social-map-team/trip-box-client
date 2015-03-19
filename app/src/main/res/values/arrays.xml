@@ -50,9 +50,6 @@
     </string-array>
 
 
-
-
-
         <string-array name="toppings">
             <item>全部</item>
             <item>好友</item>
@@ -61,8 +58,11 @@
             <item>团队</item>
         </string-array>
 
-
-
+    <string-array name="gender">
+        <item>男</item>
+        <item>女</item>
+        <item>保密</item>
+    </string-array>
 
 
 

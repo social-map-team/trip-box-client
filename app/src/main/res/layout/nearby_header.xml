@@ -21,12 +21,13 @@
         >
 
         <EditText
+            android:id="@+id/search_local"
             android:textAppearance="?android:textAppearanceMedium"
             android:gravity="left|center"
             android:background="@android:drawable/edit_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="\u0020商户名,地址等..."
+            android:hint="\u0020银行,加油站，特产商店等..."
             android:drawableLeft="@drawable/ic_btn_search"
             />
 
@@ -40,17 +41,18 @@
                 android:textAppearance="?android:textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="热门商区 :  "
+                android:text="热门搜索 :  "
                 android:textColor="#ffffffff"
                 />
 
             <Button
+                android:id="@+id/search_place"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="#ffffffff"
                 android:background="@drawable/btn_whitelink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="淮海路"
+                android:text="上海"
                 android:singleLine="true"
                 />
 
@@ -59,12 +61,13 @@
                 android:layout_height="wrap_content" />
 
             <Button
+                android:id="@+id/search_view"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="#ffffffff"
                 android:background="@drawable/btn_whitelink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="人民广场"
+                android:text="步行街"
                 android:singleLine="true"
                 />
 
@@ -72,6 +75,7 @@
                 android:layout_height="wrap_content" />
 
             <Button
+                android:id="@+id/search_more"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="#ffffffff"
                 android:background="@drawable/btn_whitelink"

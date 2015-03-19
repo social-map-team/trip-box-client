@@ -1,151 +1,179 @@
 package com.socialmap.yy.travelbox;
 
 import android.app.Activity;
-
 import android.content.Intent;
-
-import android.database.Cursor;
-
 import android.os.Bundle;
-
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
-
 import android.widget.Button;
-
 import android.widget.EditText;
-
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
 
 
 public class RegisterActivity extends Activity {
 
-    private RegisterHelper dbHelper;
+
 
     EditText edtext;
-
     EditText edpwd;
-
     EditText edpwd2;
+    TbsClient TbsClient;
+    Button test;
+    Handler handler = new Handler();
+    //新建一个线程对象
+    private Thread mThread;
 
     protected void onCreate(Bundle savedInstanceState)
 
     {
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_register);
-
-
         Button btnsub=(Button)findViewById(R.id.register);
-
         edtext=(EditText)findViewById(R.id.telnum);
-
         edpwd=(EditText)findViewById(R.id.password);
-
         edpwd2=(EditText)findViewById(R.id.password2);
-        dbHelper = new RegisterHelper(this, "register.db", null, 1);
-
-
-        btnsub.setOnClickListener(new View.OnClickListener() {
-
-
-
+        test=(Button)findViewById(R.id.test);
+       btnsub.setOnClickListener(new View.OnClickListener() {
             @Override
-
             public void onClick(View v) {
-
                 // TODO Auto-generated method stub
-
                 setUser();
-
             }
-
         });
 
-
-
-
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TbsClient.getInstance()
+                        .request("/api/user/profile", "get"
+                        ).execute(new TbsClient.Callback() {
+                    @Override
+                    public void onFinished(TbsClient.ServerResponse response) {
+                        try {
+                            String content = new String(response.getContent(), "UTF-8");
+                            Log.i("yy", response.getStatusCode() + "\n" + content);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void setUser()
 
     {
-
-
-
-
-
-
         if(edtext.getText().toString().length()<=0||edpwd.getText().toString().length()<=0||edpwd2.getText().toString().length()<=0)
 
         {
-
             Toast.makeText(this, "用户名或密码不能为空", Toast.LENGTH_LONG).show();
-
             return;
-
         }
 
-        if(edtext.getText().toString().length()>0)
-
+       /* if(edtext.getText().toString().length()>0)
         {
-
             String sql="select * from user where userid=?";
-
             Cursor cursor=dbHelper.getWritableDatabase().rawQuery(sql, new String[]{edtext.getText().toString()});
-
             if(cursor.moveToFirst())
-
             {
-
                 Toast.makeText(this, "用户名已经存在", Toast.LENGTH_LONG).show();
-
                 return;
-
             }
-
         }
+*/
 
         if(!edpwd.getText().toString().equals(edpwd2.getText().toString()))
-
         {
-
             Toast.makeText(this, "两次输入的密码不同", Toast.LENGTH_LONG).show();
-
             return;
-
         }
 
-        if(dbHelper.AddUser(edtext.getText().toString(), edpwd.getText().toString()))
 
+        if(true)//TODO 检查是否重名的操作
         {
+            new Thread(new Runnable(){
+                       public void run(){
+                           TbsClient.getInstance()
+                                   .request("/api/user/register", "post",
+                                           "username",     edtext.getText(),
+                                           "password",     edpwd.getText()
+                                   ).execute(new TbsClient.Callback() {
+                                                 @Override
+                                                 public void onFinished(TbsClient.ServerResponse response) {
+                                                     try {
+                                                         String content = new String(response.getContent(), "UTF-8");
+                                                         Log.i("yy", response.getStatusCode() + "\n" + content);
+                                                     } catch (UnsupportedEncodingException e) {
+                                                         e.printStackTrace();
+                                                     }
+                                                 }
+                                             }
+
+
+                           );
+                       }
+                   }
+           ).start();
+
+
+
+
+
+
+
+
+
+
+
+
 
             Toast.makeText(this, "用户注册成功", Toast.LENGTH_LONG).show();
-
             Intent intent=new Intent();
-
             intent.setClass(this, MainActivity.class);
-
             startActivity(intent);
 
         }
 
         else
-
         {
-
             Toast.makeText(this, "用户注册失败", Toast.LENGTH_LONG).show();
-
         }
 
-        dbHelper.close();
+
+
+
+
+
+
+
+
 
     }
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
 
 
 

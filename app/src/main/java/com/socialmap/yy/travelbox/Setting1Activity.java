@@ -1,70 +1,127 @@
 package com.socialmap.yy.travelbox;
 
-import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.socialmap.yy.travelbox.fragment.Setting11Fragment;
+import com.socialmap.yy.travelbox.fragment.Setting12Fragment;
 
 
+public class Setting1Activity extends PreferenceActivity {
+        private static final int COLOR_SELECTED = 0xff0b984c;
+        private static final int COLOR_UNSELECTED = 0xff000000;
+        private static final int TEXT_SIZE_SELECTED = 18;
+        private static final int TEXT_SIZE_UNSELECTED = 16;
+        private ImageView mTabCursor;
+        private ViewPager mViewPager;
+        private TextView mTabGeneral;
+        private TextView mTabDisplay;
 
-public class Setting1Activity extends Activity implements OnItemClickListener {
-    private android.widget.ListView ListView = null;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            if (this.getClass().equals(Setting1Activity.class))
+                setTheme(android.R.style.Theme_Holo_Light_NoActionBar);
+            super.onCreate(savedInstanceState);
+            if (this.getClass().equals(Setting1Activity.class)) {
+                setContentView(R.layout.activity_setting1);
+                mTabCursor = (ImageView) findViewById(R.id.tab_cursor);
+                ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+                viewPager.setAdapter(new ViewPagerAdapter(getFragmentManager()));
+                viewPager.setOnPageChangeListener(mPageChangeListener);
+                mViewPager = viewPager;
 
-    private List<Map<String, String>> listData = null;
-    private SimpleAdapter adapter = null;
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_tab_setting);
-
-        ListView = (ListView) findViewById(R.id.setting_list);
-        setListData();
-
-        adapter = new SimpleAdapter(getApplicationContext(), listData, R.layout.main_tab_setting_list_item, new String[]{"text"}, new int[]{R.id.setting_list_item_text});
-        ListView.setAdapter(adapter);
-        ListView.setOnItemClickListener(this);
-    }
-
-
-    private void setListData() {
-        listData = new ArrayList<Map<String, String>>();
-
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("text", "修改资料");
-        listData.add(map);
-
-        map = new HashMap<String, String>();
-        map.put("text", "修改密码");
-        listData.add(map);
-    }
-
-
-    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        switch (position) {
-            case 0:
-                Toast.makeText(Setting1Activity.this, "修改资料", Toast.LENGTH_SHORT).show();
-                break;
-            case 1:
-                Toast.makeText(Setting1Activity.this, "修改密码", Toast.LENGTH_SHORT).show();
-                break;
-
-
+                mTabGeneral = (TextView) findViewById(R.id.tab_general);
+                mTabDisplay = (TextView) findViewById(R.id.tab_display);
+                mTabGeneral.setOnClickListener(mTabOnClickListener);
+                mTabDisplay.setOnClickListener(mTabOnClickListener);
+                mTabGeneral.setTextColor(COLOR_SELECTED);
+                mTabGeneral.setTextSize(TEXT_SIZE_SELECTED);
+            }
         }
+
+        private ViewPager.OnPageChangeListener mPageChangeListener = new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    mTabCursor.setX(mViewPager.getCurrentItem()
+                            * mTabCursor.getWidth());
+                }
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
+                if (positionOffset == 0.0f)
+                    return;
+                mTabCursor.setX(positionOffset * mTabCursor.getWidth());
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (0 == position) {
+                    mTabGeneral.setTextColor(COLOR_SELECTED);
+                    mTabGeneral.setTextSize(TEXT_SIZE_SELECTED);
+                    mTabDisplay.setTextColor(COLOR_UNSELECTED);
+                    mTabDisplay.setTextSize(TEXT_SIZE_UNSELECTED);
+                } else if (1 == position) {
+                    mTabGeneral.setTextColor(COLOR_UNSELECTED);
+                    mTabGeneral.setTextSize(TEXT_SIZE_UNSELECTED);
+                    mTabDisplay.setTextColor(COLOR_SELECTED);
+                    mTabDisplay.setTextSize(TEXT_SIZE_SELECTED);
+                }
+            }
+
+        };
+
+        public class ViewPagerAdapter extends FragmentPagerAdapter {
+            public ViewPagerAdapter(FragmentManager fm) {
+                super(fm);
+            }
+
+            @Override
+            public Fragment getItem(int position) {
+                switch (position) {
+                    case 0:
+                        return new Setting11Fragment();
+
+                    case 1:
+                        return new Setting12Fragment();
+                }
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        }
+
+        private View.OnClickListener mTabOnClickListener = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.tab_general) {
+                    mViewPager.setCurrentItem(0);
+                } else if (v.getId() == R.id.tab_display) {
+                    mViewPager.setCurrentItem(1);
+                }
+            }
+        };
+
     }
 
 
-}
+
+
+
+
 
 
 

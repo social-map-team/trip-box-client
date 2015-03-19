@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +30,7 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
     private float xMove;
     public VelocityTracker mVelocityTracker;
     private TextView myTV;
-
+    final  ArrayList mSelectedItems = new ArrayList();
 
     private String[] Messagetype = new String[]{"全部","好友", "SOS", "系统", "团队", "系统" };
     private ListView MessageCheckListView;
@@ -52,61 +53,6 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
 
         ActionBar actionBar = this.getActionBar();
         actionBar.setDisplayOptions(actionBar.DISPLAY_HOME_AS_UP, ActionBar.DISPLAY_HOME_AS_UP);
-
-
-
-
-/*
-        checkBoxButton.setOnClickListener(new OnClickListener() {
-                                              public void onClick(View v) {
-                                                  final ArrayList mSelectedItems = new ArrayList();  // Where we track the selected items
-                                                  AlertDialog.Builder builder = new AlertDialog.Builder(MessageActivity.this);
-                                                  // Set the dialog title
-                                                  builder.setTitle("Pick your toppings")
-                                                          // Specify the list array, the items to be selected by default (null for none),
-                                                          // and the listener through which to receive callbacks when items are selected
-                                                          .setMultiChoiceItems(R.array.toppings, null,
-                                                                  new DialogInterface.OnMultiChoiceClickListener() {
-                                                                      @Override
-                                                                      public void onClick(DialogInterface dialog, int which,
-                                                                                          boolean isChecked) {
-                                                                          if (isChecked) {
-                                                                              // If the user checked the item, add it to the selected items
-                                                                              mSelectedItems.add(which);
-                                                                          } else if (mSelectedItems.contains(which)) {
-                                                                              // Else, if the item is already in the array, remove it
-                                                                              mSelectedItems.remove(Integer.valueOf(which));
-                                                                          }
-                                                                      }
-                                                                  })
-                                                                  // Set the action buttons
-                                                          .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                                                              @Override
-                                                              public void onClick(DialogInterface dialog, int id) {
-                                                                  // User clicked OK, so save the mSelectedItems results somewhere
-                                                                  // or return them to the component that opened the dialog
-                                                                  myTV.setText(mSelectedItems.toString());
-                                                              }
-                                                          })
-                                                          .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                                                              @Override
-                                                              public void onClick(DialogInterface dialog, int id) {
-
-                                                              }
-                                                          });
-
-                                                  AlertDialog ad = builder.create();
-                                                  ad.show();
-
-                                              }
-                                          }
-        );
-
-
-*/
-
-
-
 
 
         BaseAdapter adapter = new BaseAdapter() {
@@ -140,6 +86,11 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
         LinearLayout ll = (LinearLayout) findViewById(R.id.ll);
         ll.setOnTouchListener(this);
 
+
+
+
+
+
     }
 
 
@@ -162,7 +113,7 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
         {
             case R.id.check_message:
 
-                final ArrayList mSelectedItems = new ArrayList();  // Where we track the selected items
+                // Where we track the selected items
                 AlertDialog.Builder builder = new AlertDialog.Builder(MessageActivity.this);
                 // Set the dialog title
                 builder.setTitle("Pick your toppings")
@@ -173,6 +124,8 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which,
                                                         boolean isChecked) {
+
+                                        //mSelectedItems.add(0);
                                         if (isChecked) {
                                             // If the user checked the item, add it to the selected items
                                             mSelectedItems.add(which);
@@ -189,6 +142,7 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
                                 // User clicked OK, so save the mSelectedItems results somewhere
                                 // or return them to the component that opened the dialog
                                 myTV.setText(mSelectedItems.toString());
+                                Log.v("呼呼",myTV.getText().toString());
                             }
                         })
                         .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -209,6 +163,23 @@ public  class MessageActivity extends Activity implements View.OnTouchListener {
                 return super.onOptionsItemSelected(item);
         }
 }
+
+//todo 筛选消息
+    public void screen() {
+
+        if (mSelectedItems.contains(0)) {
+
+        }
+        else if (mSelectedItems.contains(1)) {
+
+        }
+
+
+    }
+
+
+
+
 
 
 

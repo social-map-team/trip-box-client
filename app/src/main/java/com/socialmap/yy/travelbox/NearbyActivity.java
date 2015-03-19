@@ -3,10 +3,10 @@ package com.socialmap.yy.travelbox;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.VelocityTracker;
@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -31,6 +33,10 @@ public class NearbyActivity extends Activity{
     private float xMove;
     private VelocityTracker mVelocityTracker;
     private List<Map<String, Object>> mData;
+    private  String mainlocal = "   ";
+    private  String location ;
+    private  String  searchresult;
+    public  EditText search;
     View view;
     Handler handler = new Handler(){
         public void handleMessage(Message paramMessage)
@@ -63,6 +69,63 @@ public class NearbyActivity extends Activity{
                 ListAdapter adapter = new MyAdapter(this);
                 list.setAdapter(adapter);
 
+         search = (EditText)findViewById(R.id.search_local);
+        Button shbutton = (Button)findViewById(R.id.search_place);
+        Button bxbutton = (Button)findViewById(R.id.search_view);
+        Button morebutton = (Button)findViewById(R.id.search_more);
+
+        shbutton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Intent intent = new Intent(NearbyActivity.this, NearbypoiActivity.class);
+                intent.putExtra("local", "上海");
+                intent.putExtra("type", "");
+                startActivity(intent);
+            }
+        });
+        bxbutton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Intent intent = new Intent(NearbyActivity.this, NearbypoiActivity.class);
+                intent.putExtra("local", location);
+                intent.putExtra("type", "步行街");
+                startActivity(intent);
+            }
+        });
+
+        morebutton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                Intent intent = new Intent(NearbyActivity.this, NearbypoiActivity.class);
+                intent.putExtra("local","");
+                intent.putExtra("type", "");
+                startActivity(intent);
+            }
+        });
+
+
+        search.setOnKeyListener(new View.OnKeyListener() {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (KeyEvent.KEYCODE_ENTER == keyCode && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    searchresult = search.getText().toString();
+                    Intent intent = new Intent(NearbyActivity.this, NearbypoiActivity.class);
+                    intent.putExtra("local",location);
+                    intent.putExtra("type", searchresult);
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
+
+            }
+        });
+
+
+
+
+
+
 //        Animation mAnimationScale =new ScaleAnimation(0.5f, 1.0f, 0.5f, 1.0f,
 //				Animation.RELATIVE_TO_SELF, 0.5f,
 //				Animation.RELATIVE_TO_SELF, 0.5f);
@@ -70,43 +133,82 @@ public class NearbyActivity extends Activity{
 //        mAnimationScale.setDuration(600);
 //        view.startAnimation(mAnimationScale);
 
+        Intent intent = this.getIntent();
+
+      String  mainlocal = intent.getStringExtra("mainlocal");
+
+        //location=mainlocal;
+
+         if (mainlocal.contains("市")) {
+             if(mainlocal.contains("省")){
+             location = mainlocal.substring(mainlocal.indexOf("省") + 1, mainlocal.indexOf("市"));
+         }
+            else if(mainlocal.contains("自治区")){
+                 location = mainlocal.substring(mainlocal.indexOf("区") + 1, mainlocal.indexOf("市"));
+             }
+             else{
+                 location = mainlocal.substring(mainlocal.indexOf("addr : ") + 7, mainlocal.indexOf("市"));
+             }
+         }
+        else{
+             location = " ";
+
+         }
+
+
             }
+
+
+
+
+
+
+
+
 
             private AdapterView.OnItemClickListener mOnClickListener = new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                     if (position == 1) {
-                        Uri uri1 = Uri.parse("http://lvyou.baidu.com/scene/t-meishi/");
-                        Intent intent1 = new Intent(Intent.ACTION_VIEW, uri1);
-                        startActivity(intent1);}
+                        Intent intent = new Intent(NearbyActivity.this, NearbypoiActivity.class);
+                        intent.putExtra("local", location);
+                        intent.putExtra("type", "美食");
+                        startActivity(intent);
+                    }
 
                         if (position == 2) {
-                            Uri uri2 = Uri.parse("http://www.baidu.com");
-                            Intent intent2 = new Intent(Intent.ACTION_VIEW, uri2);
-                            startActivity(intent2);
+                            Intent intent = new Intent(NearbyActivity.this, NearbypoiActivity.class);
+                            intent.putExtra("local", location);
+                            intent.putExtra("type", "风景");
+                            startActivity(intent);
+                            Log.v("蛤蛤",location);
 
                         }
                         if (position == 3) {
-                            Uri uri3 = Uri.parse("http://www.baidu.com");
-                            Intent intent3 = new Intent(Intent.ACTION_VIEW, uri3);
-                            startActivity(intent3);
+                            Intent intent = new Intent(NearbyActivity.this, NearbypoiActivity.class);
+                            intent.putExtra("local", location);
+                            intent.putExtra("type", "古迹");
+                            startActivity(intent);
                         }
 
 
                         if (position == 4) {
-                            Uri uri4 = Uri.parse("http://www.baidu.com");
-                            Intent intent4 = new Intent(Intent.ACTION_VIEW, uri4);
-                            startActivity(intent4);
+                            Intent intent = new Intent(NearbyActivity.this, NearbypoiActivity.class);
+                            intent.putExtra("local", location);
+                            intent.putExtra("type", "艺术");
+                            startActivity(intent);
                         }
 
                         if (position == 5) {
-                            Uri uri5 = Uri.parse("http://www.baidu.com");
-                            Intent intent5 = new Intent(Intent.ACTION_VIEW, uri5);
-                            startActivity(intent5);
+                            Intent intent = new Intent(NearbyActivity.this, NearbypoiActivity.class);
+                            intent.putExtra("local", location);
+                            intent.putExtra("type", "超市");
+                            startActivity(intent);
                         }
                         if (position == 6) {
-                            Uri uri6 = Uri.parse("http://www.baidu.com");
-                            Intent intent6 = new Intent(Intent.ACTION_VIEW, uri6);
-                            startActivity(intent6);
+                            Intent intent = new Intent(NearbyActivity.this, NearbypoiActivity.class);
+                            intent.putExtra("local", location);
+                            intent.putExtra("type", "酒店");
+                            startActivity(intent);
                         }
 
 
@@ -223,32 +325,4 @@ public class NearbyActivity extends Activity{
                 return super.onKeyUp(keyCode, event);
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

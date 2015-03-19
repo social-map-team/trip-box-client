@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    >
+	<RelativeLayout 
+		android:orientation="horizontal"
+		android:layout_width="309dp"
+		android:layout_height="80sp"
+		android:background="#ffffff">
+
+		<TextView
+			android:id="@+id/tv_username"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:layout_toRightOf="@+id/iv_flag"
+			android:gravity="center_vertical"
+			android:textSize="30sp"
+			/>
+		<ImageView 
+			android:id="@+id/iv_flag"
+			android:layout_width="30sp"
+			android:layout_height="30sp"
+            android:layout_marginRight="15sp"
+			android:src="@drawable/xiao1"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+	</RelativeLayout>
+	<LinearLayout 
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<ListView 
+			android:id="@+id/lv_operation"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+            android:background="#ffffff">
+		</ListView>
+	</LinearLayout>
+</LinearLayout>

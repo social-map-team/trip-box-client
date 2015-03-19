@@ -1,86 +1,137 @@
 package com.socialmap.yy.travelbox;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.SimpleAdapter;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
-public class Setting2Activity  extends Activity implements AdapterView.OnItemClickListener {
-
-
-        private android.widget.ListView ListView = null;
-
-        private List<Map<String, String>> listData = null;
-        private SimpleAdapter adapter = null;
-
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.main_tab_setting);
-
-            ListView = (android.widget.ListView) findViewById(R.id.setting_list);
-            setListData();
-
-            adapter = new SimpleAdapter(getApplicationContext(), listData, R.layout.main_tab_setting_list_item, new String[]{"text"}, new int[]{R.id.setting_list_item_text});
-            ListView.setAdapter(adapter);
-            ListView.setOnItemClickListener(this);
-        }
-
-
-        private void setListData() {
-            listData = new ArrayList<Map<String, String>>();
-
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("text", "开启信息推送");
-            listData.add(map);
-
-            map = new HashMap<String, String>();
-            map.put("text", "消息免打扰");
-            listData.add(map);
-
-
-            map = new HashMap<String, String>();
-            map.put("text", "声音开启");
-            listData.add(map);
-
-            map = new HashMap<String, String>();
-            map.put("text", "震动开启");
-            listData.add(map);
+import com.socialmap.yy.travelbox.chat.switcher.Switch;
+import com.socialmap.yy.travelbox.chat.util.PreferenceConstants;
+import com.socialmap.yy.travelbox.chat.util.PreferenceUtils;
 
 
 
 
+    public class Setting2Activity extends FragmentActivity {
+
+    private static Switch mNotifyRunBackgroundSwitch; //开启信息推送
+    private static Switch mNewMsgSoundSwitch;//声音开启
+    private static Switch mNewMsgVibratorSwitch;//震动开启
+    private static Switch mVisiableNewMsgSwitch;    //消息免打扰
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //setTheme(android.R.style.Theme_Holo_Light_NoActionBar);
+
+        setContentView(R.layout.activity_setting2);// 设置背景
+        FragmentTransaction mFragementTransaction = getSupportFragmentManager()
+                .beginTransaction();
+        Fragment mFrag = new PrefsFragement();
+        mFragementTransaction.replace(R.id.fragment2, mFrag);
 
 
-
-
-        }
-
-
-        public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-            switch (position) {
-                case 0:
-                    Toast.makeText(Setting2Activity.this, "已开启信息推送", Toast.LENGTH_SHORT).show();
-                    break;
-
-
-
-            }
-        }
 
 
     }
+
+
+    public static class PrefsFragement extends Fragment implements
+            CompoundButton.OnCheckedChangeListener {
+
+
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.setting2fragment, container,
+                    false);
+        }
+
+
+
+        @Override
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+
+
+
+            mNotifyRunBackgroundSwitch = (Switch) view .findViewById(R.id.notify_run_background_switch);
+            mNotifyRunBackgroundSwitch.setOnCheckedChangeListener(this);
+            mNewMsgSoundSwitch = (Switch) view .findViewById(R.id.new_msg_sound_switch);
+            mNewMsgSoundSwitch.setOnCheckedChangeListener(this);
+            mNewMsgVibratorSwitch = (Switch) view.findViewById(R.id.new_msg_vibrator_switch);
+            mNewMsgVibratorSwitch.setOnCheckedChangeListener(this);
+            mVisiableNewMsgSwitch = (Switch) view.findViewById(R.id.visiable_new_msg_switch);
+            mVisiableNewMsgSwitch.setOnCheckedChangeListener(this);
+
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            readData();
+        }
+
+        public void readData() {
+
+            mNotifyRunBackgroundSwitch.setChecked(PreferenceUtils.getPrefBoolean(
+                    getActivity(), PreferenceConstants.FOREGROUND, true));
+            mNewMsgSoundSwitch.setChecked(PreferenceUtils.getPrefBoolean(
+                    getActivity(), PreferenceConstants.SCLIENTNOTIFY, false));
+            mNewMsgVibratorSwitch.setChecked(PreferenceUtils.getPrefBoolean(
+                    getActivity(), PreferenceConstants.VIBRATIONNOTIFY, true));
+            mVisiableNewMsgSwitch.setChecked(PreferenceUtils.getPrefBoolean(
+                    getActivity(), PreferenceConstants.TICKER, true));
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            switch (buttonView.getId()) {
+                case R.id.notify_run_background_switch:
+                    PreferenceUtils.setPrefBoolean(getActivity(),
+                            PreferenceConstants.FOREGROUND, isChecked);
+                    break;
+                case R.id.new_msg_sound_switch:
+                    PreferenceUtils.setPrefBoolean(getActivity(),
+                            PreferenceConstants.SCLIENTNOTIFY, isChecked);
+                    break;
+                case R.id.new_msg_vibrator_switch:
+                    PreferenceUtils.setPrefBoolean(getActivity(),
+                            PreferenceConstants.VIBRATIONNOTIFY, isChecked);
+                    break;
+
+                case R.id.visiable_new_msg_switch:
+                    PreferenceUtils.setPrefBoolean(getActivity(),
+                            PreferenceConstants.TICKER, isChecked);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

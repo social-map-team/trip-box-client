@@ -19,9 +19,12 @@
     <string name="welcome_background">欢迎界面背景图片</string>
     <string name="action_sos">SOS</string>
     <string name="sos_message">求救说明</string>
+    <string name="sos_message1">再次求救（该消息会在未输入5秒之后自动发送）</string>
     <string name="sos_title">SOS</string>
     <string name="sos_send">发送</string>
     <string name="sos_cancel">取消</string>
+
+    <string name="sos_confirm">已确认获救</string>
     <string name="sos_auto_send">无输入操作，5s后自动发送求救信息</string>
     <string name="complain_send">发送</string>
     <string name="complain_send_success">发送成功，谢谢您的反馈！</string>
@@ -34,7 +37,7 @@
     <string name="app_name2">TimelineText</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">设置</string>
-    <string name="find">搜一搜</string>
+    <string name="find">搜一搜附近</string>
     <string name="history">我的足迹</string>
     <string name="friends">我的好友</string>
     <string name="LocationManager">位置管理</string>
@@ -65,5 +68,145 @@
         <item>And God said, Let the earth bring forth the living creature after his kind, cattle, and creeping thing, and beast of the earth after his kind: and it was so. And God made the beast of the earth after his kind, and cattle after their kind, and every thing that creepeth upon the earth after his kind: and God saw that it was good. And God said, Let us make man in our image, after our likeness: and let them have dominion over the fish of the sea, and over the fowl of the air, and over the cattle, and over all the earth, and over every creeping thing that creepeth upon the earth. So God created man in his own image, in the image of God created he him; male and female created he them. And God blessed them, and God said unto them, Be fruitful, and multiply, and replenish the earth, and subdue it: and have dominion over the fish of the sea, and over the fowl of the air, and over every living thing that moveth upon the earth. And God said, Behold, I have given you every herb bearing seed, which is upon the face of all the earth, and every tree, in the which is the fruit of a tree yielding seed; to you it shall be for meat. And to every beast of the earth, and to every fowl of the air, and to every thing that creepeth upon the earth, wherein there is life, I have given every green herb for meat: and it was so. And God saw every thing that he had made, and, behold, it was very good. And the evening and the morning were the sixth day.</item>
         <item>Thus the heavens and the earth were finished, and all the host of them. And on the seventh day God ended his work which he had made; and he rested on the seventh day from all his work which he had made. And God blessed the seventh day, and sanctified it: because that in it he had rested from all his work which God created and made. </item>
     </string-array>
+
+
+
+
+
+    <string name="net_error_tip">当前网络不可用，请检查你的网络设置</string>
+    <string name="left_title_name">好友列表</string>
+    <string name="center_title_name">最近会话</string>
+    <string name="right_title_name">设置</string>
+    <string name="no_chat">暂时没有新消息</string>
+    <!-- 上拉下拉 -->
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+    <string name="xlistview_header_hint_ready">释放立即刷新</string>
+    <string name="xlistview_header_hint_loading">正在刷新...</string>
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+    <string name="searchdialog_find_contact_new">搜索</string>
+    <string name="first_start_title">初始化设置</string>
+    <string name="first_start_tips">昵称不能为空哦</string>
+    <string name="first_start_scuess">连接服务器成功</string>
+    <string name="first_start_dialog_text">连接服务器...</string>
+    <string name="isSingle">单身</string>
+    <string name="info_info">个人资料</string>
+    <string name="face_jazz_effects">表情翻页效果</string>
+    <string name="set_push">消息通知</string>
+    <string name="sound_and_vibrate">声音</string>
+    <string name="new_msg_notify">新消息提醒</string>
+    <string name="setting_display">界面</string>
+    <string name="logout_account">注销登录</string>
+    <string name="security_and_privacy">安全和隐私</string>
+    <string name="logout_exit_account">退出当前帐号</string>
+    <string name="pref_assistant">辅助功能</string>
+    <string name="delete_friend_confirm">确定删除%1$s吗？</string>
+    <string name="menu_about">关于</string>
+    <string name="set_message_notify">通知栏挂机图标</string>
+    <string name="set_message_sound">新消息声音提醒</string>
+    <string name="set_show_head">聊天显示自己头像</string>
+    <string name="set_acount_info">个人资料</string>
+    <string name="set_face_jazz">表情滑动效果</string>
+    <string name="press_again_backrun">再按一次后台运行</string>
+    <string name="press_again_exit">再按一次退出应用</string>
+    <string name="app_is_run_background">推聊正在后台运行</string>
+    <string name="user_agreement">way</string>
+    <string name="official_website">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
+    <string name="feedback_suggest">帮助与反馈</string>
+    <string name="qq_impression">手机QQ印象</string>
+    <string name="version_upgrade">版本更新</string>
+    <string name="feature_info">功能介绍</string>
+    <string name="QQS_weibo">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</string>
+    <string name="all_rights_reserved">Copyright © 2014-2015 . All Rights Reserved.</string>
+    <string name="my_blog_url">http://blog.csdn.net/weidi1989</string>
+    <string name="my_email">way.ping.li@gmail.com</string>
+    <string name="app_information">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;！</string>
+    <string name="app_error">应用程序错误</string>
+    <string name="app_error_message">很抱歉，应用程序出现错误，即将退出。\n请选择邮件的方式将此错误报告提交给我，我会尽快修复这个问题，谢谢！</string>
+    <string name="submit_report">提交报告</string>
+    <string name="register_tip">提交报告</string>
+    <string name="timeout_try_again">网络连接超时，请重试</string>
+    <string name="app_version">V1.0.0</string>
+    <string name="null_account_prompt">请输入帐号号</string>
+    <string name="password_input_prompt">请输入密码</string>
+    <string name="request_failed">登录失败:</string>
+    <string name="status_available">在线</string>
+    <string name="status_away">离开</string>
+    <string name="status_chat">Q我吧</string>
+    <string name="status_dnd">请勿打扰</string>
+    <string name="status_xa">隐身</string>
+    <string name="status_offline">离线</string>
+    <string name="status_busy">忙碌</string>
+    <string name="status_online">在线</string>
+    <string name="hide_login">隐身登录</string>
+    <string name="aio_ime_action_label">完成</string>
+
+    <string name="silence_login">静音模式</string>
+    <string name="login_prompt">登录中</string>
+    <string name="login_prompt_msg">连接中...</string>
+    <string name="login_prompt_no">未连接</string>
+    <string name="MoveRosterEntryToGroupDialog_summ">请选择一个分组</string>
+    <string name="MoveRosterEntryToGroupDialog_title">改变分组</string>
+    <string name="RenameGroup_summ">重命名分组%s为:</string>
+    <string name="RenameGroup_title">重命名分组</string>
+    <string name="RenameEntry_summ">重命名%1$s(%2$s)为:</string>
+    <string name="RenameEntry_title">重命名好友</string>
+    <string name="deleteRosterItem_text">确定删除%1$s(%2$s)?</string>
+    <string name="deleteRosterItem_title">删除好友</string>
+    <string name="deleteChatHistory_text">确定清空与%1$s(%2$s)的聊天消息记录?</string>
+    <string name="deleteChatHistory_title">删除最近会话</string>
+    <string name="next">下一步</string>
+    <string name="rename">备注名</string>
+    <string name="move">移动到</string>
+    <string name="delete">删除</string>
+    <string name="add">重发申请</string>
+    <string name="open">打开</string>
+    <string name="more">显示更多</string>
+    <string name="ok">确定</string>
+    <string name="auto_save_password">记住密码</string>
+    <string name="conversation_net_error_label">请先连接上再试</string>
+    <string name="conversation_set_need_handle_label">待办</string>
+    <string name="conversation_cancel_need_handle_label">取消待办</string>
+    <string name="roster_group_rename_failed">默认分组不能重命名</string>
+    <string name="add_friend">添加好友</string>
+    <string name="default_group">我的好友</string>
+    <string name="recent_chat_fragment_title">最近会话</string>
+    <string name="settings_fragment_title">设  置</string>
+    <string name="setting_help">设置</string>
+    <string name="help">帮助</string>
+    <string name="exit">退出</string>
+    <string name="open_switch_account_msg">注销本帐号，并使用其他帐号登录?</string>
+    <string name="open_switch_account">切换帐号</string>
+    <string name="cancel">取消</string>
+    <string name="run_bg_ticker">XMPP正在后台运行</string>
+    <string name="changelog_full_title">更新日志</string>
+    <string name="changelog_title">更新日志</string>
+    <string name="addFriend_Title">添加好友</string>
+    <string name="addFriend_Summ">请输入对方帐号、备注名并选择分组</string>
+    <string name="addFriend_aliasHint">备注名</string>
+    <string name="addrosteritemaddgroupchoice">增加新分组</string>
+    <string name="NewGroup_EditTextField_Hint">新分组名称</string>
+    <string name="chat_send_photo">发送图片</string>
+    <string name="chat_send">发送</string>
+    <string name="AddContact_SpinnerPrompt">选择分组</string>
+     <string name="exit_dialog_msg">退出后不会删除任何历史数据，下次登录依然可以使用本帐号</string>
+    <string name="login_help_information">Tips:帐号由ID+@+服务器组成!：shu@192.168.1.100</string>
+    <string name="coverview_tip">上滑可关闭此界面</string>
+    <string name="info_accounts">使用TLS加密</string>
+    <string name="account">帐号</string>
+    <string name="setting_about_description">旅游盒子</string>
+    <string name="textOn">"    "</string>
+    <string name="textOff">"    "</string>
+    <string name="textOn7">&#160;&#160;</string>
+    <string name="textOff7">&#160;&#160;</string>
+    <string name="pull_to_refresh_pull_label">下拉刷新…</string>
+    <string name="pull_to_refresh_release_label">放开以刷新…</string>
+    <string name="pull_to_refresh_refreshing_label">正在载入…</string>
+    <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
+    <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
+    <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
+
+
 
 </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="verify"
+        android:summary="加好友时是否需要验证"
+        android:title="好友申请验证"
+        android:defaultValue="true"/>
+
+    <PreferenceCategory
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="足迹权限">
+        <CheckBoxPreference
+            android:key="all"
+            android:summary="向全部人公布自己的足迹"
+            android:title="全部公布"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:key="friend"
+            android:title="只向朋友公布"
+            android:defaultValue="true"/>
+        <CheckBoxPreference
+            android:key="teammate"
+            android:title="只向团队成员公布"
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

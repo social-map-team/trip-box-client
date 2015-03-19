@@ -4,6 +4,14 @@ import java.util.Date;
 
 
 public class User {
+
+
+
+    public User(int resId, String name, String detail) {
+        this.resId  = resId;
+        this.name   = name;
+        this.detail = detail;
+    }
     public enum Gender{
         MALE,
         FEMALE,
@@ -17,6 +25,10 @@ public class User {
     private String avatar;
     private Gender gender;
     private Date birthday;
+    private int resId;
+    private String name;
+    private String detail;
+
 
     public String getUsername() {
         return username;
@@ -73,4 +85,37 @@ public class User {
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
+
+
+
+    public void setImageId(int resId) {
+        this.resId  = resId;
+    }
+
+    public int getImageId() {
+        return resId;
+    }
+
+    public void setName(String name) {
+        this.name   = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public String toString() {
+        return "User[" + resId + ", " + name + ", " + detail + "]";
+    }
+
+
+
 }

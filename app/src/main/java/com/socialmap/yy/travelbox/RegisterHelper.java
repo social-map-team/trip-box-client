@@ -40,7 +40,7 @@ public class RegisterHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+        public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_Register);
         Toast.makeText(mContext, "Create succeeded", Toast.LENGTH_SHORT).show();
     }
@@ -65,6 +65,19 @@ public class RegisterHelper extends SQLiteOpenHelper {
             return false;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

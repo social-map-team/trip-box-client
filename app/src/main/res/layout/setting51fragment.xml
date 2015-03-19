@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Setting5Activity">
+
+
+
+    <com.socialmap.yy.travelbox.chat.scrollview.BounceScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/shape_bg"
+            android:orientation="vertical"
+            android:paddingLeft="10.0dip"
+            android:paddingRight="10.0dip"
+            android:paddingTop="10.0dip" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="44.0dip"
+                android:background="@drawable/common_strip_setting_bottom"
+                android:clickable="false"
+                android:focusable="false" >
+
+                <TextView
+                    style="@style/B4_Font_white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12.0dip"
+                    android:duplicateParentState="true"
+                    android:gravity="center_vertical"
+                    android:text="开启sos模式" />
+                <com.socialmap.yy.travelbox.chat.switcher.Switch
+                    android:id="@+id/sos_switch"
+                    android:layout_width="80dip"
+                    android:layout_height="28dip"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8.0dip" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                >
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_above="@+id/gv_botom_menu">
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="49dp"
+                        android:text="sos联系人"
+                        android:textColor="#ff0000"
+                        android:gravity="center"
+                        />
+
+                    <ListView
+                        android:id="@+id/lv_userlist"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:cacheColorHint="#00000000">
+                    </ListView>
+                </LinearLayout>
+                <GridView
+                    android:id="@+id/gv_botom_menu"
+                    android:layout_width="fill_parent"
+                    android:layout_height="65sp"
+                    android:layout_alignParentBottom="true">
+                </GridView>
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+    </com.socialmap.yy.travelbox.chat.scrollview.BounceScrollView>
+
+</LinearLayout>

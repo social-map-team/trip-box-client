@@ -3,10 +3,9 @@
  * Created by gxyzw_000 on 2014/11/29.
  */
 package com.socialmap.yy.travelbox;
+
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -14,7 +13,8 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.socialmap.yy.travelbox.adpater.ExpandAdapter;
-import com.socialmap.yy.travelbox.model.Item;
+
+import com.socialmap.yy.travelbox.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +23,8 @@ public class FriendsActivity extends Activity implements OnChildClickListener {
 
     private ExpandableListView mListView = null;
     private ExpandAdapter mAdapter = null;
-    private List<List<Item>> mData = new ArrayList<List<Item>>();
-
+    private List<List<User>> mData = new ArrayList<List<User>>();
+   private String[] function = new String[]{"聊天", "位置分享","个人资料"};
     private int[] mGroupArrays = new int[] {
             R.array.spongebob,
             R.array.patrick,
@@ -75,40 +75,74 @@ public class FriendsActivity extends Activity implements OnChildClickListener {
     @Override
                public boolean onChildClick(ExpandableListView parent, View v,int groupPosition, int childPosition, long id) {
         // TODO Auto-generated method stub
-        Item item = mAdapter.getChild(groupPosition, childPosition);
+                        Intent intent = new Intent();
+                        intent.setClass(FriendsActivity.this, FriendsInfoActivity.class);
+                        startActivity(intent);
+
+
+
+/*
+        User user = mAdapter.getChild(groupPosition, childPosition);
         new AlertDialog.Builder(this)
-                .setTitle(item.getName())
-                .setMessage(item.getDetail())
+                .setTitle(User.getName())
+                .setMessage(User.getDetail())
                 .setIcon(android.R.drawable.ic_menu_more)
-                .setItems(new String[] {"聊天","位置分享"}, null)
-                //TODO 缺少跳转事件
+                .setItems(function, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which)
+
+                    {
+                        if (which == 0) {
+                            Intent intent = new Intent();
+                            intent.setClass(FriendsActivity.this, FriendsInfoActivity.class);
+                            startActivity(intent);
+                        } else if (which == 1) {
+                            Toast.makeText(getApplicationContext(), "对其位置分享", Toast.LENGTH_SHORT) .show();
+                        }
+                        else if(which == 2){
+                            Intent intent = new Intent();
+                            intent.setClass(FriendsActivity.this, FriendsInfoActivity.class);
+                            startActivity(intent);
+                        }
+
+
+                    }
+                })
+                    //TODO 缺少跳转事件
+
+
                 .setNegativeButton(android.R.string.cancel,
-                        new OnClickListener() {
+                        new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog,
                                                 int which) {
                                 // TODO Auto-generated method stub
 
                             }
-                        }).create().show();
-        return true;
-    }
+                        }
+                )
+                    .create()
+                    .show();
+*/
 
-    private void initData() {
-        for (int i = 0; i < mGroupArrays.length; i++) {
-            List<Item> list = new ArrayList<Item>();
-            String[] childs = getStringArray(mGroupArrays[i]);
-            String[] details = getStringArray(mDetailIds[i]);
-            for (int j = 0; j < childs.length; j++) {
-                Item item = new Item(mImageIds[i][j], childs[j], details[j]);
-                list.add(item);
+                    return true;
+                }
+
+        private void initData() {
+                for (int i = 0; i < mGroupArrays.length; i++) {
+                    List<User> list = new ArrayList<User>();
+                    String[] childs = getStringArray(mGroupArrays[i]);
+                    String[] details = getStringArray(mDetailIds[i]);
+                    for (int j = 0; j < childs.length; j++) {
+                        User user = new User(mImageIds[i][j], childs[j], details[j]);
+                        list.add(user);
+                    }
+                    mData.add(list);
+                }
             }
-            mData.add(list);
+
+            private String[] getStringArray(int resId) {
+                return getResources().getStringArray(resId);
+            }
+
         }
-    }
-
-    private String[] getStringArray(int resId) {
-        return getResources().getStringArray(resId);
-    }
-
-}

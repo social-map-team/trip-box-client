@@ -7,13 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ActionProvider;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -22,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.socialmap.yy.travelbox.model.DailyTravelSchedule;
 import com.socialmap.yy.travelbox.model.TravelSchedule;
@@ -34,7 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ScheduleActivity extends Activity {
-    ImageButton backbutton;
+    ImageButton localbutton;
 
     private ListView list;
 
@@ -45,6 +40,11 @@ public class ScheduleActivity extends Activity {
     private List<ImageView> indicators = new LinkedList<>();
 
     private int currentDay = 0;
+
+
+
+
+
 
 
     private void initDays() {
@@ -100,6 +100,9 @@ public class ScheduleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
+
+
+
         //custom actionbar
         ActionBar mActionBar = getActionBar();
         mActionBar.setDisplayShowHomeEnabled(false);
@@ -110,28 +113,45 @@ public class ScheduleActivity extends Activity {
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
         mTitleTextView.setText("World in 7 Days");
 
-        backbutton = (ImageButton)findViewById(R.id.backbutton);
-        ImageButton imageButton = (ImageButton) mCustomView
-                .findViewById(R.id.imageButton);
-        imageButton.setOnClickListener(new View.OnClickListener() {
+
+
+        ImageButton  calbutton = (ImageButton)mCustomView.findViewById(R.id.cal);
+        ImageButton  localbutton = (ImageButton)mCustomView.findViewById(R.id.local);
+
+
+
+
+        calbutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Refresh Clicked!",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-        /*backbutton.setOnClickListener(new ImageButton.OnClickListener(){
-            //TODO 跳转 具体什么问题不清楚，第125行报错，应该是返回按钮和其他东西冲突
-            public void onClick(View view){
-                Intent intent = new Intent();
-                intent.setClass(ScheduleActivity.this,MainActivity.class);
-                startActivity(intent);
-                finish();
+
+                startActivity(new Intent(ScheduleActivity.this, CalendarActivity.class));
 
             }
         });
-*/
+
+
+
+        localbutton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(ScheduleActivity.this, ScheduleLocalActivity.class));
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
         //custom actionbar end
@@ -190,10 +210,17 @@ public class ScheduleActivity extends Activity {
     }
 
 
+
+    //自定义actionbar和原生堆叠
+
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.schedule, menu);
+        getMenuInflater().inflate(R.menu.schedule, menu);
+        MyActionProvider provider = (MyActionProvider) menu.findItem(
+                R.id.action_share).getActionProvider();
+
         return true;
     }
 
@@ -201,19 +228,16 @@ public class ScheduleActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_my_schedule:
-                startActivity(new Intent(this, ScheduleActivity.class));
+            case R.id.action_days:
+                startActivity(new Intent(this, ScheduleLocalActivity.class));
                 break;
-            case R.id.action_nearby:
+            case R.id.action_share:
                 startActivity(new Intent(this, NearbyActivity.class));
                 break;
-            case R.id.action_account:
-                startActivity(new Intent(this, ProfileActivity.class));
-                break;
-
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     public static class MyActionProvider extends ActionProvider {
 
@@ -223,7 +247,6 @@ public class ScheduleActivity extends Activity {
             super(context);
             mContext = context;
         }
-
         @Override
         public View onCreateActionView() {
             return null;
@@ -243,10 +266,51 @@ public class ScheduleActivity extends Activity {
         }
     }
 
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static class DayFragment extends Fragment {
         private DailyTravelSchedule day;
         private static LayoutInflater inflater;
         private GestureDetector gestureDetector;
+
 
         public DayFragment(Context context) {
             super();
@@ -307,5 +371,17 @@ public class ScheduleActivity extends Activity {
             });
             return root;
         }
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

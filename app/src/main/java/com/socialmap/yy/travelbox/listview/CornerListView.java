@@ -10,7 +10,7 @@ import android.widget.ListView;
 import com.socialmap.yy.travelbox.R;
 
 /**
- * Բ��ListView
+ * ListView
  */
 public class CornerListView extends ListView {
 

@@ -2,14 +2,20 @@ package com.socialmap.yy.travelbox;
 
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import com.socialmap.yy.travelbox.chat.activity.MainActivity;
+import com.socialmap.yy.travelbox.chat.service.XXService;
+import com.socialmap.yy.travelbox.chat.view.CustomDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +28,7 @@ public class SettingTabActivity extends Activity implements OnItemClickListener{
     
     private List<Map<String,String>> listData = null;
     private SimpleAdapter adapter = null;
-    
+   private Button exitbutton;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +37,18 @@ public class SettingTabActivity extends Activity implements OnItemClickListener{
         
        ListView = (ListView)findViewById(R.id.setting_list);
         setListData();
-        
+
+        exitbutton=(Button)findViewById(R.id.exit_app);
+
         adapter = new SimpleAdapter(getApplicationContext(), listData, R.layout.main_tab_setting_list_item , new String[]{"text"}, new int[]{R.id.setting_list_item_text});
         ListView.setAdapter(adapter);
         ListView.setOnItemClickListener(this);
+
+
+
+
+
+
     }
     
 
@@ -104,7 +118,7 @@ public class SettingTabActivity extends Activity implements OnItemClickListener{
             break;
         case 6:
             Toast.makeText(SettingTabActivity.this, "退出登录", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, Setting7Activity.class));
+            logoutDialog();
             break;
 
 
@@ -115,4 +129,42 @@ public class SettingTabActivity extends Activity implements OnItemClickListener{
 			break;
 		}
 	}
+
+
+    public void logoutDialog() {
+        new CustomDialog.Builder(this)
+                .setTitle(this.getString(R.string.open_switch_account))
+                .setMessage(
+                        this.getString(
+                                R.string.open_switch_account_msg))
+                .setPositiveButton(android.R.string.yes,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                XXService service = MainActivity.mXxService;
+
+                                if (service != null) {
+                                    service.logout();// 注销
+                                }
+                                dialog.dismiss();
+                                startActivity(new Intent(SettingTabActivity.this,
+                                        LoginActivity.class));
+                                SettingTabActivity.this.finish();
+                            }
+                        })
+                .setNegativeButton(android.R.string.no,
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+    }
+
+
+
+
+
 }

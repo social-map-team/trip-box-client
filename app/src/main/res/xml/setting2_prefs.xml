@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="push"
+        android:summary="退出后依旧能够收到信息"
+        android:title="信息推送"
+        android:defaultValue="true"/>
+    <CheckBoxPreference
+    android:key="mesaage"
+    android:summary="不提醒任何信息"
+    android:title="信息免打扰"
+        android:defaultValue="true"/>
+    <CheckBoxPreference
+    android:key="sound"
+    android:title="声音"
+        android:defaultValue="true"/>
+    <CheckBoxPreference
+    android:key="vibrate"
+    android:title="振动"
+        android:defaultValue="true"/>
+</PreferenceScreen>

@@ -9,17 +9,32 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <!-- 高德地图需要的权限 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- Baidu地图需要的权限 -->
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 此权限用来显示反馈崩溃信息对话框 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 判断堆栈中是否有本应用的权限 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -33,8 +48,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="735eb0f14a5ab8fe23a646435e68f798" />
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="BFp0X5sHwLd8jm1nHjQZrbWX" />
 
         <activity
             android:name=".WelcomeActivity"
@@ -45,9 +60,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/login_title" />
+
         <activity
             android:name=".ScheduleActivity"
             android:label="@string/app_name" />
@@ -63,7 +76,15 @@
                 <action android:name="com.socialmap.yy.travelbox.ACCOUNT_SERVICE" />
             </intent-filter>
         </service>
-
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
+            <intent-filter>
+                <action android:name="com.baidu.location.service_v2.2" >
+                </action>
+            </intent-filter>
+        </service>
+        <activity
+            android:name=".ScheduleLocalActivity"
+            android:label="@string/app_name" />
         <activity android:name=".NearbyActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".SettingTabActivity" />
@@ -77,7 +98,11 @@
         <activity android:name=".TeamFindActivity" />
         <activity android:name=".TeamGatherActivity" />
         <activity android:name=".TeamHistoryActivity" />
-
+        <activity android:name=".NearbypoiActivity"
+        android:configChanges="orientation|keyboardHidden"
+        android:screenOrientation="portrait"
+        android:label="附近" >
+        </activity>
 
 
 
@@ -86,14 +111,105 @@
         <activity android:name=".Setting3Activity" />
         <activity android:name=".Setting4Activity" />
         <activity android:name=".Setting5Activity" />
+
+
+
+
         <activity android:name=".Setting6Activity" />
-        <activity android:name=".Setting7Activity" />
+
+        <activity android:name=".FriendsInfoActivity" />
+        <activity android:name=".FriendChatActivity"/>
+        <activity android:name=".FriendsSettingActivity"/>
 
 
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/login_title"
+            android:theme="@style/Default.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" >
+            <intent-filter>
+                <action android:name="com.socialmap.yy.travelbox.action.LOGIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".chat.activity.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Default.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" >
+        </activity>
+        <activity
+            android:name=".chat.activity.ChatActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:theme="@style/Default.SwipeBack.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+            <intent-filter>
+                <action android:name="ccom.socialmap.yy.travelbox.action.CHAT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="locale|keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:theme="@style/Default.SwipeBack.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+
+        <service android:name=".chat.service.XXService" />
+
+        <receiver android:name=".chat.app.XXBroadcastReceiver" >
+            <intent-filter>
+
+                <!-- 开机广播 -->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <!-- 关机广播 -->
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+                <!-- 网络连接变化的广播 -->
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name=".chat.db.ChatProvider"
+            android:authorities="com.socialmap.yy.travelbox.provider.Chats" />
+        <provider
+            android:name=".chat.db.RosterProvider"
+            android:authorities="com.socialmap.yy.travelbox.provider.Roster" />
 
 
+        <activity
+            android:name=".AddActivity"
+            android:label="增加日程" >
+        </activity>
+        <activity
+            android:name=".EditActivity"
+            android:label="编辑日程" >
+        </activity>
 
 
+        <activity android:name=".CalendarActivity">
+        </activity>
+
+        <activity android:name=".ContactActivity">
+        </activity>
+
+        <activity android:name=".OperateActivity">
+        </activity>
+        <activity android:name=".DetailActivity">
+        </activity>
+        DetailActivity
 
     </application>
 

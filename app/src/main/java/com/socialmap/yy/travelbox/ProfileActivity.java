@@ -1,7 +1,9 @@
 package com.socialmap.yy.travelbox;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -40,28 +42,37 @@ public class ProfileActivity extends Activity  {
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private String[] mPlanetTitles;
-
-
-
+    private String username;
+    private String realname;
+    private String gender;
+    private String birthday;
+    private String num;
+    private String email;
+    private  String location ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // setContentView(R.layout.activity_profile);
-
-
+        SharedPreferences sp = this.getSharedPreferences("profile", Context.MODE_WORLD_READABLE);
+        String username = sp.getString("username", " ");
+        String realname = sp.getString("realname", " ");
+        String gender = sp.getString("gender", " ");
+        String birthday = sp.getString("birthday", " ");
+        String num = sp.getString("num", " ");
+        String email = sp.getString("email", " ");
 
 
 
         setContentView(R.layout.activity_profile1);
         listView = (PullToZoomListView)findViewById(R.id.listview);
         adapterData = new String[] {
-                "用户名：bitdancer",
-                "身份证号：XXXXXXXXXXXXXXXXXX",
-                "真实姓名：xx",
-                "生日：",
-                "联系电话: +86XXXXXXXXXXX",
-                "联系邮箱:"
+                "用户名："+username,
+                "真实姓名："+realname,
+                "性别："+gender,
+                "生日："+birthday,
+                "联系电话:"+num,
+                "联系邮箱:"+email
         };
 
         listView.setAdapter(new ArrayAdapter<String>(ProfileActivity.this,
@@ -124,7 +135,18 @@ public class ProfileActivity extends Activity  {
 
 
 
+        Intent intent = this.getIntent();
 
+        String  mainlocal = intent.getStringExtra("mainlocal");
+        //location =mainlocal;
+
+        if (mainlocal.contains("市")) {
+                location = mainlocal.substring(mainlocal.indexOf("addr : ") + 7, mainlocal.indexOf("op"));
+        }
+        else{
+            location = " ";
+
+        }
 
 
 
@@ -180,11 +202,12 @@ public class ProfileActivity extends Activity  {
             //selectItem(position);
             if (position == 0){
                 Intent intent = new Intent();
-                intent.setClass(ProfileActivity.this,FriendsActivity.class);
+                intent.setClass(ProfileActivity.this, com.socialmap.yy.travelbox.chat.activity.MainActivity.class);
                 startActivity(intent);
             }
             if (position == 1){
                 Intent intent = new Intent();
+                intent.putExtra("profilelocal",location );
                 intent.setClass(ProfileActivity.this,historyActivity.class);
                 startActivity(intent);
             }
@@ -269,32 +292,7 @@ public class ProfileActivity extends Activity  {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    /**
-     * Fragment that appears in the "content_frame", shows a planet
 
-    public static class PlanetFragment extends Fragment {
-        public static final String ARG_PLANET_NUMBER = "planet_number";
-
-        public PlanetFragment() {
-            // Empty constructor required for fragment subclasses
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_planet, container, false);
-            int i = getArguments().getInt(ARG_PLANET_NUMBER);
-            String planet = getResources().getStringArray(R.array.profile_array)[i];
-
-            int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
-                    "drawable", getActivity().getPackageName());
-            ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
-            getActivity().setTitle(planet);
-            return rootView;
-        }
-    }
-
-    */
 
 
 

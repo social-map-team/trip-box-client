@@ -6,27 +6,21 @@
     android:orientation="vertical"
     android:weightSum="1">
 
-    <com.amap.api.maps.MapView
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <EditText
-            android:id="@+id/find"
-            style="@style/TravelBox.main.EditText.Style"
-            android:layout_width="273dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/find"
-            android:layout_marginTop="1dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="center_horizontal|top" />
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clickable="true"/>
 
     <ImageButton
             android:id="@+id/sos"
             android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:src="@drawable/sos"
-        android:layout_gravity="left|bottom" />
+            android:layout_gravity="left|bottom"
+            android:background="#00000000"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="10dp"/>
 
     <com.socialmap.yy.travelbox.arclibrary.ArcMenu
         android:id="@+id/arc_menu_2"
@@ -36,6 +30,36 @@
         arc:toDegrees="@dimen/menuToDegrees"
         arc:childSize="@dimen/menuChildSize"
         android:layout_gravity="center_horizontal|bottom" />
+
+    <ImageButton
+         android:id="@+id/locationself"
+         android:layout_width="51dp"
+         android:layout_height="51dp"
+        android:layout_alignParentBottom="true"
+        android:background="#00000000"
+        android:layout_marginBottom="75dip"
+         android:layout_marginLeft="15dp"
+         android:src ="@drawable/locationself"
+        android:layout_gravity="right|top" />
+
+    <TextView
+        android:id="@+id/local"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        />
+
+    <EditText
+            android:id="@+id/find"
+            style="@style/TravelBox.main.EditText.Style"
+            android:layout_width="273dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/find"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_horizontal|top"
+            android:singleLine="true" />
 
 
 </FrameLayout>

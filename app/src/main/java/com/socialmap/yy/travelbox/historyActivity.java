@@ -9,7 +9,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,11 +22,20 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.socialmap.yy.travelbox.adpater.TimelineAdapter;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,12 +47,22 @@ import java.util.Map;
  * 4. 没用的TODO删掉
  */
 
-public class historyActivity extends Activity {
+public class historyActivity extends Activity  {
     private int currentPosition = 0;
     private ListView listView;
     private TimelineAdapter timelineAdapter;
     private List<Map<String, Object>> dataSource;
-
+     public String profilelocal;
+   public EditText inputString;
+    public EditText inputString_edit;
+   public TextView inputLocal;
+    public  int i;
+    public class MobileInfo implements Serializable {
+        //该类实现Serializable接口， 以启用其序列化功能
+        private static final long serialVersionUID = 1L;
+        public String name;
+        public String infoString;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +73,18 @@ public class historyActivity extends Activity {
         dataSource = getData();
         timelineAdapter = new TimelineAdapter(this, dataSource);
         listView.setAdapter(timelineAdapter);
+
+
+
+
+        Intent intent = this.getIntent();
+
+          profilelocal = intent.getStringExtra("profilelocal");
+        Log.v("腊肉",profilelocal);
+     //   historylocal = profilelocal;
+
+        inputLocal = (TextView) this .findViewById(R.id.local);
+
 
         ActionBar actionBar = this.getActionBar();
         actionBar.setDisplayOptions(actionBar.DISPLAY_HOME_AS_UP, ActionBar.DISPLAY_HOME_AS_UP);
@@ -67,6 +101,10 @@ public class historyActivity extends Activity {
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 final LinearLayout layout = (LinearLayout) inflater.inflate(
                         R.layout.input_edit, null);
+                 inputString_edit = (EditText) layout
+                        .findViewById(R.id.input_add_string);
+
+
 
                 // 弹出的对话框
                 new AlertDialog.Builder(historyActivity.this)
@@ -91,38 +129,38 @@ public class historyActivity extends Activity {
 
 
 
-                                        EditText inputString = (EditText) layout
-                                                .findViewById(R.id.input_add_string);
+
 
                                         // 获取用户添加足迹的输入内容
-                                        String str = inputString.getText().toString();
+                                        String str = inputString_edit.getText().toString();
+                                        Log.w("yy", str);
 
                                         // 验证用户输入
                                         if (str == null || str.equals("")) {
                                             Toast.makeText(getApplicationContext(),
                                                     "请输入修改", Toast.LENGTH_SHORT)
                                                     .show();
-                                        } else {
-                                            if (str.contains(" ")) {
-                                                String[] temp = str.split(" ");
-                                                String str1 = temp[0];
-                                                String str2 = temp[1];
+                                        }
+                                        else {
 
-                                                Log.e("yy", str1 + " " + str2);
+
+
+
                                                 HashMap<String, Object> map = new HashMap<String, Object>();
-                                                map.put("title", str1);
-                                                map.put("show_time", str2);
+                                                map.put("title", str);
+                                                map.put("show_time","" );
+                                                 map.put("local","" );
+
                                                 dataSource.set(currentPosition, map);
+                                                Log.w("yy", String.valueOf(currentPosition));
+
                                                 timelineAdapter.notifyDataSetChanged();
 
                                                 Toast.makeText(
                                                         historyActivity.this,
                                                         "修改的数据为:" + str + "",
                                                         Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                Toast.makeText(historyActivity.this,
-                                                        "输入格式应该为“地点+空格+时间”", Toast.LENGTH_SHORT)
-                                                        .show();
+
                                             }
 
 
@@ -148,7 +186,7 @@ public class historyActivity extends Activity {
                                         }
 */
                                         }
-                                    }
+
                                 })
 
                         .setNegativeButton("取消",
@@ -171,51 +209,23 @@ public class historyActivity extends Activity {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("title", "常州恐龙园");
         map.put("show_time", "10.1");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("title", "春秋淹城");
-        map.put("show_time", "10.1");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("title", "天目山");
-        map.put("show_time", "10.2");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("title", "嬉戏谷");
-        map.put("show_time", "10.3");
+        map.put("local", "常州");
         list.add(map);
 
 
-        map = new HashMap<String, Object>();
-        map.put("title", "狮子林");
-        map.put("show_time", "10.4");
-        list.add(map);
 
         map = new HashMap<String, Object>();
-        map.put("title", "拙政园");
-        map.put("show_time", "10.4");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("title", "虎丘");
-        map.put("show_time", "10.5");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("title", "苏堤");
-        map.put("show_time", "10.7");
-        list.add(map);
-
-        map = new HashMap<String, Object>();
-        map.put("title", "周庄");
-        map.put("show_time", "10.8");
+        try {
+            map=Read_Data();
+        }
+        catch (Throwable  e){
+            Log.e("1","");
+        }
         list.add(map);
 
         return list;
     }
+
 
 
     //创建actionbar设置一个增加按钮
@@ -226,14 +236,57 @@ public class historyActivity extends Activity {
         return true;
     }
 
+
+    public void Write_Data(HashMap map) throws Throwable {
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+        objectOutputStream.writeObject(map);
+        SharedPreferences sharedPreferences = getSharedPreferences("history", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        sharedPreferences = getSharedPreferences(String.valueOf(i),Activity.MODE_PRIVATE);
+        String historyString = new String(Base64.encode(byteArrayOutputStream.toByteArray(), Base64.DEFAULT));
+        editor.putString("history1", historyString);
+        editor.commit();
+
+        objectOutputStream.close();
+
+    }
+
+    public HashMap Read_Data() throws Throwable {
+
+        SharedPreferences sharedPreferences = getSharedPreferences("history", Activity.MODE_PRIVATE);
+        String mobilesString = sharedPreferences.getString(String.valueOf(i), "");
+        byte[] mobileBytes = Base64.decode(mobilesString.getBytes(), Base64.DEFAULT);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        HashMap map = (HashMap) objectInputStream.readObject();
+
+        objectInputStream.close();
+        return map;
+
+    }
+
+
+
+
+
+
+
+
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)   {
         switch (item.getItemId()) {
             case R.id.history_add:
                 LayoutInflater inflater = (LayoutInflater) historyActivity.this
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                final LinearLayout layout = (LinearLayout) inflater.inflate(
+                 RelativeLayout layout = (RelativeLayout) inflater.inflate(
                         R.layout.input_add, null);
+                 inputString = (EditText) layout
+                        .findViewById(R.id.input_add_string);
+
+
 
                 new AlertDialog.Builder(historyActivity.this)
 
@@ -251,49 +304,66 @@ public class historyActivity extends Activity {
                         .setPositiveButton("确定",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialoginterface, int i) {
-                                        EditText inputStringr = (EditText) layout
-                                                .findViewById(R.id.input_add_string);
+
+
+                                        //inputLocal.setText(historyActivity.this.profilelocal);
+                                        //Log.v("腊肉1",historyActivity.this.profilelocal);
 
                                         // 获取用户添加足迹的输入内容
-                                        String str = inputStringr.getText().toString();
-
+                                        String str = inputString.getText().toString();
+                                        String str3 = historyActivity.this.profilelocal;
+                                        //Log.v("腊肉2",str3);
                                         // 验证用户输入
                                         if (str == null || str.equals("")) {
                                             Toast.makeText(getApplicationContext(),
                                                     "添加的内容不能为空", Toast.LENGTH_SHORT)
                                                     .show();
                                         } else {
-                                            if (str.contains(" ")) {
-                                                String[] temp = str.split(" ");
-                                                String str1 = temp[0];
-                                                String str2 = temp[1];
 
-                                                Log.e("yy", str1 + " " + str2);
 
-                                                // 和上面一样的错误
-                                                // List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-                                                HashMap<String, Object> map = new HashMap<String, Object>();
-                                                map.put("title", str1);
-                                                map.put("show_time", str2);
-                                                dataSource.add(0, map);
-                                                timelineAdapter.notifyDataSetChanged();
+                                            // 和上面一样的错误
+                                            // List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
-                                                Toast.makeText(
-                                                        historyActivity.this,
-                                                        "添加的数据为:" + str + "",
-                                                        Toast.LENGTH_SHORT).show();
-                                            } else {
-                                                Toast.makeText(historyActivity.this,
-                                                        "输入格式应该为“地点+空格+时间”", Toast.LENGTH_SHORT)
-                                                        .show();
+                                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd     ");
+                                            Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+                                            String str2 = formatter.format(curDate);
+
+                                            HashMap<String, Object> map = new HashMap<String, Object>();
+                                            map.put("title", str);
+                                            map.put("show_time", str2);
+                                            map.put("local", str3);
+
+
+                                            // SharedPreferences sp =historyActivity.this.getSharedPreferences("history", Context.MODE_WORLD_READABLE);
+
+
+                                            try {
+                                                Write_Data(map);
+                                                i=i+1;
                                             }
+                                            catch (Throwable  e){
+                                                Log.e("2","");
+                                            }
+
+
+
+                                            dataSource.add(0, map);
+
+
+                                            timelineAdapter.notifyDataSetChanged();
+
+                                            Toast.makeText(
+                                                    historyActivity.this,
+                                                    "添加的数据为:" + str + "",
+                                                    Toast.LENGTH_SHORT).show();
+
                                         }
                                     }
                                 })
                         .setNegativeButton("取消",
                                 new DialogInterface.OnClickListener() {
 
-                                /* 设置跳出窗口的返回事件 */
+                                    /* 设置跳出窗口的返回事件 */
                                     public void onClick(DialogInterface dialoginterface, int i) {
                                         Toast.makeText(historyActivity.this,
                                                 "取消了添加数据", Toast.LENGTH_SHORT)

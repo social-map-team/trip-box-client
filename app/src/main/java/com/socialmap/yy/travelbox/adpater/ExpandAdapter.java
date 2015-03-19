@@ -8,8 +8,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.socialmap.yy.travelbox.model.Item;
 import com.socialmap.yy.travelbox.R;
+import com.socialmap.yy.travelbox.model.User;
 
 import java.util.List;
 
@@ -18,9 +18,9 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private LayoutInflater mInflater = null;
     private String[]   mGroupStrings = null;
-    private List<List<Item>>   mData = null;
+    private List<List<User>>   mData = null;
 
-    public ExpandAdapter (Context ctx, List<List<Item>> list) {
+    public ExpandAdapter (Context ctx, List<List<User>> list) {
         mContext = ctx;
         mInflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -28,7 +28,7 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
         mData = list;
     }
 
-    public void setData(List<List<Item>> list) {
+    public void setData(List<List<User>> list) {
         mData = list;
     }
 
@@ -45,13 +45,13 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public List<Item> getGroup(int groupPosition) {
+    public List<User> getGroup(int groupPosition) {
         // TODO Auto-generated method stub
         return mData.get(groupPosition);
     }
 
     @Override
-    public Item getChild(int groupPosition, int childPosition) {
+    public User getChild(int groupPosition, int childPosition) {
         // TODO Auto-generated method stub
         return mData.get(groupPosition).get(childPosition);
     }
@@ -98,6 +98,10 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.child_item_layout, null);
         }
+
+        final User u = (User) getChild(groupPosition, childPosition);
+
+
         ChildViewHolder holder = new ChildViewHolder();
         holder.mIcon = (ImageView) convertView.findViewById(R.id.img);
         holder.mIcon.setBackgroundResource(getChild(groupPosition,
@@ -108,6 +112,38 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
         holder.mDetail = (TextView) convertView.findViewById(R.id.item_detail);
         holder.mDetail.setText(getChild(groupPosition, childPosition)
                 .getDetail());
+
+   /*         convertView.setOnLongClickListener(new View.OnLongClickListener() {
+
+           @Override
+            public boolean onLongClick(View v) {
+                // TODO Auto-generated method stub
+                new AlertDialog.Builder(this.getActivity())
+                        .setMessage("确定删除 " + u.getName() + " 吗？")
+                        .setPositiveButton(android.R.string.ok,
+                                new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(
+                                            DialogInterface dialog,
+                                            int which) {
+                                        // TODO Auto-generated method stub
+
+                                    }
+                                })
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create().show();
+                return false;
+            }
+
+        });*/
+
+
+
+
+
+
+
         return convertView;
     }
 

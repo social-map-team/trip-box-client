@@ -8,7 +8,9 @@
     <TextView android:id="@+id/TextView01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="测试"></TextView>
+        android:text="测试">
+
+        </TextView>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
