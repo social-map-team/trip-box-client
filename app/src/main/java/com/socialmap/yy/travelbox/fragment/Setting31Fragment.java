@@ -21,7 +21,7 @@ public class Setting31Fragment extends PreferenceFragment
 
 
     public void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
+
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting31_prefs);
 

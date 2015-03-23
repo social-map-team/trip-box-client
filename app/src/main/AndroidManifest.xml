@@ -47,9 +47,15 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+        <!--<meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="BFp0X5sHwLd8jm1nHjQZrbWX" />-->
+
+        <!-- yy -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="BFp0X5sHwLd8jm1nHjQZrbWX" />
+            android:value="TdMUELrHWc2osaolQM9jZePX" />
+
 
         <activity
             android:name=".WelcomeActivity"

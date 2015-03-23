@@ -34,50 +34,42 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        // TODO Auto-generated method stub
         return mData.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        // TODO Auto-generated method stub
         return mData.get(groupPosition).size();
     }
 
     @Override
     public List<User> getGroup(int groupPosition) {
-        // TODO Auto-generated method stub
         return mData.get(groupPosition);
     }
 
     @Override
     public User getChild(int groupPosition, int childPosition) {
-        // TODO Auto-generated method stub
         return mData.get(groupPosition).get(childPosition);
     }
 
     @Override
     public long getGroupId(int groupPosition) {
-        // TODO Auto-generated method stub
         return groupPosition;
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-        // TODO Auto-generated method stub
         return childPosition;
     }
 
     @Override
     public boolean hasStableIds() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
             View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.group_item_layout, null);
         }
@@ -94,7 +86,6 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition,
             boolean isLastChild, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.child_item_layout, null);
         }
@@ -117,7 +108,6 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
 
            @Override
             public boolean onLongClick(View v) {
-                // TODO Auto-generated method stub
                 new AlertDialog.Builder(this.getActivity())
                         .setMessage("确定删除 " + u.getName() + " 吗？")
                         .setPositiveButton(android.R.string.ok,
@@ -127,7 +117,6 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
                                     public void onClick(
                                             DialogInterface dialog,
                                             int which) {
-                                        // TODO Auto-generated method stub
 
                                     }
                                 })
@@ -149,7 +138,6 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        // TODO Auto-generated method stub
         /*很重要：实现ChildView点击事件，必须返回true*/
         return true;
     }

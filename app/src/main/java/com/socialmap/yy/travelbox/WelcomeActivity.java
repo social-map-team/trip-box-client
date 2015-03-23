@@ -17,11 +17,12 @@ public class WelcomeActivity extends Activity {
         setContentView(R.layout.activity_welcome);
 
         //启动账户服务
-        //TODO 在账户服务中添加身份信息：游客，导游
         startService(new Intent("com.socialmap.yy.travelbox.ACCOUNT_SERVICE"));
 
         //Initialize the whole application
         DimensionUtils.init(getApplicationContext());
+
+        TbsClient.init(this);
 
         TextView textView = (TextView) findViewById(R.id.welcome_title);
         Typeface typeFace = Typeface.createFromAsset(getAssets(),"fonts/Sketch Gothic School.ttf");

@@ -26,7 +26,7 @@ public class Setting52Fragment extends Fragment {
     private Button Countdown;
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
+
         super.onCreate(savedInstanceState);
     }
     @Override

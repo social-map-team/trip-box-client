@@ -65,7 +65,7 @@ public class Setting12Fragment extends Fragment {
             return;
         }
 
-        TbsClient.getInstance()
+        TbsClient.getInstance(getActivity())
                 .request("/api/user/register", "post",
                         "password",     pass1.getText()
                 )

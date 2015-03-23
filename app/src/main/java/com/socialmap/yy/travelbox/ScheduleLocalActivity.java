@@ -26,6 +26,11 @@ import com.socialmap.yy.travelbox.data.DBHelper;
 import com.socialmap.yy.travelbox.model.DailyTravelSchedule;
 import com.socialmap.yy.travelbox.model.TravelSchedule;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -61,31 +66,71 @@ public class ScheduleLocalActivity extends Activity {
     public static SimpleAdapter adapter;
     private static String orderItem="level"; // 排序列
 
+    /**
+     * 用于测试
+     */
     public void createTable()  {
         dbHelper = new DBHelper(this.getBaseContext());
         dbHelper.open();
 
-        //String deleteSql = "drop table if exists tItem ";
-        //dbHelper.execSQL(deleteSql);
+        String deleteSql = "drop table if exists tItem ";
+        dbHelper.execSQL(deleteSql);
 
         // id：自动递增
         // title: 标题 概要
         // info：详细内容
         // t: 日期时间
-        if (!dbHelper.isTableExist("tItem"))   //判断表是否存在
+        if (true || !dbHelper.isTableExist("tItem"))   //判断表是否存在
         {
-            //创建表
-            String sql = "CREATE TABLE tItem (id integer primary key autoincrement, title text, info text,t datatime,level integer)";
-            dbHelper.execSQL(sql);
-            //初始化两条数据
-            sql="insert into tItem(title,info,t,level) values('龙虎山','走透明栈道看悬棺崖墓' ,'3-10-2015 8:00',2)";
-            dbHelper.execSQL(sql);
-            sql="insert into tItem(title,info,t,level) values('天师符','天师府全称“嗣汉天师府”，亦称“大真人府” 府第坐落在江西贵溪上清古镇，南朝琵琶峰，面临上清河（古称沂溪），北倚西华山，东距大上清官二华里，西离龙虎山主峰十五里许。整个府第由府门、大堂、后堂、私第、殿宇、书屋、花园等部分构成。规模宏大，雄伟壮观，建筑华丽，工艺精致，是一处王府式样的建筑，也是中国现存封建社会“大府第”之一。院内豫樟成林，古木参天，浓荫散绿，环境清幽，昔有“仙都”，“南国第一家”之称。' ,'3-10-2015 11:00',1)";
-            dbHelper.execSQL(sql);
+            try {
+                String sql = IOUtils.toString(getAssets().open("create_local_schedule_table.sql"));
+                dbHelper.execSQL(sql);
+
+                // 插入默认数据
+                String format = "INSERT INTO tItem(t, title, info, level) VALUES('%s', '%s', '%s', %s)";
+                InputStream is = getAssets().open("sample_local_schedules.txt");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                String[] data = new String[4];
+                boolean hasdata = false;
+                int currentIndex = 0;
+                String line = null;
+                while((line = reader.readLine()) != null){
+                    if (line.isEmpty()){
+                        if (hasdata){
+                            // insert
+                            dbHelper.execSQL(String.format(format, data[0], data[1], data[2], data[3]));
+                            hasdata = false;
+                            data[0] = data[1] = data[2] = data[3] = null;
+                            currentIndex = 0;
+                        }
+                    } else {
+                        hasdata = true;
+                        if (line.startsWith("时间：")){
+                            data[0] = line.substring(3);
+                            currentIndex = 0;
+                        } else if(line.startsWith("标题：")){
+                            data[1] = line.substring(3);
+                            currentIndex = 1;
+                        } else if(line.startsWith("简介：")){
+                            data[2] = line.substring(3);
+                            currentIndex = 2;
+                        } else if(line.startsWith("星等：")){
+                            data[3] = line.substring(3);
+                            currentIndex = 3;
+                        } else {
+                            data[currentIndex] += line;
+                        }
+                    }
+                }
+                if (hasdata){
+                    dbHelper.execSQL(String.format(format, data[0], data[1], data[2], data[3]));
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
         dbHelper.closeConnection();
     }
-
 
     private void initDays() {
         String[] days_text = getResources().getStringArray(R.array.seven_days);
@@ -137,35 +182,21 @@ public class ScheduleLocalActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
-        createTable();  //链接数据库并检查表是否存在，不存在则创建表
-        //custom actionbar
+
+        // 首先，检查数据库，如果表不存在就新建表
+        createTable();
+
+        // 自定义的ActionBar
         ActionBar mActionBar = getActionBar();
+        assert mActionBar != null;
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
 
+        // 加载本地日程ActionBar的布局文件
         View mCustomView = mInflater.inflate(R.layout.activity_schedule_local_actionbar, null);
-        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
-        mTitleTextView.setText("World in 7 Days");
-
+        // 添加日程按钮
         ImageButton addbutton = (ImageButton) mCustomView.findViewById(R.id.add);
-        ImageButton deletebutton = (ImageButton) mCustomView.findViewById(R.id.delete);
-        ImageButton editbutton = (ImageButton) mCustomView.findViewById(R.id.edit);
-        ImageButton calbutton = (ImageButton) mCustomView.findViewById(R.id.cal);
-
-
-
-        calbutton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ScheduleLocalActivity.this, CalendarActivity.class));
-
-            }
-        });
-
-
-
         addbutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -177,6 +208,10 @@ public class ScheduleLocalActivity extends Activity {
             }
         });
 
+
+
+        // 删除日程按钮
+        ImageButton deletebutton = (ImageButton) mCustomView.findViewById(R.id.delete);
         deletebutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -193,6 +228,10 @@ public class ScheduleLocalActivity extends Activity {
             }
         });
 
+
+
+        // 编辑日程按钮
+        ImageButton editbutton = (ImageButton) mCustomView.findViewById(R.id.edit);
         editbutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -222,31 +261,26 @@ public class ScheduleLocalActivity extends Activity {
 
 
 
+
+
+        // 日历按钮
+        ImageButton calbutton = (ImageButton) mCustomView.findViewById(R.id.cal);
         calbutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
-
-                Toast.makeText(getApplicationContext(), "Refresh Clicked!",
-                        Toast.LENGTH_LONG).show();
+                startActivity(new Intent(ScheduleLocalActivity.this, CalendarActivity.class));
             }
         });
 
-
-
-
-
-
-
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
-        //custom actionbar end
+        // 完成自定义ActionBar
 
         // initialize days for test
         initDays();
 
         // create a fragment for each day
-
         gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             private static final int SWIPE_MIN_DISTANCE = 120;
             private static final int SWIPE_MAX_OFF_PATH = 250;
@@ -353,7 +387,7 @@ public class ScheduleLocalActivity extends Activity {
 
 
 
-    public static class DayFragment extends Fragment {
+    public static class  DayFragment extends Fragment {
         private DailyTravelSchedule day;
         private static LayoutInflater inflater;
         private GestureDetector gestureDetector;

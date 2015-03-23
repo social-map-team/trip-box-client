@@ -2,7 +2,8 @@ package com.socialmap.yy.travelbox.adpater;
 
 
         import android.content.Context;
-import android.view.LayoutInflater;
+        import android.util.Log;
+        import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -61,11 +62,11 @@ public class TimelineAdapter extends BaseAdapter {
         }
 
         String titleStr = list.get(position).get("title").toString();
+        //String titleStr = "title";
         String timeStr = list.get(position).get("show_time").toString();
+        //String timeStr = "time";
         String localStr = list.get(position).get("local").toString();
-
-        //TODO 注释掉上面这段代码的原因是获取不到show_time对应的View，换上下面这行代码代替
-        //String timeStr = "10.1";
+        //String localStr = "local";
 
         viewHolder.title.setText(titleStr);
         viewHolder.show_time.setText(timeStr);

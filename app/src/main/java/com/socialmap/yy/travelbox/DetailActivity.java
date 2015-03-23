@@ -26,7 +26,7 @@ public class DetailActivity extends Activity{
 	UserBean ub=new UserBean();
 	
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
         setTheme(android.R.style.Theme_Holo_Light_NoActionBar);
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.detailinfo);
@@ -58,7 +58,7 @@ public class DetailActivity extends Activity{
 			
 			
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
+
 				if(b==false){
 					b=true;
 					setEditAble();
@@ -101,7 +101,7 @@ public class DetailActivity extends Activity{
 			
 			
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
+
 
 				UserBeanCl ubc=new UserBeanCl(DetailActivity.this);
 				if(ubc.delete(ub.get_id())){
@@ -122,7 +122,7 @@ public class DetailActivity extends Activity{
 			
 			
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
+
 				DetailActivity.this.finish();
 			}
 		});
@@ -133,7 +133,7 @@ public class DetailActivity extends Activity{
 	
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
+
 		super.onActivityResult(requestCode, resultCode, data);
 		if(requestCode==0){
 			if(resultCode==1){

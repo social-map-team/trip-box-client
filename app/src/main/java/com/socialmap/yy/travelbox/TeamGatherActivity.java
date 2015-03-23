@@ -93,7 +93,7 @@ public class TeamGatherActivity extends Activity {
             location_text.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View arg0, boolean arg1) {
-// TODO Auto-generated method stub
+
 //获取触发事件的EditText
                     EditText clickEditText = (EditText)arg0;
 //如果失去焦点
@@ -132,7 +132,7 @@ public class TeamGatherActivity extends Activity {
             location_text.setOnKeyListener(new View.OnKeyListener() {
                 @Override
                 public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
-// TODO Auto-generated method stub
+
 //获取触发事件的EditText
                     EditText clickEditText = (EditText)arg0;
 //获取当前文本

@@ -20,7 +20,7 @@ public class RegisterActivity extends Activity {
     EditText edtext;
     EditText edpwd;
     EditText edpwd2;
-    TbsClient TbsClient;
+    //TbsClient TbsClient;
     Button test;
     Handler handler = new Handler();
     //新建一个线程对象
@@ -40,7 +40,7 @@ public class RegisterActivity extends Activity {
        btnsub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+
                 setUser();
             }
         });
@@ -48,7 +48,7 @@ public class RegisterActivity extends Activity {
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TbsClient.getInstance()
+                TbsClient.getInstance(RegisterActivity.this)
                         .request("/api/user/profile", "get"
                         ).execute(new TbsClient.Callback() {
                     @Override
@@ -94,11 +94,12 @@ public class RegisterActivity extends Activity {
         }
 
 
-        if(true)//TODO 检查是否重名的操作
+        if(true)
+        //TODO 检查是否重名的操作
         {
             new Thread(new Runnable(){
                        public void run(){
-                           TbsClient.getInstance()
+                           TbsClient.getInstance(RegisterActivity.this)
                                    .request("/api/user/register", "post",
                                            "username",     edtext.getText(),
                                            "password",     edpwd.getText()

@@ -109,7 +109,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 
 	private void sendAppCrashReport(final Context context,
 			final String crashReport, final File file) {
-		// TODO Auto-generated method stub
+
 		AlertDialog dialog;
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setIcon(android.R.drawable.ic_dialog_info);

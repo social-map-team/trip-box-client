@@ -177,7 +177,7 @@ public class SOSCDialogFragment extends DialogFragment {
 
     @Override
     public void onAttach(Activity activity) {
-        // TODO Auto-generated method stub
+
         super.onAttach(activity);
         sosfragmentCallBack = (MainActivity)activity;
     }

@@ -1,5 +1,8 @@
 package com.socialmap.yy.travelbox;
 
+import android.app.Activity;
+import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
@@ -28,21 +31,222 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
-
+/**
+ * Created by yy on 3/5/15.
+ */
 public class TbsClient {
-    public static String serverAddress = "192.168.0.101:8080";
+    private static TbsClient instance;
+    private static Activity activity;
+    public CloseableHttpClient client;
+    public HttpHost server;
+    public HttpClientContext context;
+
+    private TbsClient() {
+        init();
+    }
+
+    public static void init(Activity activity) {
+        TbsClient.activity = activity;
+        instance = new TbsClient();
+    }
+
+    /**
+     * 当服务器地址发生变化时手动刷新
+     */
+    public static void refresh() {
+        if (instance != null)
+            instance.init();
+    }
+
+    /**
+     * 当服务器地址，用户名和密码发生变化时手动刷新
+     *
+     * @param username
+     * @param password
+     */
+    public static void refresh(String username, String password) {
+        if (instance != null)
+            instance.init(username, password);
+    }
+
+    public static TbsClient getInstance(Activity activity) {
+        if (instance == null) {
+            throw new RuntimeException("TbsClient未初始化");
+        }
+        TbsClient.activity = activity;
+        return instance;
+    }
+
+    public static TbsClient getInstance() {
+        if (instance == null) {
+            throw new RuntimeException("TbsClient未初始化");
+        }
+        return instance;
+    }
+
+    private void init(String username, String password) {
+        String host = "192.168.1.103";
+        int port = 8080;
+        server = new HttpHost(host, port, "http");
+
+        CredentialsProvider provider = new BasicCredentialsProvider();
+        provider.setCredentials(
+                new AuthScope(server.getHostName(), server.getPort()),
+                new UsernamePasswordCredentials(username, password)
+        );
+
+        client = HttpClients.custom().setDefaultCredentialsProvider(provider).build();
+
+        AuthCache cache = new BasicAuthCache();
+        DigestScheme digest = new DigestScheme();
+        digest.overrideParamter("realm", "some realm");
+        digest.overrideParamter("nonce", "whatever");
+        cache.put(server, digest);
+
+        context = HttpClientContext.create();
+        context.setAuthCache(cache);
+    }
+
+    private void init() {
+        String host = "192.168.1.103";
+        int port = 8080;
+        server = new HttpHost(host, port, "http");
+
+        client = HttpClients.createDefault();
+
+        context = HttpClientContext.create();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        client.close();
+        super.finalize();
+    }
+
+    /**
+     * 这个接口只能用一般的字符串模式的请求
+     *
+     * @param uri
+     * @param method
+     * @param params
+     * @return
+     */
+    public TbsClientRequest request(String uri, String method, Object... params) {
+        if (method.equals("get")) {
+            return get(uri, params);
+        } else if (method.equals("post")) {
+            return post(uri, params);
+        } else if (method.equals("put")) {
+            return put(uri, params);
+        } else if (method.equals("delete")) {
+            return delete(uri, params);
+        }
+        return null;
+    }
+
+    /**
+     * 这个接口的设计是考虑的传送图片的需求
+     *
+     * @param r
+     * @return
+     */
+    public TbsClientRequest request(HttpRequestBase r) {
+        return new TbsClientRequest(client, server, context, r);
+    }
+
+    private String encode(Object origin) {
+        try {
+            return URLEncoder.encode(origin.toString(), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private String buildUrlParams(Object[] params) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < params.length; i += 2) {
+            String key = params[i].toString();
+            String value = null;
+            if (params[i + 1].getClass().isArray()) {
+                Object[] array = (Object[]) params[i + 1];
+                value = array[0].toString();
+                for (int j = 1; j < array.length; j++) {
+                    value = value + "," + array[j];
+                }
+            } else {
+                value = params[i + 1].toString();
+            }
+
+            builder.append(encode(key)).append("=").append(encode(value));
+            if (i + 2 < params.length) {
+                builder.append("&");
+            }
+        }
+        return builder.toString();
+    }
+
+    private List<NameValuePair> buildEntityParams(Object[] params) {
+        List<NameValuePair> r = new ArrayList<>();
+        for (int i = 0; i < params.length; i += 2) {
+            String key = params[i].toString();
+            String value = null;
+            if (params[i + 1].getClass().isArray()) {
+                Object[] array = (Object[]) params[i + 1];
+                value = array[0].toString();
+                for (int j = 1; j < array.length; j++) {
+                    value = value + "," + array[j];
+                }
+            } else {
+                value = params[i + 1].toString();
+            }
+
+            r.add(new BasicNameValuePair(key, value));
+        }
+        return r;
+    }
+
+    private TbsClientRequest get(String uri, Object[] params) {
+        HttpGet r = new HttpGet(uri + "?" + buildUrlParams(params));
+        return new TbsClientRequest(client, server, context, r);
+    }
+
+    private TbsClientRequest post(String uri, Object[] params) {
+        // TODO Post Image
+        HttpPost r = new HttpPost(uri);
+        try {
+            r.setEntity(new UrlEncodedFormEntity(buildEntityParams(params), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
+        return new TbsClientRequest(client, server, context, r);
+    }
+
+    private TbsClientRequest delete(String uri, Object[] params) {
+        HttpDelete r = new HttpDelete(uri + "?" + buildUrlParams(params));
+        return new TbsClientRequest(client, server, context, r);
+    }
+
+    private TbsClientRequest put(String uri, Object[] params) {
+        HttpPut r = new HttpPut(uri);
+        try {
+            r.setEntity(new UrlEncodedFormEntity(buildEntityParams(params), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
+        return new TbsClientRequest(client, server, context, r);
+    }
+
+    public static interface Callback {
+        public void onFinished(ServerResponse response);
+    }
 
     public static class ServerResponse {
         private int statusCode = 0;
         private String contentType = "";
-        private byte[] content = null;
+        private byte[] content;
 
         public int getStatusCode() {
             return statusCode;
@@ -68,67 +272,77 @@ public class TbsClient {
             this.content = content;
         }
 
+        public boolean is1xx() {
+            return statusCode >= 100 && statusCode < 200;
+        }
+
+        public boolean is2xx() {
+            return statusCode >= 200 && statusCode < 300;
+        }
+
+        public boolean is3xx() {
+            return statusCode >= 300 && statusCode < 400;
+        }
+
+        public boolean is4xx() {
+            return statusCode >= 400 && statusCode < 500;
+        }
+
+        public boolean is5xx() {
+            return statusCode >= 500;
+        }
+
         public Error getError() {
-            if (getStatusCode() >= 200 && getStatusCode() < 300) {
-                if (getContent() == null) {
-                    return null;
-                } else {
-                    if (getContentType().equals("application/json")) {
-                        String content = new String(getContent(), StandardCharsets.UTF_8);
-                        try {
-                            JSONObject json = new JSONObject(content);
-                            if (json.get("errorCode") == null) {
-                                return null;
-                            } else {
-                                Error error = new Error(json.getInt("errorCode"));
-                                return error;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+            if (is2xx() && getContent().length == 0) {
+                return null;
+            } else {
+                Error error = new Error();
+                try {
+                    JSONObject json = new JSONObject(getString());
+                    error.setCode(json.getInt("error"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+                return error;
             }
-            return null;
+        }
+
+        public String getString() {
+            try {
+                return IOUtils.toString(getContent(), "UTF-8");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "";
         }
     }
 
     public static class Error {
-        private int errorCode;
-        private int errorMessage;
+        private int code;
+        private int message;
 
-        public Error() {
-
+        public int getCode() {
+            return code;
         }
 
-        public Error(int errorCode) {
-            this.errorCode = errorCode;
-            // fetch Error Message
+        public void setCode(int code) {
+            this.code = code;
         }
 
-        public int getErrorCode() {
-            return errorCode;
+        public int getMessage() {
+            return message;
         }
 
-        public void setErrorCode(int errorCode) {
-            this.errorCode = errorCode;
-        }
-
-        public int getErrorMessage() {
-            return errorMessage;
-        }
-
-        public void setErrorMessage(int errorMessage) {
-            this.errorMessage = errorMessage;
+        public void setMessage(int message) {
+            this.message = message;
         }
     }
 
     public static class TbsClientRequest {
+        private HttpRequestBase request;
         private CloseableHttpClient client;
         private HttpHost server;
-        private HttpRequestBase request;
         private HttpClientContext context;
-
 
         public TbsClientRequest(CloseableHttpClient client, HttpHost server, HttpClientContext context, HttpRequestBase request) {
             this.client = client;
@@ -137,161 +351,39 @@ public class TbsClient {
             this.request = request;
         }
 
-        private ServerResponse resp;
+        public void execute(final Callback callback) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-        public void execute(Callback callback) {
-            try {
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            CloseableHttpResponse response = client.execute(server, request, context);
-                            resp = new ServerResponse();
-                            resp.setStatusCode(response.getStatusLine().getStatusCode());
-                            if (response.getEntity().getContentType() != null) {
-                                resp.setContentType(response.getEntity().getContentType().getValue());
-                            }
-                            resp.setContent(IOUtils.toByteArray(response.getEntity().getContent()));
-                            response.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    try {
+                        CloseableHttpResponse response = client.execute(server, request, context);
+                        ServerResponse resp = new ServerResponse();
+                        resp.setStatusCode(response.getStatusLine().getStatusCode());
+                        if (response.getEntity().getContentType() != null) {
+                            resp.setContentType(response.getEntity().getContentType().getValue());
                         }
+                        resp.setContent(IOUtils.toByteArray(response.getEntity().getContent()));
+                        response.close();
+                        final ServerResponse r = resp;
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.onFinished(r);
+                            }
+                        });
+                    } catch (IOException e) {
+                        Log.e("tbs", "网络故障", e);
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(activity, "网络故障", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
-                });
-                t.start();
-                t.join();//这是假死的bug
-                callback.onFinished(resp);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
-    public static interface Callback {
-        public void onFinished(ServerResponse response);
-    }
-
-    private static TbsClient instance = null;
-    private String host;
-    private int port;
-    private String protocal;// http, https
-    private CloseableHttpClient client;
-    private HttpHost server;
-    private HttpClientContext context;
-
-    // hide constructor, this class is singleton
-    private TbsClient() {
-    }
-
-    public static TbsClient getInstance() {
-        if (instance == null) {
-            // create client here
-            instance = new TbsClient();
-
-            String[] parts = serverAddress.split(":");
-            instance.host = parts[0];
-            instance.port = Integer.parseInt(parts[1]);
-            instance.protocal = "http";
-            instance.server = new HttpHost(instance.host, instance.port, instance.protocal);
-            CredentialsProvider provider = new BasicCredentialsProvider();
-            provider.setCredentials(
-                    new AuthScope(instance.server.getHostName(), instance.server.getPort()),
-                    new UsernamePasswordCredentials("test", "123")
-            );
-            instance.client = HttpClients.custom()
-                    .setDefaultCredentialsProvider(provider).build();
-            AuthCache cache = new BasicAuthCache();
-            DigestScheme digest = new DigestScheme();
-            digest.overrideParamter("realm", "some realm");
-            digest.overrideParamter("nonce", "whatever");
-            cache.put(instance.server, digest);
-
-            instance.context = HttpClientContext.create();
-            instance.context.setAuthCache(cache);
-        }
-        return instance;
-    }
-
-    public TbsClientRequest requestAnonymous(String url, String method, Object... params) {
-        return null;
-    }
-
-    private String encode(Object origin) {
-        try {
-            return URLEncoder.encode(origin.toString(), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public TbsClientRequest request(String uri, String method, Object... params) {
-        if (method.equalsIgnoreCase("get")) {
-            StringBuilder builder = new StringBuilder(uri);
-            if (params.length > 0) {
-                builder.append("?");
-            }
-            for (int i = 0; i < params.length; i += 2) {
-                builder.append(encode(params[i]))
-                        .append("=")
-                        .append(encode(params[i + 1]));
-                if (i + 2 < params.length) {
-                    builder.append("&");
                 }
-            }
-            HttpGet get = new HttpGet(builder.toString());
-            return new TbsClientRequest(client, server, context, get);
-
+            }).start();
         }
-        else if (method.equalsIgnoreCase("post")) {
-            List<NameValuePair> postParams = new ArrayList<>();
-            for (int i = 0; i < params.length; i += 2) {
-                postParams.add(new BasicNameValuePair(params[i].toString(), params[i + 1].toString()));
-            }
-            HttpPost post = new HttpPost(uri);
-            try {
-                post.setEntity(new UrlEncodedFormEntity(postParams, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            return new TbsClientRequest(client, server, context, post);
-
-        } else if (method.equalsIgnoreCase("put")) {
-            List<NameValuePair> postParams = new ArrayList<>();
-            for (int i = 0; i < params.length; i += 2) {
-                postParams.add(new BasicNameValuePair(params[i].toString(), params[i + 1].toString()));
-            }
-            HttpPost post = new HttpPost(uri);
-            HttpPut put = new HttpPut(uri);
-            try {
-                post.setEntity(new UrlEncodedFormEntity(postParams, "UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            return new TbsClientRequest(client, server, context, put);
-
-        } else if (method.equalsIgnoreCase("delete")) {
-            StringBuilder builder = new StringBuilder(uri);
-            if (params.length > 0) {
-                builder.append("?");
-            }
-            for (int i = 0; i < params.length; i += 2) {
-                builder.append(encode(params[i]))
-                        .append("=")
-                        .append(encode(params[i + 1]));
-                if (i + 2 < params.length) {
-                    builder.append("&");
-                }
-            }
-            HttpDelete delete = new HttpDelete(builder.toString());
-            return new TbsClientRequest(client, server, context, delete);
-        }
-        return null;
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        client.close();
-        super.finalize();
     }
 }

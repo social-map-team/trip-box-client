@@ -26,16 +26,16 @@ public class SOSDataBaseHelper extends SQLiteOpenHelper{
 
 	public SOSDataBaseHelper(Context context, String name, int version) {
 		super(context, name,null, version);
-		// TODO Auto-generated constructor stub
+
 	}
 	public SOSDataBaseHelper(Context context, String name) {
 		super(context, name,null, 1);
-		// TODO Auto-generated constructor stub
+
 	}
 	
 	public SOSDataBaseHelper(Context context) {
 		super(context, "db_contact",null, 1);
-		// TODO Auto-generated constructor stub
+
 	}
 
 	

@@ -67,7 +67,7 @@ public class RosterAdapter extends BaseExpandableListAdapter implements
 
 	public RosterAdapter(Context context, IphoneTreeView iphoneTreeView,
 			PullToRefreshScrollView pullToRefreshScrollView) {
-		// TODO Auto-generated constructor stub
+
 		mContext = context;
 		mIphoneTreeView = iphoneTreeView;
 		mPullToRefreshScrollView = pullToRefreshScrollView;
@@ -273,7 +273,7 @@ public class RosterAdapter extends BaseExpandableListAdapter implements
 
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		// TODO Auto-generated method stub
+
 		return true;
 	}
 
@@ -313,7 +313,7 @@ public class RosterAdapter extends BaseExpandableListAdapter implements
 
 	@Override
 	public void onHeadViewClick(int groupPosition, int status) {
-		// TODO Auto-generated method stub
+
 		groupStatusMap.put(groupPosition, status);
 	}
 
@@ -390,7 +390,7 @@ public class RosterAdapter extends BaseExpandableListAdapter implements
 
 	@Override
 	public int getChildCount(int groupPosition) {
-		// TODO Auto-generated method stub
+
 		return getChildrenCount(groupPosition);
 	}
 }

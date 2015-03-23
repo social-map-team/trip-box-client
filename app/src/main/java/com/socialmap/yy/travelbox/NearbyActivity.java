@@ -231,19 +231,19 @@ public class NearbyActivity extends Activity{
 
                 @Override
                 public int getCount() {
-                    // TODO Auto-generated method stub
+
                     return mData.size();
                 }
 
                 @Override
                 public Object getItem(int arg0) {
-                    // TODO Auto-generated method stub
+
                     return null;
                 }
 
                 @Override
                 public long getItemId(int arg0) {
-                    // TODO Auto-generated method stub
+
                     return 0;
                 }
 

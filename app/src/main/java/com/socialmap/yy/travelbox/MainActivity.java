@@ -498,13 +498,13 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
 
     @Override
     public void callbackFun1(Bundle arg) {
-        // TODO Auto-generated method stub
+
             sosnum=0;
     }
 
     @Override
     public void callbackFun2(Bundle arg) {
-        // TODO Auto-generated method stub
+
         sosnum=sosnum+1;
     }
 

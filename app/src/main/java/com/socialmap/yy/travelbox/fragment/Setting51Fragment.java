@@ -43,7 +43,7 @@ public  class Setting51Fragment extends Fragment implements
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
+
         super.onCreate(savedInstanceState);
     }
     @Override
@@ -125,7 +125,7 @@ public  class Setting51Fragment extends Fragment implements
 
             public void onItemClick(AdapterView<?> parent, View v, int position,
                                     long id) {
-                // TODO Auto-generated method stub
+
                 //当单击某项时取出该项的详细信息，放入Intent中，启动下一个Activity
                 HashMap map=(HashMap)parent.getItemAtPosition(position);
                 Intent it=new Intent();
@@ -169,7 +169,7 @@ public  class Setting51Fragment extends Fragment implements
              */
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
-                // TODO Auto-generated method stub
+
                 //通过判断点击那一列来决定做什么操作
                 switch(position){
                     case 0:{
@@ -202,7 +202,7 @@ public  class Setting51Fragment extends Fragment implements
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
+
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==0||requestCode==3){

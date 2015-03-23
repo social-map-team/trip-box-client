@@ -8,11 +8,13 @@
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:textAllCaps="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#fff"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_toRightOf="@+id/cal"
+        android:layout_centerVertical="true"
+        android:text="本地日程管理"/>
     <ImageButton
         android:id="@+id/add"
         android:layout_width="wrap_content"

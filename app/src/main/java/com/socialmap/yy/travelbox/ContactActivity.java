@@ -46,7 +46,7 @@ public class ContactActivity extends Activity {
 			
 			
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+
 
 				if((et_name.getText().toString()).equals("")||(et_phone.getText().toString()).equals("")){
 					Toast.makeText(ContactActivity.this, "姓名和手机不能为空", Toast.LENGTH_SHORT).show();
@@ -79,7 +79,7 @@ public class ContactActivity extends Activity {
 			
 			
 			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
+
 				setResult(2);
 				ContactActivity.this.finish();
 			}
@@ -87,7 +87,7 @@ public class ContactActivity extends Activity {
     }
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
+
 		super.onActivityResult(requestCode, resultCode, data);
 		
 		if(requestCode==0){

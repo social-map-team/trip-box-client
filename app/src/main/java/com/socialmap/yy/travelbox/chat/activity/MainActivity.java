@@ -517,7 +517,7 @@ public class  MainActivity extends BaseSlidingFragmentActivity implements
 					@Override
 					public void onItemClick(QuickAction source, int pos,
 							int actionId) {
-						// TODO Auto-generated method stub
+
 						if (!isConnected()) {
 							T.showShort(MainActivity.this,
 									R.string.conversation_net_error_label);

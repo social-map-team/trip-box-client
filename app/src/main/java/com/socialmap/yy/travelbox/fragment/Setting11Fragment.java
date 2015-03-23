@@ -45,7 +45,7 @@ public  class Setting11Fragment extends Fragment {
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
 		super.onCreate(savedInstanceState);
 
 
@@ -189,7 +189,7 @@ public  class Setting11Fragment extends Fragment {
 
     private void submit(){
 
-        TbsClient.getInstance()
+        TbsClient.getInstance(getActivity())
                 .request("/api/user/register", "post",
                         "username",     username.getText(),
                         "realname",     realname.getText(),

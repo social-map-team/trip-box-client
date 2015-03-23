@@ -29,7 +29,7 @@ public class OperateActivity extends Activity{
 	HashMap map=null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
 		setTheme(android.R.style.Theme_Holo_Light);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sos_connact_operation);
@@ -70,7 +70,7 @@ public class OperateActivity extends Activity{
 			
 			public void onItemClick(AdapterView<?> parent, View v, int position,
 					long id) {
-				// TODO Auto-generated method stub
+
 				HashMap map=(HashMap)parent.getItemAtPosition(position);
 				String mobile=map.get("number").toString();
 				if(position==0){
@@ -99,7 +99,7 @@ public class OperateActivity extends Activity{
 
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
+
 		if(item.getItemId()==1){
 			Intent it=new Intent();
 			it.putExtra("userInfo", this.map);

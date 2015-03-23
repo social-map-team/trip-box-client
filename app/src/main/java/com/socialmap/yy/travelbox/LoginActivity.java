@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -24,7 +25,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.socialmap.yy.travelbox.chat.exception.XXAdressMalformedException;
 import com.socialmap.yy.travelbox.chat.service.IConnectionStatusCallback;
@@ -37,7 +37,6 @@ import com.socialmap.yy.travelbox.chat.util.T;
 import com.socialmap.yy.travelbox.chat.util.XMPPHelper;
 import com.socialmap.yy.travelbox.chat.view.ChangeLog;
 import com.socialmap.yy.travelbox.service.AccountService;
-import com.socialmap.yy.travelbox.utils.Global;
 
 /**
  * A login screen that offers login via email/password.
@@ -83,16 +82,19 @@ public class LoginActivity  extends FragmentActivity implements
        login.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //调用账户服务中的登录验证
-                //TODO 要开启单独的线程，避免主线程失去响应
-                int r = binder.login(str1,str2 );
-                switch (r) {
-                    case Global.SUCCESS:
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        break;
-                    default:
-                        Toast.makeText(LoginActivity.this, getString(R.string.login_failed), Toast.LENGTH_LONG).show();
-                }
+                TbsClient.refresh(str1, str2);
+                TbsClient.getInstance(LoginActivity.this)
+                        .request("/login", "post")
+                        .execute(new TbsClient.Callback() {
+                            @Override
+                            public void onFinished(TbsClient.ServerResponse response) {
+                                if (response.is2xx() && response.getContent().length == 0){
+                                    Log.i("yy", "Login Success");
+                                } else {
+                                    Log.i("yy", "Login Failed");
+                                }
+                            }
+                        });
             }
         });
         Button register = (Button) findViewById(R.id.register);
@@ -369,7 +371,7 @@ public class LoginActivity  extends FragmentActivity implements
 
     @Override
     public void connectionStatusChanged(int connectedState, String reason) {
-        // TODO Auto-generated method stub
+
         if (mLoginDialog != null && mLoginDialog.isShowing())
             mLoginDialog.dismiss();
         if (mLoginOutTimeProcess != null && mLoginOutTimeProcess.running) {

@@ -6,15 +6,12 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.socialmap.yy.travelbox.TbsClient;
 import com.socialmap.yy.travelbox.model.User;
 import com.socialmap.yy.travelbox.utils.Global;
 
 import java.io.UnsupportedEncodingException;
 
-import static com.socialmap.yy.travelbox.TbsClient.Callback;
-import static com.socialmap.yy.travelbox.TbsClient.ServerResponse;
-import static com.socialmap.yy.travelbox.TbsClient.getInstance;
+
 
 
 public class AccountService extends Service {
@@ -99,7 +96,7 @@ public class AccountService extends Service {
                       dbHelper.close();
                       return  false;
 */
-                      getInstance()
+                     /* getInstance()
                               .request("/api/user/login", "get",
                                       "username", str1,
                                       "password", str2,
@@ -132,7 +129,8 @@ public class AccountService extends Service {
                               }
                                 else{
                                   return  false;
-                              }
+                              }*/
+                      return true;
 
 
 

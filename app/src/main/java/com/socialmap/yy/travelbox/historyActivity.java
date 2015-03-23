@@ -40,13 +40,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** 关于格式问题，提几点建议：
- * 1. historyActivity -> HistoryActivity
- * 2. TimelineAdapter 你写成一个外部类，如果这个类仅仅是HistoryActivity使用，那么请写成HistoryActivity的内部类
- * 3. 缩进对齐很重要
- * 4. 没用的TODO删掉
- */
-
 public class historyActivity extends Activity  {
     private int currentPosition = 0;
     private ListView listView;
@@ -214,14 +207,15 @@ public class historyActivity extends Activity  {
 
 
 
-        map = new HashMap<String, Object>();
+        // FIXME 下面的代码读取的map没有title，show_time，local三个字段，会出现bug
+        /*map = new HashMap<String, Object>();
         try {
             map=Read_Data();
         }
         catch (Throwable  e){
             Log.e("1","");
         }
-        list.add(map);
+        list.add(map);*/
 
         return list;
     }

@@ -74,7 +74,7 @@ public class FriendsActivity extends Activity implements OnChildClickListener {
     </span>*/
     @Override
                public boolean onChildClick(ExpandableListView parent, View v,int groupPosition, int childPosition, long id) {
-        // TODO Auto-generated method stub
+
                         Intent intent = new Intent();
                         intent.setClass(FriendsActivity.this, FriendsInfoActivity.class);
                         startActivity(intent);
@@ -116,7 +116,7 @@ public class FriendsActivity extends Activity implements OnChildClickListener {
                             @Override
                             public void onClick(DialogInterface dialog,
                                                 int which) {
-                                // TODO Auto-generated method stub
+
 
                             }
                         }

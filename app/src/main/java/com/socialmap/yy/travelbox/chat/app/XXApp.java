@@ -40,7 +40,7 @@ public class XXApp extends Application {
 	}
 
 	private void initFaceMap() {
-		// TODO Auto-generated method stub
+
 		mFaceMap.put("[呲牙]", R.drawable.f_static_000);
 		mFaceMap.put("[调皮]", R.drawable.f_static_001);
 		mFaceMap.put("[流汗]", R.drawable.f_static_002);
