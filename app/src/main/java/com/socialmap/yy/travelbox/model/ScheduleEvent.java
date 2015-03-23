@@ -3,6 +3,7 @@ package com.socialmap.yy.travelbox.model;
 import java.util.Date;
 
 public class ScheduleEvent {
+    private int id;
     private Date start;
     private Date end;
     private String title;
@@ -16,6 +17,14 @@ public class ScheduleEvent {
     public ScheduleEvent(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getStart() {

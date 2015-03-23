@@ -196,7 +196,7 @@
 
 
         <activity
-            android:name=".AddActivity"
+            android:name=".ScheduleLocalAddActivity"
             android:label="增加日程" >
         </activity>
         <activity
@@ -215,7 +215,7 @@
         </activity>
         <activity android:name=".DetailActivity">
         </activity>
-        DetailActivity
+        <activity android:name=".DebugActivity"/>
 
     </application>
 

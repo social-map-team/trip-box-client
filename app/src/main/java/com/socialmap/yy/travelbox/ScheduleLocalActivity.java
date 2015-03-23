@@ -15,31 +15,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.socialmap.yy.travelbox.data.DBHelper;
 import com.socialmap.yy.travelbox.model.DailyTravelSchedule;
 import com.socialmap.yy.travelbox.model.ScheduleEvent;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -47,80 +42,13 @@ import java.util.List;
  */
 public class ScheduleLocalActivity extends Activity {
 
-
-    private List<DayFragment> fragments = new LinkedList<>();
-    private List<ImageView> indicators = new LinkedList<>();
+    private List<DayFragment> fragments;
+    private LinearLayout indicatorWrapper;
     private int currentDay = 0;
 
     private static GestureDetector gestureDetector;
-    private static List<DailyTravelSchedule> days = new ArrayList<>(); // 数据源
+    private static List<DailyTravelSchedule> days; // 数据源
     public static DBHelper dbHelper;
-
-    /**
-     * 用于测试
-     */
-    public void createTable() {
-        dbHelper = new DBHelper(this.getBaseContext());
-        dbHelper.open();
-
-        String deleteSql = "drop table if exists tItem ";
-        dbHelper.execSQL(deleteSql);
-
-        // id：自动递增
-        // title: 标题 概要
-        // info：详细内容
-        // t: 日期时间
-        if (true || !dbHelper.isTableExist("tItem"))   //判断表是否存在
-        {
-            try {
-                String sql = IOUtils.toString(getAssets().open("create_local_schedule_table.sql"));
-                dbHelper.execSQL(sql);
-
-                // 插入默认数据
-                String format = "INSERT INTO tItem(t, title, info, level) VALUES('%s', '%s', '%s', %s)";
-                InputStream is = getAssets().open("sample_local_schedules.txt");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                String[] data = new String[4];
-                boolean hasdata = false;
-                int currentIndex = 0;
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    if (line.isEmpty()) {
-                        if (hasdata) {
-                            // insert
-                            dbHelper.execSQL(String.format(format, data[0], data[1], data[2], data[3]));
-                            hasdata = false;
-                            data[0] = data[1] = data[2] = data[3] = null;
-                            currentIndex = 0;
-                        }
-                    } else {
-                        hasdata = true;
-                        if (line.startsWith("时间：")) {
-                            data[0] = line.substring(3);
-                            currentIndex = 0;
-                        } else if (line.startsWith("标题：")) {
-                            data[1] = line.substring(3);
-                            currentIndex = 1;
-                        } else if (line.startsWith("简介：")) {
-                            data[2] = line.substring(3);
-                            currentIndex = 2;
-                        } else if (line.startsWith("星等：")) {
-                            data[3] = line.substring(3);
-                            currentIndex = 3;
-                        } else {
-                            data[currentIndex] += line;
-                        }
-                    }
-                }
-                if (hasdata) {
-                    dbHelper.execSQL(String.format(format, data[0], data[1], data[2], data[3]));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        dbHelper.closeConnection();
-    }
 
     private void getDataSource() {
         List<ScheduleEvent> events = new ArrayList<>();
@@ -142,6 +70,7 @@ public class ScheduleLocalActivity extends Activity {
             }
             event.setTitle(title);
             event.setLevel(Float.parseFloat(level));
+            event.setId(Integer.parseInt(id));
             events.add(event);
         }
         dbHelper.closeConnection();
@@ -152,6 +81,8 @@ public class ScheduleLocalActivity extends Activity {
                 return (lhs.getStart().after(rhs.getStart())) ? 1 : -1;
             }
         });
+
+        days = new ArrayList<>();
         DailyTravelSchedule day = new DailyTravelSchedule();
         for (ScheduleEvent e : events) {
 
@@ -169,7 +100,9 @@ public class ScheduleLocalActivity extends Activity {
                 }
             }
         }
-        days.add(day);
+        if (!day.getEvents().isEmpty()) {
+            days.add(day);
+        }
     }
 
     private void rightFling() {
@@ -199,13 +132,39 @@ public class ScheduleLocalActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule);
+        setContentView(R.layout.activity_schedule_local);
 
-        // 首先，检查数据库，如果表不存在就新建表
-        createTable();
+        // 初始化数据库
+        dbHelper = new DBHelper(getBaseContext());
 
         // 获取数据库内的数据
         getDataSource();
+
+        // 每一天创建一个DayFragment
+        gestureDetector =
+                new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+                    private static final int SWIPE_MIN_DISTANCE = 120;
+                    private static final int SWIPE_MAX_OFF_PATH = 250;
+                    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                        if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+                            return false;
+                        // right to left swipe
+                        if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                            leftFling();
+                        } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                            rightFling();
+                        }
+                        return false;
+                    }
+                });
+
+        // 添加界面下面的一排小圈圈
+        indicatorWrapper = (LinearLayout) findViewById(R.id.schedule_indicator);
+
+        update();
 
         // 自定义的ActionBar
         ActionBar mActionBar = getActionBar();
@@ -217,29 +176,56 @@ public class ScheduleLocalActivity extends Activity {
         // 加载本地日程ActionBar的布局文件
         View mCustomView = mInflater.inflate(R.layout.activity_schedule_local_actionbar, null);
 
+
+
+
+
+
+
         // 添加日程按钮
         ImageButton addbutton = (ImageButton) mCustomView.findViewById(R.id.add);
         addbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(ScheduleLocalActivity.this, AddActivity.class);
+                intent.setClass(ScheduleLocalActivity.this, ScheduleLocalAddActivity.class);
                 startActivity(intent);
             }
         });
+
+
+
+
+
 
         // 删除日程按钮
         ImageButton deletebutton = (ImageButton) mCustomView.findViewById(R.id.delete);
         deletebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dbHelper.open();
-                // 删除选中的事件项
+                EventListAdapter adapter = fragments.get(currentDay).getAdapter();
+                if (adapter.getSelectedIndex() == -1) {
+                    Toast.makeText(ScheduleLocalActivity.this, "请选择一项来删除", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 // 从数据库中删除
-                // dbHelper.delete("tItem", "id =?", new String[]{itemid});
-                // 从数据源中删除
-                // adapter.notifyDataSetChanged();
+                dbHelper.open();
+                DailyTravelSchedule day = days.get(currentDay);
+                ScheduleEvent event = day.getEvents().get(adapter.getSelectedIndex());
+                int id = event.getId();
+                Log.i("yy", "id:" + id);
+                dbHelper.execSQL("DELETE FROM tItem WHERE id = " + id);
                 dbHelper.closeConnection();
+
+                // 从UI中删除
+                day.getEvents().remove(event);
+                adapter.setSelectedIndex(-1);
+                if (day.getEvents().isEmpty()) {
+                    if (currentDay == days.size() - 1) currentDay = 0;
+                    days.remove(day);
+
+                }
+                update();
             }
         });
 
@@ -264,56 +250,53 @@ public class ScheduleLocalActivity extends Activity {
 
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
-        // 完成自定义ActionBar
+    }
 
+    private void showNoEventFragment() {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.schedule_list_wrapper, new NoEventFragment())
+                .commit();
+    }
 
-        // create a fragment for each day
-        gestureDetector =
-                new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-                    private static final int SWIPE_MIN_DISTANCE = 120;
-                    private static final int SWIPE_MAX_OFF_PATH = 250;
-                    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+    private void update() {
+        updateFragments();
+        updateIndicators();
+    }
 
-                    @Override
-                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                        if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-                            return false;
-                        // right to left swipe
-                        if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                            leftFling();
-                        } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                            rightFling();
-                        }
-                        return false;
-                    }
-                });
-
-        for (int i = 0; i< days.size(); i++) {
+    private void updateFragments() {
+        fragments = new ArrayList<>();
+        for (int i = 0; i < days.size(); i++) {
             DayFragment f = new DayFragment();
             f.setDayIndex(i);
             fragments.add(f);
         }
-        getFragmentManager().beginTransaction()
-                .replace(R.id.schedule_list_wrapper, fragments.get(0))
-                .commit();
 
-        // 添加界面下面的一排小圈圈
-        LinearLayout indicatorWrapper = (LinearLayout) findViewById(R.id.schedule_indicator);
-        for (int i = 0; i < days.size(); i++) {
-            ImageView circle = (ImageView) getLayoutInflater()
-                    .inflate(R.layout.activity_schedule_indicator, indicatorWrapper, false);
-            indicators.add(circle);
-            indicatorWrapper.addView(circle);
+        if (fragments.size() == 0) {
+            showNoEventFragment();
+        } else {
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.schedule_list_wrapper, fragments.get(currentDay))
+                    .commit();
         }
-        indicatorWrapper.invalidate();
-        indicators.get(0).setImageResource(R.drawable.schedule_indicator_choosen);
     }
 
     private void updateIndicators() {
-        for (ImageView v : indicators) {
-            v.setImageResource(R.drawable.schedule_indicator);
+        if (days.size() <= 1) {
+            indicatorWrapper.setVisibility(View.GONE);
+            return;
+        } else {
+            indicatorWrapper.setVisibility(View.VISIBLE);
         }
-        indicators.get(currentDay).setImageResource(R.drawable.schedule_indicator_choosen);
+
+        indicatorWrapper.removeAllViews();
+        for (int i = 0; i < days.size(); i++) {
+            ImageView circle = (ImageView) getLayoutInflater()
+                    .inflate(R.layout.activity_schedule_indicator, indicatorWrapper, false);
+            indicatorWrapper.addView(circle);
+        }
+        ((ImageView) indicatorWrapper.getChildAt(currentDay))
+                .setImageResource(R.drawable.schedule_indicator_choosen);
+        indicatorWrapper.invalidate();
     }
 
     public static class DayFragment extends Fragment {
@@ -328,42 +311,22 @@ public class ScheduleLocalActivity extends Activity {
             return adapter;
         }
 
-        /*private AdapterView.OnItemClickListener ItemClick = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                //恢复上一选定项颜色
-                if (itemview != null) itemview.setBackgroundResource(R.color.white);
-                //取消展开
-                if (itemview != null)
-                    ((TextView) itemview.findViewById(R.id.info)).setVisibility(View.GONE);
-                //设置当前选定项颜色
-                arg1.setBackgroundResource(R.color.holo_blue);
-                //保存选定项id
-                itemid = ((TextView) arg1.findViewById(R.id.id)).getText().toString();
-                Log.i("getitemid", itemid);
-                poid = arg2;
-                Log.i("getpoid", poid.toString());
-                //保存当前项目view
-                itemview = arg1;
-                String title = ((TextView) arg1.findViewById(R.id.title)).getText().toString();
-                String t = ((TextView) arg1.findViewById(R.id.t)).getText().toString();
-                String info = ((TextView) arg1.findViewById(R.id.info)).getText().toString();
-                ((TextView) arg1.findViewById(R.id.info)).setVisibility(View.VISIBLE);
-                ShowMsg(new StringBuilder().append(title).append("\n").append(t).append("\n").append(info).toString());
-            }
-        };*/
-
         @Override
         public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-            View root = inflater.inflate(R.layout.activity_schedule_fragment, null);
+            View root = inflater.inflate(R.layout.activity_schedule_local_fragment, null);
             ListView list = (ListView) root.findViewById(R.id.list);
             adapter = new EventListAdapter(getActivity(), dayIndex);
             list.setAdapter(adapter);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                    if (position != adapter.getSelectedIndex()) {
+                        adapter.selectedIndex = position;
+                    } else {
+                        adapter.selectedIndex = -1;
+                    }
+                    adapter.notifyDataSetInvalidated();
+                    Log.i("yy", "clicked!");
                 }
             });
 
@@ -378,10 +341,26 @@ public class ScheduleLocalActivity extends Activity {
         }
     }
 
+    public static class NoEventFragment extends Fragment {
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.activity_schedule_local_empty, container, false);
+        }
+    }
+
     public static class EventListAdapter extends BaseAdapter {
 
         private int dayIndex;
         private LayoutInflater inflater;
+        int selectedIndex = -1;
+
+        public int getSelectedIndex() {
+            return selectedIndex;
+        }
+
+        public void setSelectedIndex(int selectedIndex) {
+            this.selectedIndex = selectedIndex;
+        }
 
         public EventListAdapter(Context context, int dayIndex) {
             inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -400,26 +379,28 @@ public class ScheduleLocalActivity extends Activity {
 
         @Override
         public long getItemId(int position) {
-            return 0; // 没有数字ID，所以都返回0
+            return days.get(dayIndex).getEvents().get(position).getId();
         }
 
-        private class ViewHolder {
+        public class ViewHolder {
             public TextView title;
             public TextView content;
             public TextView time;
             public RatingBar level;
+            public CheckBox checkbox;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
             if (convertView == null) {
-                convertView = inflater.inflate(R.layout.schedule_event_item, parent, false);
+                convertView = inflater.inflate(R.layout.activity_schedule_local_item, parent, false);
                 holder = new ViewHolder();
                 holder.title = (TextView) convertView.findViewById(R.id.title);
                 holder.content = (TextView) convertView.findViewById(R.id.content);
                 holder.time = (TextView) convertView.findViewById(R.id.time);
                 holder.level = (RatingBar) convertView.findViewById(R.id.level);
+                holder.checkbox = (CheckBox) convertView.findViewById(R.id.checkbox);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -441,6 +422,8 @@ public class ScheduleLocalActivity extends Activity {
             holder.content.setText(content);
             holder.time.setText(time);
             holder.level.setRating(level);
+            holder.checkbox.setVisibility(View.GONE);
+            if (selectedIndex == position) holder.checkbox.setVisibility(View.VISIBLE);
 
             return convertView;
         }

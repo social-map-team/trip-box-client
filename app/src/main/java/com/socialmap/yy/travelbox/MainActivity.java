@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -441,6 +442,9 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
                 break;
             case R.id.action_allteam:
                 startActivity(new Intent(this, AllTeamActivity.class));
+                break;
+            case R.id.action_debug:
+                startActivity(new Intent(this, DebugActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
