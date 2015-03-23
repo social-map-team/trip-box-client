@@ -200,12 +200,13 @@
             android:label="增加日程" >
         </activity>
         <activity
-            android:name=".EditActivity"
+            android:name=".ScheduleLocalEditActivity"
             android:label="编辑日程" >
         </activity>
 
 
-        <activity android:name=".CalendarActivity">
+        <activity android:name=".ScheduleLocalCalendarActivity"
+            android:label="日程安排总览">
         </activity>
 
         <activity android:name=".ContactActivity">

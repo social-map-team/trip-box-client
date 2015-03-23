@@ -425,7 +425,7 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         int id = item.getItemId();
         switch (id) {
             case R.id.action_my_schedule:
-                startActivity(new Intent(this, ScheduleActivity.class));
+                startActivity(new Intent(this, ScheduleLocalActivity.class));
                 break;
             case R.id.action_nearby:
                 Intent intent = new Intent(this, NearbyActivity.class);

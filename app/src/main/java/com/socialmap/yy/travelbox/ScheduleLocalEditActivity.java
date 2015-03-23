@@ -14,9 +14,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class ScheduleLocalAddActivity extends Activity {
+
+public class ScheduleLocalEditActivity extends Activity {
     static final int DATE_DIALOG_ID = 0;
     static final int TIME_DIALOG_ID = 1;
 
@@ -47,6 +50,7 @@ public class ScheduleLocalAddActivity extends Activity {
     private TextView info;
     private TextView title;
     private RatingBar level;
+    private int id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,13 @@ public class ScheduleLocalAddActivity extends Activity {
         info = (TextView) findViewById(R.id.info);
         title = (TextView) findViewById(R.id.title);
         level = (RatingBar) findViewById(R.id.level);
+
+        Intent intent = getIntent();
+        time.setText(intent.getStringExtra("time"));
+        info.setText(intent.getStringExtra("info"));
+        title.setText(intent.getStringExtra("title"));
+        level.setRating(intent.getFloatExtra("level", 0));
+        id = intent.getIntExtra("id", 0);
 
         // 设置时间按钮
         findViewById(R.id.set_time).setOnClickListener(new View.OnClickListener() {
@@ -81,12 +92,13 @@ public class ScheduleLocalAddActivity extends Activity {
                 values.put("info", info.getText().toString());
                 values.put("t", time.getText().toString());
                 values.put("level", level.getRating());
-                ScheduleLocalActivity.dbHelper.insert("tItem", values);
+
+                ScheduleLocalActivity.dbHelper.update("tItem", values, "id=?", new String[]{id + ""});
                 ScheduleLocalActivity.dbHelper.closeConnection();
 
-                Toast.makeText(getApplicationContext(), "新的日程项已经添加", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "日程项已修改", Toast.LENGTH_LONG).show();
 
-                startActivity(new Intent(ScheduleLocalAddActivity.this, ScheduleLocalActivity.class));
+                startActivity(new Intent(ScheduleLocalEditActivity.this, ScheduleLocalActivity.class));
                 finish();
             }
         });
@@ -94,21 +106,24 @@ public class ScheduleLocalAddActivity extends Activity {
         // 取消按钮
         findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startActivity(new Intent(ScheduleLocalAddActivity.this, ScheduleLocalActivity.class));
+                startActivity(new Intent(ScheduleLocalEditActivity.this, ScheduleLocalActivity.class));
                 finish();
             }
         });
 
-        // 得到当前的时间
-        final Calendar c = Calendar.getInstance();
-        year = c.get(Calendar.YEAR);
-        month = c.get(Calendar.MONTH);
-        day = c.get(Calendar.DAY_OF_MONTH);
-        hour = c.get(Calendar.HOUR_OF_DAY);
-        minute = c.get(Calendar.MINUTE);
-
-        // 更新现有时间
-        updateDisplay();
+        // 设置时间
+        try {
+            final Calendar c = Calendar.getInstance();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            c.setTime(format.parse(time.getText().toString()));
+            year = c.get(Calendar.YEAR);
+            month = c.get(Calendar.MONTH);
+            day = c.get(Calendar.DAY_OF_MONTH);
+            hour = c.get(Calendar.HOUR_OF_DAY);
+            minute = c.get(Calendar.MINUTE);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -128,3 +143,4 @@ public class ScheduleLocalAddActivity extends Activity {
                 .append(hour).append(":").append(minute));
     }
 }
+

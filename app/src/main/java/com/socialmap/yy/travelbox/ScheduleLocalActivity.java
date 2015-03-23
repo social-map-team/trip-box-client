@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -133,6 +134,9 @@ public class ScheduleLocalActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_local);
+
+        Intent intent = getIntent();
+        currentDay = intent.getIntExtra("currentDay", 0);
 
         // 初始化数据库
         dbHelper = new DBHelper(getBaseContext());
@@ -235,7 +239,22 @@ public class ScheduleLocalActivity extends Activity {
         editbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EventListAdapter adapter = fragments.get(currentDay).getAdapter();
+                if (adapter.getSelectedIndex() == -1) {
+                    Toast.makeText(ScheduleLocalActivity.this, "请选择一项来编辑", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
+                DailyTravelSchedule day = days.get(currentDay);
+                ScheduleEvent event = day.getEvents().get(adapter.getSelectedIndex());
+                Intent intent = new Intent(ScheduleLocalActivity.this, ScheduleLocalEditActivity.class);
+                intent.putExtra("title", event.getTitle());
+                intent.putExtra("info", event.getContent());
+                intent.putExtra("level", event.getLevel());
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                intent.putExtra("time", format.format(event.getStart()));
+                intent.putExtra("id", event.getId());
+                startActivity(intent);
             }
         });
 
@@ -244,7 +263,21 @@ public class ScheduleLocalActivity extends Activity {
         calbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ScheduleLocalActivity.this, CalendarActivity.class));
+                if (days.isEmpty()) return;
+                Intent intent = new Intent(ScheduleLocalActivity.this, ScheduleLocalCalendarActivity.class);
+                List<Date> dates = new ArrayList<Date>();
+                for (DailyTravelSchedule day : days){
+                    dates.add(day.getEvents().get(0).getStart());
+                }
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String datesStr = format.format(dates.get(0));
+                for (int i=1;i<dates.size();i++){
+                    datesStr = datesStr + " " + format.format(dates.get(i));
+                }
+                Log.i("yy", datesStr);
+                intent.putExtra("dates", datesStr);
+                intent.putExtra("currentDay", currentDay);
+                startActivity(intent);
             }
         });
 
@@ -326,7 +359,6 @@ public class ScheduleLocalActivity extends Activity {
                         adapter.selectedIndex = -1;
                     }
                     adapter.notifyDataSetInvalidated();
-                    Log.i("yy", "clicked!");
                 }
             });
 

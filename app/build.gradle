@@ -49,7 +49,7 @@ dependencies {
     compile files('libs/android-support-v13.jar')
     compile files('libs/httpclient-android-4.3.5.1.jar')
     provided project(':app2')
-    compile 'com.squareup:android-times-square:1.5.0@aar'
+    compile 'com.squareup:android-times-square:1.5.0@aar' // 日历
     compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
     compile files('libs/baidumapapi_v3_2_0.jar')
     compile files('libs/locSDK_5.01.jar')

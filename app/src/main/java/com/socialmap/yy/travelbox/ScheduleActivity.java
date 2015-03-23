@@ -126,7 +126,7 @@ public class ScheduleActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(ScheduleActivity.this, CalendarActivity.class));
+                startActivity(new Intent(ScheduleActivity.this, ScheduleLocalCalendarActivity.class));
 
             }
         });
