@@ -5,16 +5,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DailyTravelSchedule {
-    private List<TravelSchedule> schedules = new LinkedList<>();
+    private List<ScheduleEvent> events = new LinkedList<>();
     private Date date;
     private String title;
 
-    public List<TravelSchedule> getSchedules() {
-        return schedules;
+    public List<ScheduleEvent> getEvents() {
+        return events;
     }
 
-    public void setSchedules(List<TravelSchedule> schedules) {
-        this.schedules = schedules;
+    public void setEvents(List<ScheduleEvent> events) {
+        this.events = events;
     }
 
     public Date getDate() {

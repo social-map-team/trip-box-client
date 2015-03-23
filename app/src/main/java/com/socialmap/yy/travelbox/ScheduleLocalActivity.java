@@ -14,31 +14,33 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.socialmap.yy.travelbox.data.DBHelper;
 import com.socialmap.yy.travelbox.model.DailyTravelSchedule;
-import com.socialmap.yy.travelbox.model.TravelSchedule;
+import com.socialmap.yy.travelbox.model.ScheduleEvent;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by gxyzw_000 on 2015/3/9.
@@ -46,30 +48,18 @@ import java.util.Map;
 public class ScheduleLocalActivity extends Activity {
 
 
-
-    private ListView list;
-
-    private List<DailyTravelSchedule> days = new ArrayList<>();
-
     private List<DayFragment> fragments = new LinkedList<>();
-
     private List<ImageView> indicators = new LinkedList<>();
-
     private int currentDay = 0;
 
+    private static GestureDetector gestureDetector;
+    private static List<DailyTravelSchedule> days = new ArrayList<>(); // 数据源
     public static DBHelper dbHelper;
-    private static String itemid="0";
-    private static Integer poid=0; //记录listview的当前项位置
-    private static ListView mylist;
-    private static View itemview;
-    private static List<Map<String, Object>> listItem;  // ListView的数据源
-    public static SimpleAdapter adapter;
-    private static String orderItem="level"; // 排序列
 
     /**
      * 用于测试
      */
-    public void createTable()  {
+    public void createTable() {
         dbHelper = new DBHelper(this.getBaseContext());
         dbHelper.open();
 
@@ -94,9 +84,9 @@ public class ScheduleLocalActivity extends Activity {
                 boolean hasdata = false;
                 int currentIndex = 0;
                 String line = null;
-                while((line = reader.readLine()) != null){
-                    if (line.isEmpty()){
-                        if (hasdata){
+                while ((line = reader.readLine()) != null) {
+                    if (line.isEmpty()) {
+                        if (hasdata) {
                             // insert
                             dbHelper.execSQL(String.format(format, data[0], data[1], data[2], data[3]));
                             hasdata = false;
@@ -105,16 +95,16 @@ public class ScheduleLocalActivity extends Activity {
                         }
                     } else {
                         hasdata = true;
-                        if (line.startsWith("时间：")){
+                        if (line.startsWith("时间：")) {
                             data[0] = line.substring(3);
                             currentIndex = 0;
-                        } else if(line.startsWith("标题：")){
+                        } else if (line.startsWith("标题：")) {
                             data[1] = line.substring(3);
                             currentIndex = 1;
-                        } else if(line.startsWith("简介：")){
+                        } else if (line.startsWith("简介：")) {
                             data[2] = line.substring(3);
                             currentIndex = 2;
-                        } else if(line.startsWith("星等：")){
+                        } else if (line.startsWith("星等：")) {
                             data[3] = line.substring(3);
                             currentIndex = 3;
                         } else {
@@ -122,36 +112,65 @@ public class ScheduleLocalActivity extends Activity {
                         }
                     }
                 }
-                if (hasdata){
+                if (hasdata) {
                     dbHelper.execSQL(String.format(format, data[0], data[1], data[2], data[3]));
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         dbHelper.closeConnection();
     }
 
-    private void initDays() {
-        String[] days_text = getResources().getStringArray(R.array.seven_days);
-        for (int i = 0; i < 7; i++) {
-            DailyTravelSchedule d = new DailyTravelSchedule();
-            TravelSchedule t = new TravelSchedule();
-            t.setContent(days_text[i]);
-            t.setStart(new Date());
-            t.setEnd(new Date());
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
-            days.add(d);
+    private void getDataSource() {
+        List<ScheduleEvent> events = new ArrayList<>();
+        dbHelper.open();
+        Cursor returnCursor = dbHelper.findList(false, "tItem", new String[]{"id", "t", "title", "info", "level"}, null, null, null, null, "id desc", null);
+        while (returnCursor.moveToNext()) {
+            String id = returnCursor.getString(returnCursor.getColumnIndexOrThrow("id"));
+            String t = returnCursor.getString(returnCursor.getColumnIndexOrThrow("t"));
+            String title = returnCursor.getString(returnCursor.getColumnIndexOrThrow("title"));
+            String info = returnCursor.getString(returnCursor.getColumnIndexOrThrow("info"));
+            String level = returnCursor.getString(returnCursor.getColumnIndexOrThrow("level"));
+            ScheduleEvent event = new ScheduleEvent();
+            event.setContent(info);
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                event.setStart(format.parse(t));
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            event.setTitle(title);
+            event.setLevel(Float.parseFloat(level));
+            events.add(event);
         }
-    }
+        dbHelper.closeConnection();
 
-    private GestureDetector gestureDetector;
+        Collections.sort(events, new Comparator<ScheduleEvent>() {
+            @Override
+            public int compare(ScheduleEvent lhs, ScheduleEvent rhs) {
+                return (lhs.getStart().after(rhs.getStart())) ? 1 : -1;
+            }
+        });
+        DailyTravelSchedule day = new DailyTravelSchedule();
+        for (ScheduleEvent e : events) {
+
+            int size = day.getEvents().size();
+            if (size == 0) {
+                day.getEvents().add(e);
+            } else {
+                ScheduleEvent last = day.getEvents().get(size - 1);
+                if (DateUtils.isSameDay(last.getStart(), e.getStart())) {
+                    day.getEvents().add(e);
+                } else {
+                    days.add(day);
+                    day = new DailyTravelSchedule();
+                    day.getEvents().add(e);
+                }
+            }
+        }
+        days.add(day);
+    }
 
     private void rightFling() {
         if (currentDay > 0) {
@@ -175,7 +194,6 @@ public class ScheduleLocalActivity extends Activity {
                     .commit();
         }
         updateIndicators();
-
     }
 
     @Override
@@ -186,6 +204,9 @@ public class ScheduleLocalActivity extends Activity {
         // 首先，检查数据库，如果表不存在就新建表
         createTable();
 
+        // 获取数据库内的数据
+        getDataSource();
+
         // 自定义的ActionBar
         ActionBar mActionBar = getActionBar();
         assert mActionBar != null;
@@ -195,78 +216,46 @@ public class ScheduleLocalActivity extends Activity {
 
         // 加载本地日程ActionBar的布局文件
         View mCustomView = mInflater.inflate(R.layout.activity_schedule_local_actionbar, null);
+
         // 添加日程按钮
         ImageButton addbutton = (ImageButton) mCustomView.findViewById(R.id.add);
         addbutton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                Intent intent =new Intent();
-                intent.setClass(ScheduleLocalActivity.this,AddActivity.class);
+                Intent intent = new Intent();
+                intent.setClass(ScheduleLocalActivity.this, AddActivity.class);
                 startActivity(intent);
-
             }
         });
-
-
 
         // 删除日程按钮
         ImageButton deletebutton = (ImageButton) mCustomView.findViewById(R.id.delete);
         deletebutton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 dbHelper.open();
-                Log.i("delpoid",poid.toString());
-                dbHelper.delete("tItem", "id =?", new String[] { itemid });
-                listItem.remove(poid.intValue());
-                adapter.notifyDataSetChanged();
-                Log.i("delitemid",itemid);
-                ShowMsg("删除成功！");
+                // 删除选中的事件项
+                // 从数据库中删除
+                // dbHelper.delete("tItem", "id =?", new String[]{itemid});
+                // 从数据源中删除
+                // adapter.notifyDataSetChanged();
                 dbHelper.closeConnection();
-
             }
         });
-
 
 
         // 编辑日程按钮
         ImageButton editbutton = (ImageButton) mCustomView.findViewById(R.id.edit);
         editbutton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-                if (!itemid.equals("0")){
-                    Intent intent =new Intent();
-                    intent.setClass(ScheduleLocalActivity.this, EditActivity.class);
-                    String id=((TextView)itemview.findViewById(R.id.id)).getText().toString();
-                    String title=((TextView)itemview.findViewById(R.id.title)).getText().toString();
-                    String t=((TextView)itemview.findViewById(R.id.t)).getText().toString();
-                    String info=((TextView)itemview.findViewById(R.id.info)).getText().toString();
-                    String level=((TextView)itemview.findViewById(R.id.level)).getText().toString();
-                    intent.putExtra("id", id);
-                    intent.putExtra("title", title);
-                    intent.putExtra("t", t);
-                    intent.putExtra("info", info);
-                    intent.putExtra("level", level);
-                    startActivityForResult(intent, 123);
-                }
-                else
-                    ShowMsg("请选择项目。");
 
             }
         });
 
-
-
-
-
-
-
         // 日历按钮
         ImageButton calbutton = (ImageButton) mCustomView.findViewById(R.id.cal);
         calbutton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(ScheduleLocalActivity.this, CalendarActivity.class));
@@ -277,48 +266,46 @@ public class ScheduleLocalActivity extends Activity {
         mActionBar.setDisplayShowCustomEnabled(true);
         // 完成自定义ActionBar
 
-        // initialize days for test
-        initDays();
 
         // create a fragment for each day
-        gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
-            private static final int SWIPE_MIN_DISTANCE = 120;
-            private static final int SWIPE_MAX_OFF_PATH = 250;
-            private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+        gestureDetector =
+                new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
+                    private static final int SWIPE_MIN_DISTANCE = 120;
+                    private static final int SWIPE_MAX_OFF_PATH = 250;
+                    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
-            @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-                    return false;
-                // right to left swipe
-                if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                    Log.i("yy", "left");
-                    leftFling();
-                } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                    Log.i("yy", "right");
-                    rightFling();
-                }
-                return false;
-            }
-        });
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                        if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+                            return false;
+                        // right to left swipe
+                        if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                            leftFling();
+                        } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                            rightFling();
+                        }
+                        return false;
+                    }
+                });
 
-        for (DailyTravelSchedule d : days) {
-            DayFragment f = new DayFragment(this);
-            f.setDay(d);
-            f.setGestureDetector(gestureDetector);
+        for (int i = 0; i< days.size(); i++) {
+            DayFragment f = new DayFragment();
+            f.setDayIndex(i);
             fragments.add(f);
         }
-        getFragmentManager().beginTransaction().replace(R.id.schedule_list_wrapper, fragments.get(0)).commit();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.schedule_list_wrapper, fragments.get(0))
+                .commit();
 
+        // 添加界面下面的一排小圈圈
         LinearLayout indicatorWrapper = (LinearLayout) findViewById(R.id.schedule_indicator);
         for (int i = 0; i < days.size(); i++) {
-            ImageView circle = (ImageView) getLayoutInflater().inflate(R.layout.activity_schedule_indicator, indicatorWrapper, false);
+            ImageView circle = (ImageView) getLayoutInflater()
+                    .inflate(R.layout.activity_schedule_indicator, indicatorWrapper, false);
             indicators.add(circle);
             indicatorWrapper.addView(circle);
         }
-        Log.i("yy", indicatorWrapper.getChildCount() + "");
         indicatorWrapper.invalidate();
-
         indicators.get(0).setImageResource(R.drawable.schedule_indicator_choosen);
     }
 
@@ -329,195 +316,133 @@ public class ScheduleLocalActivity extends Activity {
         indicators.get(currentDay).setImageResource(R.drawable.schedule_indicator_choosen);
     }
 
+    public static class DayFragment extends Fragment {
+        private int dayIndex;
+        private EventListAdapter adapter;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private  List<Map<String,Object>> listDataOrder( List<Map<String,Object>> list){
-        if (!list.isEmpty()) {
-            Collections.sort(list, new Comparator<Map<String, Object>>() {
-                @Override
-                public int compare(Map<String, Object> object1, Map<String, Object> object2) {
-                    //根据文本排序
-                    return ((String) object1.get(orderItem)).compareTo((String) object2.get(orderItem));
-                }
-            });
-        }
-        return list;
-    }
-
-
-
-    //显示提示信息
-    public  void ShowMsg(String msg){
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public static class  DayFragment extends Fragment {
-        private DailyTravelSchedule day;
-        private static LayoutInflater inflater;
-        private GestureDetector gestureDetector;
-
-
-
-
-        public  void ShowMsg(String msg){
-            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+        public void setDayIndex(int dayIndex) {
+            this.dayIndex = dayIndex;
         }
 
-
-        public DayFragment(Context context) {
-            super();
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        public EventListAdapter getAdapter() {
+            return adapter;
         }
 
-        public void setDay(DailyTravelSchedule d) {
-            day = d;
-        }
-
-        public void setGestureDetector(GestureDetector gestureDetector) {
-            this.gestureDetector = gestureDetector;
-        }
-
-
-        private List<Map<String,Object>> getlistdata(){
-            List<Map<String,Object>> list=new ArrayList<Map<String,Object>>();
-            dbHelper.open();
-            Cursor returnCursor = dbHelper.findList(false, "tItem", new String[] { "id", "t", "title","info","level" }, null, null, null, null, "id desc", null);
-            while (returnCursor.moveToNext()) {
-                String id = returnCursor.getString(returnCursor.getColumnIndexOrThrow("id"));
-                String t= returnCursor.getString(returnCursor.getColumnIndexOrThrow("t"));
-                String title = returnCursor.getString(returnCursor.getColumnIndexOrThrow("title"));
-                String info = returnCursor.getString(returnCursor.getColumnIndexOrThrow("info"));
-                String level = returnCursor.getString(returnCursor.getColumnIndexOrThrow("level"));
-                Map<String,Object> map=new HashMap<String,Object>();
-                map.put("id", id);
-                if (level.equals("1"))
-                    map.put("img",R.drawable.img1);
-                else
-                    map.put("img",R.drawable.img2);
-                map.put("t", t);
-                map.put("title",title );
-                map.put("info", info);
-                map.put("level", level);
-                list.add(map);
-            }
-            dbHelper.closeConnection();
-            return list;
-        }
-
-
-        private AdapterView.OnItemClickListener ItemClick=new  AdapterView.OnItemClickListener(){
+        /*private AdapterView.OnItemClickListener ItemClick = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
                 //恢复上一选定项颜色
-                if (itemview!=null) itemview.setBackgroundResource(R.color.white);
+                if (itemview != null) itemview.setBackgroundResource(R.color.white);
                 //取消展开
-                if (itemview!=null) ((TextView)itemview.findViewById(R.id.info)).setVisibility(View.GONE);
+                if (itemview != null)
+                    ((TextView) itemview.findViewById(R.id.info)).setVisibility(View.GONE);
                 //设置当前选定项颜色
                 arg1.setBackgroundResource(R.color.holo_blue);
                 //保存选定项id
-                itemid=((TextView)arg1.findViewById(R.id.id)).getText().toString();
-                Log.i("getitemid",itemid);
-                poid=arg2;
-                Log.i("getpoid",poid.toString());
+                itemid = ((TextView) arg1.findViewById(R.id.id)).getText().toString();
+                Log.i("getitemid", itemid);
+                poid = arg2;
+                Log.i("getpoid", poid.toString());
                 //保存当前项目view
-                itemview=arg1;
-                String title=((TextView)arg1.findViewById(R.id.title)).getText().toString();
-                String t=((TextView)arg1.findViewById(R.id.t)).getText().toString();
-                String info=((TextView)arg1.findViewById(R.id.info)).getText().toString();
-                ((TextView)arg1.findViewById(R.id.info)).setVisibility(View.VISIBLE);
+                itemview = arg1;
+                String title = ((TextView) arg1.findViewById(R.id.title)).getText().toString();
+                String t = ((TextView) arg1.findViewById(R.id.t)).getText().toString();
+                String info = ((TextView) arg1.findViewById(R.id.info)).getText().toString();
+                ((TextView) arg1.findViewById(R.id.info)).setVisibility(View.VISIBLE);
                 ShowMsg(new StringBuilder().append(title).append("\n").append(t).append("\n").append(info).toString());
             }
-        };
-
-
-
-        private  List<Map<String,Object>> listDataOrder( List<Map<String,Object>> list){
-            if (!list.isEmpty()) {
-                Collections.sort(list, new Comparator<Map<String, Object>>() {
-                    @Override
-                    public int compare(Map<String, Object> object1, Map<String, Object> object2) {
-                        //根据文本排序
-                        return ((String) object1.get(orderItem)).compareTo((String) object2.get(orderItem));
-                    }
-                });
-            }
-            return list;
-        }
-
-
-
-
-
-
-
-
-
+        };*/
 
         @Override
         public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-            View itemview = inflater.inflate(R.layout.activity_schedule_fragment, null);
-            ListView mylist = (ListView) itemview.findViewById(R.id.tb_schedule_list);
-            listItem=getlistdata();
-            adapter = new SimpleAdapter(getActivity(),listItem,R.layout.mylist, new String[]{"id","img","t","title","info","level"}, new int[]{R.id.id,R.id.img,R.id.t,R.id.title,R.id.info,R.id.level});
-            mylist.setAdapter(adapter);
-            mylist.setOnItemClickListener(ItemClick);
+            View root = inflater.inflate(R.layout.activity_schedule_fragment, null);
+            ListView list = (ListView) root.findViewById(R.id.list);
+            adapter = new EventListAdapter(getActivity(), dayIndex);
+            list.setAdapter(adapter);
+            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            if (orderItem.equals("level")) orderItem="t";else orderItem="level";
-            listItem=listDataOrder(listItem);
-            adapter.notifyDataSetChanged();
+                }
+            });
 
-
-            mylist.setOnTouchListener(new View.OnTouchListener() {
+            list.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     return gestureDetector.onTouchEvent(motionEvent);
                 }
             });
-            assert day != null;
 
+            return root;
+        }
+    }
 
+    public static class EventListAdapter extends BaseAdapter {
 
+        private int dayIndex;
+        private LayoutInflater inflater;
 
-            return itemview;
+        public EventListAdapter(Context context, int dayIndex) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            this.dayIndex = dayIndex;
         }
 
+        @Override
+        public int getCount() {
+            return days.get(dayIndex).getEvents().size();
+        }
 
+        @Override
+        public Object getItem(int position) {
+            return days.get(dayIndex).getEvents().get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0; // 没有数字ID，所以都返回0
+        }
+
+        private class ViewHolder {
+            public TextView title;
+            public TextView content;
+            public TextView time;
+            public RatingBar level;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.schedule_event_item, parent, false);
+                holder = new ViewHolder();
+                holder.title = (TextView) convertView.findViewById(R.id.title);
+                holder.content = (TextView) convertView.findViewById(R.id.content);
+                holder.time = (TextView) convertView.findViewById(R.id.time);
+                holder.level = (RatingBar) convertView.findViewById(R.id.level);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            DailyTravelSchedule day = days.get(dayIndex);
+            ScheduleEvent event = day.getEvents().get(position);
+            String title = event.getTitle();
+            String content = event.getContent();
+            String time = "";
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            if (event.getEnd() == null) {
+                time = format.format(event.getStart());
+            } else {
+                time = format.format(event.getStart()) + " ~ " + format.format(event.getEnd());
+            }
+            float level = event.getLevel();
+
+            holder.title.setText(title);
+            holder.content.setText(content);
+            holder.time.setText(time);
+            holder.level.setRating(level);
+
+            return convertView;
+        }
     }
 }

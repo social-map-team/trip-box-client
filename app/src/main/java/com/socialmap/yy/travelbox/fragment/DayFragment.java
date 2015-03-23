@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.socialmap.yy.travelbox.R;
 import com.socialmap.yy.travelbox.model.DailyTravelSchedule;
-import com.socialmap.yy.travelbox.model.TravelSchedule;
+import com.socialmap.yy.travelbox.model.ScheduleEvent;
 
 import java.text.SimpleDateFormat;
 
@@ -39,7 +39,7 @@ public  class DayFragment extends Fragment {
         @Override
         public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
             View root = inflater.inflate(R.layout.activity_schedule_fragment, null);
-            ListView list = (ListView) root.findViewById(R.id.tb_schedule_list);
+            ListView list = (ListView) root.findViewById(R.id.list);
 
             list.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -51,12 +51,12 @@ public  class DayFragment extends Fragment {
             list.setAdapter(new BaseAdapter() {
                 @Override
                 public int getCount() {
-                    return day.getSchedules().size();
+                    return day.getEvents().size();
                 }
 
                 @Override
                 public Object getItem(int i) {
-                    return day.getSchedules().get(i);
+                    return day.getEvents().get(i);
                 }
 
                 @Override
@@ -71,7 +71,7 @@ public  class DayFragment extends Fragment {
                         TextView content = (TextView) convertView.findViewById(R.id.content);
                         TextView start = (TextView) convertView.findViewById(R.id.start);
                         TextView end = (TextView) convertView.findViewById(R.id.end);
-                        TravelSchedule t = (TravelSchedule) getItem(position);
+                        ScheduleEvent t = (ScheduleEvent) getItem(position);
                         content.setText(t.getContent());
                         SimpleDateFormat df = new SimpleDateFormat("HH:mm");
                         start.setText(df.format(t.getStart()));

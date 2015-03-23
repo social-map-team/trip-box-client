@@ -20,7 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.socialmap.yy.travelbox.model.DailyTravelSchedule;
-import com.socialmap.yy.travelbox.model.TravelSchedule;
+import com.socialmap.yy.travelbox.model.ScheduleEvent;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,17 +51,17 @@ public class ScheduleActivity extends Activity {
         String[] days_text = getResources().getStringArray(R.array.seven_days);
         for (int i = 0; i < 7; i++) {
             DailyTravelSchedule d = new DailyTravelSchedule();
-            TravelSchedule t = new TravelSchedule();
+            ScheduleEvent t = new ScheduleEvent();
             t.setContent(days_text[i]);
             t.setStart(new Date());
             t.setEnd(new Date());
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
-            d.getSchedules().add(t);
+            d.getEvents().add(t);
+            d.getEvents().add(t);
+            d.getEvents().add(t);
+            d.getEvents().add(t);
+            d.getEvents().add(t);
+            d.getEvents().add(t);
+            d.getEvents().add(t);
             days.add(d);
 
         }
@@ -328,7 +328,7 @@ public class ScheduleActivity extends Activity {
         @Override
         public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
             View root = inflater.inflate(R.layout.activity_schedule_fragment, null);
-            ListView list = (ListView) root.findViewById(R.id.tb_schedule_list);
+            ListView list = (ListView) root.findViewById(R.id.list);
 
             list.setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -340,12 +340,12 @@ public class ScheduleActivity extends Activity {
             list.setAdapter(new BaseAdapter() {
                 @Override
                 public int getCount() {
-                    return day.getSchedules().size();
+                    return day.getEvents().size();
                 }
 
                 @Override
                 public Object getItem(int i) {
-                    return day.getSchedules().get(i);
+                    return day.getEvents().get(i);
                 }
 
                 @Override
@@ -360,7 +360,7 @@ public class ScheduleActivity extends Activity {
                         TextView content = (TextView) convertView.findViewById(R.id.content);
                         TextView start = (TextView) convertView.findViewById(R.id.start);
                         TextView end = (TextView) convertView.findViewById(R.id.end);
-                        TravelSchedule t = (TravelSchedule) getItem(position);
+                        ScheduleEvent t = (ScheduleEvent) getItem(position);
                         content.setText(t.getContent());
                         SimpleDateFormat df = new SimpleDateFormat("HH:mm");
                         start.setText(df.format(t.getStart()));
@@ -371,17 +371,5 @@ public class ScheduleActivity extends Activity {
             });
             return root;
         }
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

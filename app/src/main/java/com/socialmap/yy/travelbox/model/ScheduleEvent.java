@@ -2,18 +2,18 @@ package com.socialmap.yy.travelbox.model;
 
 import java.util.Date;
 
-
-public class TravelSchedule {
+public class ScheduleEvent {
     private Date start;
     private Date end;
     private String title;
     private String content;
+    private float level;
 
-    public TravelSchedule() {
+    public ScheduleEvent() {
 
     }
 
-    public TravelSchedule(String title, String content) {
+    public ScheduleEvent(String title, String content) {
         this.title = title;
         this.content = content;
     }
@@ -50,5 +50,11 @@ public class TravelSchedule {
         this.title = title;
     }
 
+    public float getLevel() {
+        return level;
+    }
 
+    public void setLevel(float level) {
+        this.level = level;
+    }
 }

@@ -374,7 +374,7 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
                 sb.append(location.getOperators());
             }
             logMsg(sb.toString());  //TODO 这就是把经纬度传出来的代码
-            Log.v("习习蛤蛤1",mLocationResult.getText().toString());
+            //Log.v("习习蛤蛤1",mLocationResult.getText().toString());
             Log.i("BaiduLocationApiDem", sb.toString());
         }
     }
@@ -384,7 +384,7 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
          //if (mLocationResult != null)
              mLocationResult.setText(str);  //TODO locationresult就是定位结果，log里面也能查到。这里用的是TEXTVIEW显示，而我们需要的是服务器
              mainlocation=mLocationResult.getText().toString();
-             Log.v("习习蛤蛤2",mLocationResult.getText().toString());
+             //Log.v("习习蛤蛤2",mLocationResult.getText().toString());
          } catch (Exception e) {
          e.printStackTrace();
          }
