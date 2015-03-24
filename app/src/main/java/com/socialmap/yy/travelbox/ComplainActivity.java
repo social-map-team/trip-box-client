@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.socialmap.yy.travelbox.chat.util.T;
+import com.socialmap.yy.travelbox.module.chat.util.T;
 
 
 public class ComplainActivity extends Activity{

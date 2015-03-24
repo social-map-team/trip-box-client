@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.socialmap.yy.travelbox.data.DBHelper;
@@ -22,13 +23,9 @@ public class DebugActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LinearLayout linearLayout = new LinearLayout(this);
-        Button _resetScheduleData = new Button(this);
-        _resetScheduleData.setText("重置本地日程数据");
-        linearLayout.addView(_resetScheduleData);
-        setContentView(linearLayout);
-        
-        _resetScheduleData.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_debug);
+
+        findViewById(R.id.reset_local_schedule_data).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DBHelper dbHelper = new DBHelper(getBaseContext());
@@ -95,5 +92,32 @@ public class DebugActivity extends Activity {
             }
         });
 
+
+        findViewById(R.id.start_loc).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((App)getApplication()).locationClient.start();
+                updateLocStatus();
+            }
+        });
+
+        findViewById(R.id.stop_loc).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((App)getApplication()).locationClient.stop();
+                updateLocStatus();
+            }
+        });
+
+        updateLocStatus();
+
+
+    }
+
+    private void updateLocStatus(){
+        ((TextView)findViewById(R.id.loc_status)).setText(
+                ((App)getApplication()).locationClient.isStarted()?
+                        "定位服务已开启":"定位服务未开启"
+        );
     }
 }

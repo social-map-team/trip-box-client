@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
 
+import com.socialmap.yy.travelbox.module.main.MainActivity;
 import com.socialmap.yy.travelbox.utils.DimensionUtils;
 import com.socialmap.yy.travelbox.utils.TbsClient;
 
@@ -23,6 +24,7 @@ public class WelcomeActivity extends Activity {
         //Initialize the whole application
         DimensionUtils.init(getApplicationContext());
 
+        // 初始化 TbsClient
         TbsClient.init(this);
 
         TextView textView = (TextView) findViewById(R.id.welcome_title);
@@ -41,14 +43,14 @@ public class WelcomeActivity extends Activity {
         //TODO 这里设置成1920*1080会出现图片太大不能加载的问题
         //image.setImageBitmap(ImageHelper.decodeSampledBitmapFromResource(getResources(), R.drawable.welcome, 160, 90));
 
-        //延迟3000ms切换到主界面
+        //延迟300ms切换到主界面
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
                 finish();
             }
-        }, 1000);
+        }, 300);
 
     }
 }

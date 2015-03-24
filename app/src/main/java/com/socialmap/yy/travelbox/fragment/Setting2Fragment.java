@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.chat.switcher.Switch;
-import com.socialmap.yy.travelbox.chat.util.PreferenceConstants;
-import com.socialmap.yy.travelbox.chat.util.PreferenceUtils;
+import com.socialmap.yy.travelbox.module.chat.switcher.Switch;
+import com.socialmap.yy.travelbox.module.chat.util.PreferenceConstants;
+import com.socialmap.yy.travelbox.module.chat.util.PreferenceUtils;
 
 /**
  * Created by gxyzw_000 on 2015/3/12.

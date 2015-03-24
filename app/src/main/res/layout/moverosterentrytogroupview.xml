@@ -17,7 +17,7 @@
         android:focusable="true"
         android:text="@string/MoveRosterEntryToGroupDialog_summ" />
 
-    <com.socialmap.yy.travelbox.chat.view.GroupNameView
+    <com.socialmap.yy.travelbox.module.chat.view.GroupNameView
         android:id="@+id/moverosterentrytogroupview_gv"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

@@ -5,8 +5,8 @@ import android.text.util.Linkify;
 import android.view.View;
 import android.widget.TextView;
 
-import com.socialmap.yy.travelbox.chat.swipeback.SwipeBackActivity;
-import com.socialmap.yy.travelbox.chat.view.ChangeLog;
+import com.socialmap.yy.travelbox.module.chat.swipeback.SwipeBackActivity;
+import com.socialmap.yy.travelbox.module.chat.view.ChangeLog;
 
 
 public class AboutActivity extends SwipeBackActivity {

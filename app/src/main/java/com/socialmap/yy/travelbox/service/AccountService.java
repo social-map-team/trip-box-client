@@ -49,25 +49,25 @@ public class AccountService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind()");
+        //Log.d(TAG, "onBind()");
         return binder;
     }
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "onCreate()");
+        //Log.d(TAG, "onCreate()");
         super.onCreate();
     }
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "onDestroy()");
+        //Log.d(TAG, "onDestroy()");
         super.onDestroy();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand");
+        //Log.d(TAG, "onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
 

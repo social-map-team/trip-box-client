@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.socialmap.yy.travelbox.chat.scrollview.BounceScrollView
+    <com.socialmap.yy.travelbox.module.chat.scrollview.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/coversation_bg"
@@ -37,7 +37,7 @@
                     android:duplicateParentState="true"
                     android:gravity="center_vertical"
                     android:text="消息推送" />
-                <com.socialmap.yy.travelbox.chat.switcher.Switch
+                <com.socialmap.yy.travelbox.module.chat.switcher.Switch
                     android:id="@+id/notify_run_background_switch"
                     android:layout_width="80dip"
                     android:layout_height="28dip"
@@ -64,7 +64,7 @@
                     android:gravity="center_vertical"
                     android:text="静音模式" />
 
-                <com.socialmap.yy.travelbox.chat.switcher.Switch
+                <com.socialmap.yy.travelbox.module.chat.switcher.Switch
                     android:id="@+id/new_msg_sound_switch"
                     android:layout_width="80dip"
                     android:layout_height="28dip"
@@ -90,7 +90,7 @@
                     android:gravity="center_vertical"
                     android:text="消息振动提示" />
 
-                <com.socialmap.yy.travelbox.chat.switcher.Switch
+                <com.socialmap.yy.travelbox.module.chat.switcher.Switch
                     android:id="@+id/new_msg_vibrator_switch"
                     android:layout_width="80dip"
                     android:layout_height="28dip"
@@ -117,7 +117,7 @@
                     android:gravity="center_vertical"
                     android:text="新消息免打扰" />
 
-                <com.socialmap.yy.travelbox.chat.switcher.Switch
+                <com.socialmap.yy.travelbox.module.chat.switcher.Switch
                     android:id="@+id/visiable_new_msg_switch"
                     android:layout_width="80dip"
                     android:layout_height="28dip"
@@ -128,7 +128,7 @@
 
 
         </LinearLayout>
-    </com.socialmap.yy.travelbox.chat.scrollview.BounceScrollView>
+    </com.socialmap.yy.travelbox.module.chat.scrollview.BounceScrollView>
 
     <LinearLayout
         android:orientation="vertical"

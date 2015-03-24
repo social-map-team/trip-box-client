@@ -12,6 +12,7 @@
         android:layout_height="fill_parent"
         android:clickable="true"/>
 
+    <!-- SOS 红色圆形按钮 -->
     <ImageButton
             android:id="@+id/sos"
             android:layout_width="72dp"
@@ -22,6 +23,7 @@
             android:layout_marginBottom="30dp"
             android:layout_marginLeft="10dp"/>
 
+    <!-- 点散式菜单 -->
     <com.socialmap.yy.travelbox.arclibrary.ArcMenu
         android:id="@+id/arc_menu_2"
         android:layout_width="wrap_content"
@@ -31,6 +33,7 @@
         arc:childSize="@dimen/menuChildSize"
         android:layout_gravity="center_horizontal|bottom" />
 
+    <!-- 定位当前位置 -->
     <ImageButton
          android:id="@+id/locationself"
          android:layout_width="51dp"
@@ -42,6 +45,7 @@
          android:src ="@drawable/locationself"
         android:layout_gravity="right|top" />
 
+
     <TextView
         android:id="@+id/local"
         android:layout_width="72dp"
@@ -50,6 +54,7 @@
         android:visibility="visible"
         />
 
+    <!-- POI 搜索框 -->
     <EditText
             android:id="@+id/find"
             style="@style/TravelBox.main.EditText.Style"

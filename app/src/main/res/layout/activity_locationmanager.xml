@@ -18,7 +18,7 @@
             android:duplicateParentState="true"
             android:gravity="center_vertical"
             android:text="位置分享" />
-        <com.socialmap.yy.travelbox.chat.switcher.Switch
+        <com.socialmap.yy.travelbox.module.chat.switcher.Switch
             android:id="@+id/local_switch"
             android:layout_width="80dip"
             android:layout_height="28dip"

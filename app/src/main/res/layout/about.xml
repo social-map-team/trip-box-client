@@ -15,7 +15,7 @@
         android:textColor="@color/skin_bar_text"
         android:textSize="19.0sp" />
 
-    <com.socialmap.yy.travelbox.chat.scrollview.BounceScrollView
+    <com.socialmap.yy.travelbox.module.chat.scrollview.BounceScrollView
         android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -279,6 +279,6 @@
                 android:textColor="#ffbbbbbb"
                 android:textSize="12.0sp" />
         </RelativeLayout>
-    </com.socialmap.yy.travelbox.chat.scrollview.BounceScrollView>
+    </com.socialmap.yy.travelbox.module.chat.scrollview.BounceScrollView>
 
 </LinearLayout>

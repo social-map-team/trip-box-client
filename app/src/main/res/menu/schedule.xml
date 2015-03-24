@@ -9,13 +9,13 @@
         android:id="@+id/action_days"
         android:icon="@drawable/ic_launcher"
         android:title="本地模式"
-        android:actionProviderClass="com.socialmap.yy.travelbox.schedule.ScheduleActivity$MyActionProvider"
+        android:actionProviderClass="com.socialmap.yy.travelbox.module.schedule.ScheduleActivity$MyActionProvider"
         app:showAsAction="ifRoom|withText" />
 
 
     <item
         android:id="@+id/action_share"
-       android:actionProviderClass="com.socialmap.yy.travelbox.schedule.ScheduleActivity$MyActionProvider"
+       android:actionProviderClass="com.socialmap.yy.travelbox.module.schedule.ScheduleActivity$MyActionProvider"
         android:icon="@drawable/ic_launcher"
         app:showAsAction="ifRoom"
         android:title="分享" />

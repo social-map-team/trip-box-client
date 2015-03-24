@@ -13,7 +13,7 @@
         android:layout_height="0.0dip"
         android:layout_weight="1.0" >
 
-        <com.socialmap.yy.travelbox.chat.xlistview.MsgListView
+        <com.socialmap.yy.travelbox.module.chat.xlistview.MsgListView
             android:id="@+id/msg_listView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

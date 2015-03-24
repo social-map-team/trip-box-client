@@ -15,12 +15,12 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.socialmap.yy.travelbox.account.ContactActivity;
-import com.socialmap.yy.travelbox.account.OperateActivity;
+import com.socialmap.yy.travelbox.module.account.ContactActivity;
+import com.socialmap.yy.travelbox.module.account.OperateActivity;
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.chat.switcher.Switch;
-import com.socialmap.yy.travelbox.chat.util.PreferenceConstants;
-import com.socialmap.yy.travelbox.chat.util.PreferenceUtils;
+import com.socialmap.yy.travelbox.module.chat.switcher.Switch;
+import com.socialmap.yy.travelbox.module.chat.util.PreferenceConstants;
+import com.socialmap.yy.travelbox.module.chat.util.PreferenceUtils;
 import com.socialmap.yy.travelbox.model.UserBeanCl;
 
 import java.util.ArrayList;

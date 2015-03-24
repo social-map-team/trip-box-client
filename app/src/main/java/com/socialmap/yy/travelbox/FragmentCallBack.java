@@ -1,8 +1,8 @@
 package com.socialmap.yy.travelbox;
 
 
-import com.socialmap.yy.travelbox.chat.activity.MainActivity;
-import com.socialmap.yy.travelbox.chat.service.XXService;
+import com.socialmap.yy.travelbox.module.chat.activity.MainActivity;
+import com.socialmap.yy.travelbox.module.chat.service.XXService;
 
 public  interface FragmentCallBack {
 	public  XXService getService();

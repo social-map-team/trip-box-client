@@ -8,7 +8,7 @@
 
 
 
-    <com.socialmap.yy.travelbox.chat.scrollview.BounceScrollView
+    <com.socialmap.yy.travelbox.module.chat.scrollview.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -40,7 +40,7 @@
                     android:duplicateParentState="true"
                     android:gravity="center_vertical"
                     android:text="开启sos模式" />
-                <com.socialmap.yy.travelbox.chat.switcher.Switch
+                <com.socialmap.yy.travelbox.module.chat.switcher.Switch
                     android:id="@+id/sos_switch"
                     android:layout_width="80dip"
                     android:layout_height="28dip"
@@ -84,6 +84,6 @@
 
 
         </LinearLayout>
-    </com.socialmap.yy.travelbox.chat.scrollview.BounceScrollView>
+    </com.socialmap.yy.travelbox.module.chat.scrollview.BounceScrollView>
 
 </LinearLayout>
