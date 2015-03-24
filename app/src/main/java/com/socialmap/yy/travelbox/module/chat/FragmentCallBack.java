@@ -1,4 +1,4 @@
-package com.socialmap.yy.travelbox;
+package com.socialmap.yy.travelbox.module.chat;
 
 
 import com.socialmap.yy.travelbox.module.chat.activity.MainActivity;

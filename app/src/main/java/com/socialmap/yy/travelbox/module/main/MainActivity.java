@@ -37,9 +37,7 @@ import com.baidu.mapapi.search.poi.PoiSearch;
 import com.socialmap.yy.travelbox.App;
 import com.socialmap.yy.travelbox.DebugActivity;
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.arclibrary.ArcMenu;
-import com.socialmap.yy.travelbox.fragment.SOSCDialogFragment;
-import com.socialmap.yy.travelbox.fragment.SOSDialogFragment;
+import com.socialmap.yy.travelbox.ui.arclibrary.ArcMenu;
 import com.socialmap.yy.travelbox.module.account.MessageActivity;
 import com.socialmap.yy.travelbox.module.account.NearbyActivity;
 import com.socialmap.yy.travelbox.module.account.ProfileActivity;
@@ -247,8 +245,6 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         // 注册定位监听器
         ((App) getApplication()).locationClient.registerLocationListener(mLocationListener);
 
-        // 定位到当前位置
-        ((App) getApplication()).locationClient.requestLocation();
     }
 
 
@@ -277,6 +273,9 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         super.onResume();
         // 在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
         mMapView.onResume();
+
+        // 定位到当前位置
+        ((App) getApplication()).locationClient.requestLocation();
     }
 
     @Override

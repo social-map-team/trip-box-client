@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.socialmap.yy.travelbox.ComplainActivity;
 import com.socialmap.yy.travelbox.R;
 import com.socialmap.yy.travelbox.AboutActivity;
-import com.socialmap.yy.travelbox.FragmentCallBack;
+import com.socialmap.yy.travelbox.module.chat.FragmentCallBack;
 import com.socialmap.yy.travelbox.module.account.LoginActivity;
 import com.socialmap.yy.travelbox.module.chat.activity.MainActivity;
 import com.socialmap.yy.travelbox.module.chat.service.XXService;

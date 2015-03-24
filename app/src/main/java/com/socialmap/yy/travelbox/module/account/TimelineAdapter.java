@@ -1,4 +1,4 @@
-package com.socialmap.yy.travelbox.adpater;
+package com.socialmap.yy.travelbox.module.account;
 
 
         import android.content.Context;

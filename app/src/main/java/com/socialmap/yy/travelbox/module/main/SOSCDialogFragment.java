@@ -1,4 +1,4 @@
-package com.socialmap.yy.travelbox.fragment;
+package com.socialmap.yy.travelbox.module.main;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,10 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.socialmap.yy.travelbox.module.main.MainActivity;
 import com.socialmap.yy.travelbox.R;
 import com.socialmap.yy.travelbox.utils.TbsClient;
-import com.socialmap.yy.travelbox.module.main.SOSFragmentCallBack;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Timer;
@@ -40,8 +38,6 @@ public class SOSCDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
-
-
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout

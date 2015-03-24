@@ -24,7 +24,7 @@
             android:layout_marginLeft="10dp"/>
 
     <!-- 点散式菜单 -->
-    <com.socialmap.yy.travelbox.arclibrary.ArcMenu
+    <com.socialmap.yy.travelbox.ui.arclibrary.ArcMenu
         android:id="@+id/arc_menu_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

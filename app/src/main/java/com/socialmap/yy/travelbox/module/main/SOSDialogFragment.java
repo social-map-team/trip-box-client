@@ -1,4 +1,4 @@
-package com.socialmap.yy.travelbox.fragment;
+package com.socialmap.yy.travelbox.module.main;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,10 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.socialmap.yy.travelbox.module.main.MainActivity;
 import com.socialmap.yy.travelbox.R;
 import com.socialmap.yy.travelbox.utils.TbsClient;
-import com.socialmap.yy.travelbox.module.main.SOSFragmentCallBack;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Timer;

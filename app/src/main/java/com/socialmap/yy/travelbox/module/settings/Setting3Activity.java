@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.fragment.Setting31Fragment;
-import com.socialmap.yy.travelbox.fragment.Setting32Fragment;
 
 
 public class Setting3Activity extends PreferenceActivity {

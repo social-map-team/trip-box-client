@@ -27,7 +27,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.adpater.TimelineAdapter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -1,9 +1,8 @@
-package com.socialmap.yy.travelbox.fragment;
+package com.socialmap.yy.travelbox.module.settings;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,33 +25,32 @@ import com.socialmap.yy.travelbox.model.UserBeanCl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Created by gxyzw_000 on 2015/3/12.
+ */
 
-public  class Setting51Fragment extends Fragment implements
+
+
+
+public  class Setting5Fragment extends Fragment implements
         CompoundButton.OnCheckedChangeListener {
 
 
-    private  Switch SOSSwitch;
-    private  ListView user_lv;
-    private   GridView gv_botom_menu;
-    private   UserBeanCl ubc;
-    private   ArrayList<HashMap<String,String>> userlist=new ArrayList<HashMap<String,String>>();
-    private  EditText et_search=null;
-    private    int totalNum;//联系人总条数
+    private static Switch SOSSwitch;
+    private static ListView user_lv=null;
+    private static  GridView gv_botom_menu=null;
+    private static  UserBeanCl ubc=null;
+    private static  ArrayList<HashMap<String,String>> userlist=new ArrayList<HashMap<String,String>>();
+    private static EditText et_search=null;
+    private static   int totalNum;//联系人总条数
 
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view= inflater.inflate(R.layout.setting51fragment, container,
+        return inflater.inflate(R.layout.setting5fragment, container,
                 false);
-        return view;
+
     }
 
 
@@ -73,7 +71,6 @@ public  class Setting51Fragment extends Fragment implements
         user_lv=(ListView) view.findViewById(R.id.lv_userlist);
         SOSSwitch = (Switch) view .findViewById(R.id.sos_switch);
         SOSSwitch.setOnCheckedChangeListener(this);
-
     }
 
     @Override
@@ -112,13 +109,13 @@ public  class Setting51Fragment extends Fragment implements
         totalNum=ubc.getTotalUserNum("");
         getActivity().setTitle("共有" + totalNum + "条记录");//查询共有多少条记录
 
-        user_lv= (ListView)this.getActivity().findViewById(R.id.lv_userlist);
+
         //ArrayList<HashMap<String,String>> userlist=ubc.getUserList();
 
         SimpleAdapter adapter =new SimpleAdapter(getActivity(), userlist, R.layout.userlist,
                 new String[]{"imageId","userName","cellphone"}, new int[]{R.id.list_item_image,R.id.first_ll_name,R.id.second_ll_phone});
         user_lv.setAdapter(adapter);
-        Log.e("八哥",userlist.toString());
+
         //设置listView的点击事件，单击某一项，即可显示详细信息
         user_lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -140,7 +137,6 @@ public  class Setting51Fragment extends Fragment implements
 
 
     public void loadBotomMenu(){
-        gv_botom_menu= (GridView)this.getActivity().findViewById(R.id.gv_botom_menu);
 
         gv_botom_menu.setNumColumns(1);//设置显示一列
         gv_botom_menu.setGravity(Gravity.CENTER);//居中显示
@@ -156,7 +152,6 @@ public  class Setting51Fragment extends Fragment implements
 
         SimpleAdapter adapter=new SimpleAdapter(getActivity(), data, R.layout.set5item_menu,
                 new String[]{"imageItem","itemText"}, new int[]{R.id.item_image,R.id.item_text});
-
         gv_botom_menu.setAdapter(adapter);//设置适配器列表
 
         //gridview的单击事件

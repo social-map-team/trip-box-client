@@ -5,11 +5,10 @@ import android.util.Log;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.BDNotifyListener;
 import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.socialmap.yy.travelbox.model.Location;
+import com.socialmap.yy.travelbox.model.User;
 
 /**
  * Created by yy on 3/24/15.
@@ -20,8 +19,28 @@ public class App extends Application {
 
     private Location currentLocation; // 注意这不是当前是实时位置，这里记录用户上一次Main界面点击定位按钮所得到的位置
 
+    private boolean login;
+
+    private User currentUser;
+
     public Location getCurrentLocation() {
         return currentLocation;
+    }
+
+    public boolean isLogin() {
+        return login;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+        if (currentUser == null)
+            login = false;
+        else
+            login = true;
     }
 
     @Override
@@ -36,7 +55,7 @@ public class App extends Application {
         locationClient.registerLocationListener(new BDLocationListener() {
             @Override
             public void onReceiveLocation(BDLocation location) {
-                Log.d("yy","app loc");
+                Log.d("yy", "app loc");
                 if (location == null) return;
                 currentLocation = new Location(location);
             }

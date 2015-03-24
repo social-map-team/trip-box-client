@@ -1,4 +1,4 @@
-package com.socialmap.yy.travelbox.fragment;
+package com.socialmap.yy.travelbox.module.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

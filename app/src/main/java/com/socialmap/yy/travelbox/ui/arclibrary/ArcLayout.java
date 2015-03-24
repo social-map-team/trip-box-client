@@ -2,7 +2,7 @@
 开源项目
  */
 
-package com.socialmap.yy.travelbox.arclibrary;
+package com.socialmap.yy.travelbox.ui.arclibrary;
 
 import android.content.Context;
 import android.content.res.TypedArray;

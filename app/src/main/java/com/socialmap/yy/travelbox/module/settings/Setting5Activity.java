@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.fragment.Setting51Fragment;
-import com.socialmap.yy.travelbox.fragment.Setting52Fragment;
 
 public class Setting5Activity extends PreferenceActivity {
     private static final int COLOR_SELECTED = 0xff0b984c;

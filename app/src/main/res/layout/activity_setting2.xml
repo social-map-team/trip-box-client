@@ -9,7 +9,7 @@
 <fragment
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="com.socialmap.yy.travelbox.fragment.Setting2Fragment"
+    android:name="com.socialmap.yy.travelbox.module.settings.Setting2Fragment"
     tools:layout="@layout/setting2fragment">
 
     </fragment>

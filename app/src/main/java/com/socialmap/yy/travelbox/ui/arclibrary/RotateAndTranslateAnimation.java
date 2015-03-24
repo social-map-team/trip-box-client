@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.socialmap.yy.travelbox.arclibrary;
+package com.socialmap.yy.travelbox.ui.arclibrary;
 
 import android.view.animation.Animation;
 import android.view.animation.Transformation;

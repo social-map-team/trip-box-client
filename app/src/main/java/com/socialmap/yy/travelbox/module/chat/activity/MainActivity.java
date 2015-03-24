@@ -33,7 +33,7 @@ import android.widget.TextView;
 
 import com.socialmap.yy.travelbox.module.account.LoginActivity;
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.FragmentCallBack;
+import com.socialmap.yy.travelbox.module.chat.FragmentCallBack;
 import com.socialmap.yy.travelbox.module.chat.adapter.RosterAdapter;
 import com.socialmap.yy.travelbox.module.chat.app.XXBroadcastReceiver;
 import com.socialmap.yy.travelbox.module.chat.db.ChatProvider;
