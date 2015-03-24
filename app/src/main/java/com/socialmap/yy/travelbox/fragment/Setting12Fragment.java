@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.TbsClient;
+import com.socialmap.yy.travelbox.utils.TbsClient;
 
 import java.io.UnsupportedEncodingException;
 

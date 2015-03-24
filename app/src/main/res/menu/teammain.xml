@@ -14,5 +14,8 @@
         <item
             android:id="@+id/team_schedule"
             android:title="团队日程"/>
+    <item
+        android:id="@+id/team_create"
+        android:title="创建团队"/>
 
 </menu>

@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.socialmap.yy.travelbox.R;
 import com.socialmap.yy.travelbox.chat.activity.ChatActivity;
-import com.socialmap.yy.travelbox.call.FragmentCallBack;
+import com.socialmap.yy.travelbox.FragmentCallBack;
 import com.socialmap.yy.travelbox.chat.adapter.RecentChatAdapter;
 import com.socialmap.yy.travelbox.chat.db.ChatProvider;
 import com.socialmap.yy.travelbox.chat.service.XXService;

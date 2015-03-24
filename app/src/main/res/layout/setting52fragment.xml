@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <EditText
-            android:id="@+id/username1"
+            android:id="@+id/time"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -25,7 +26,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/username1"
+            android:layout_alignBaseline="@id/time"
             android:layout_centerVertical="true"
             android:paddingLeft="10.0dip"
             android:text="倒计时（小时）"
@@ -126,15 +127,56 @@
             android:textSize="16.5dip"
             android:id="@+id/textView7" />
     </RelativeLayout>
-    <Button
+    <RelativeLayout
+        android:id="@+id/relativeLayout4"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            android:id="@+id/sossay"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text=""
+            android:maxLength="16"
+            android:maxLines="1"
+            android:paddingBottom="6.0dip"
+            android:paddingLeft="50.0dip"
+            android:paddingTop="6.0dip"
+            android:textColor="#ff333333"
+            android:textSize="17.829987dip"
+            android:layout_toEndOf="@+id/textView8" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/sossay"
+            android:paddingLeft="10.0dip"
+            android:text="留言"
+            android:textColor="#ff333333"
+            android:textSize="16.5dip"
+            android:id="@+id/textView8" />
+    </RelativeLayout>
+    <TextView
         android:id="@+id/Countdown"
         style="@style/login_Font"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="54dp"
         android:background="@drawable/chat_send_button_bg"
         android:gravity="center"
-        android:onClick="onLoginClick"
         android:text="开始倒计时"
         android:textColor="#ffffffff"
-        android:textSize="17.0sp" />
+        android:textSize="17.0sp"
+        android:layout_weight="0.00" />
+    <TextView
+        android:id="@+id/StopCountdown"
+        style="@style/login_Font"
+        android:layout_width="fill_parent"
+        android:layout_height="54dp"
+        android:background="@drawable/chat_send_button_bg"
+        android:gravity="center"
+        android:text="停止倒计时"
+        android:textColor="#ffffffff"
+        android:textSize="17.0sp"
+        android:layout_weight="0.00" />
 </LinearLayout>

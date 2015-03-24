@@ -17,7 +17,7 @@ import android.text.TextUtils;
 
 import com.socialmap.yy.travelbox.R;
 import com.socialmap.yy.travelbox.chat.activity.BaseActivity;
-import com.socialmap.yy.travelbox.LoginActivity;
+import com.socialmap.yy.travelbox.account.LoginActivity;
 import com.socialmap.yy.travelbox.chat.activity.MainActivity;
 import com.socialmap.yy.travelbox.chat.app.XXBroadcastReceiver;
 import com.socialmap.yy.travelbox.chat.exception.XXException;

@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.widget.TextView;
 
 import com.socialmap.yy.travelbox.utils.DimensionUtils;
+import com.socialmap.yy.travelbox.utils.TbsClient;
 
 
 public class WelcomeActivity extends Activity {

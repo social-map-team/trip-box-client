@@ -31,9 +31,9 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.socialmap.yy.travelbox.LoginActivity;
+import com.socialmap.yy.travelbox.account.LoginActivity;
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.call.FragmentCallBack;
+import com.socialmap.yy.travelbox.FragmentCallBack;
 import com.socialmap.yy.travelbox.chat.adapter.RosterAdapter;
 import com.socialmap.yy.travelbox.chat.app.XXBroadcastReceiver;
 import com.socialmap.yy.travelbox.chat.db.ChatProvider;

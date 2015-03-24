@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/input"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dip"
+        android:layout_marginRight="0dip"
+        android:layout_marginTop="0dip"
+        android:background="@drawable/as_input_frame"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/team_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text=""
+                android:maxLength="50"
+                android:paddingBottom="6.0dip"
+                android:paddingLeft="50.0dip"
+                android:paddingTop="6.0dip"
+                android:singleLine="true"
+                android:textColor="#ff333333"
+                android:textSize="17.829987dip"
+                android:layout_toEndOf="@+id/textView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/team_name"
+                android:layout_centerVertical="true"
+                android:paddingLeft="10.0dip"
+                android:text="团队名"
+                android:textColor="#ff333333"
+                android:textSize="16.5dip"
+                android:id="@+id/textView" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="#ffcfd4da" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/team_man"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text=""
+                android:maxLength="16"
+                android:maxLines="1"
+                android:paddingBottom="6.0dip"
+                android:paddingLeft="50.0dip"
+                android:paddingTop="6.0dip"
+                android:textColor="#ff333333"
+                android:textSize="17.829987dip"
+                android:layout_toEndOf="@+id/textView5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/team_man"
+                android:paddingLeft="10.0dip"
+                android:text="团队发起人"
+                android:textColor="#ff333333"
+                android:textSize="16.5dip"
+                android:id="@+id/textView5" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="#ffcfd4da" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/team_local"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text=""
+                android:maxLength="16"
+                android:maxLines="1"
+                android:paddingBottom="6.0dip"
+                android:paddingLeft="50.0dip"
+                android:paddingTop="6.0dip"
+                android:textColor="#ff333333"
+                android:textSize="17.829987dip"
+                android:layout_toEndOf="@+id/textView6" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/team_local"
+                android:paddingLeft="10.0dip"
+                android:text="旅游目的地"
+                android:textColor="#ff333333"
+                android:textSize="16.5dip"
+                android:id="@+id/textView6" />
+        </RelativeLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="#ffcfd4da" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/team_data"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text=""
+                android:maxLength="16"
+                android:maxLines="1"
+                android:paddingBottom="6.0dip"
+                android:paddingLeft="50.0dip"
+                android:paddingTop="6.0dip"
+                android:textColor="#ff333333"
+                android:textSize="17.829987dip"
+                android:layout_toEndOf="@+id/textView7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/team_data"
+                android:paddingLeft="10.0dip"
+                android:text="出发时间"
+                android:textColor="#ff333333"
+                android:textSize="16.5dip"
+                android:id="@+id/textView7" />
+        </RelativeLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="#ffcfd4da" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout6"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/team_status"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text=""
+                android:maxLength="16"
+                android:maxLines="1"
+                android:paddingBottom="6.0dip"
+                android:paddingLeft="50.0dip"
+                android:paddingTop="6.0dip"
+                android:textColor="#ff333333"
+                android:textSize="17.829987dip"
+                android:layout_toEndOf="@+id/textView10" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/team_status"
+                android:paddingLeft="10.0dip"
+                android:text="状态"
+                android:textColor="#ff333333"
+                android:textSize="16.5dip"
+                android:id="@+id/textView10" />
+        </RelativeLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="#ffcfd4da" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout5"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/team_other"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:text=""
+                android:maxLength="16"
+                android:maxLines="1"
+                android:paddingBottom="6.0dip"
+                android:paddingLeft="50.0dip"
+                android:paddingTop="6.0dip"
+                android:textColor="#ff333333"
+                android:textSize="17.829987dip"
+                android:layout_toEndOf="@+id/textView9" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/team_other"
+                android:paddingLeft="10.0dip"
+                android:text="备注"
+                android:textColor="#ff333333"
+                android:textSize="16.5dip"
+                android:id="@+id/textView9" />
+        </RelativeLayout>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="#ffcfd4da" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1.0px"
+            android:background="#ffcfd4da" />
+
+
+        <Button
+            android:id="@+id/submit"
+            style="@style/login_Font"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/chat_send_button_bg"
+            android:gravity="center"
+            android:onClick="onLoginClick"
+            android:text="创建团队"
+            android:textColor="#ffffffff"
+            android:textSize="17.0sp" />
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+</LinearLayout>

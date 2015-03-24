@@ -15,8 +15,8 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.socialmap.yy.travelbox.ContactActivity;
-import com.socialmap.yy.travelbox.OperateActivity;
+import com.socialmap.yy.travelbox.account.ContactActivity;
+import com.socialmap.yy.travelbox.account.OperateActivity;
 import com.socialmap.yy.travelbox.R;
 import com.socialmap.yy.travelbox.chat.switcher.Switch;
 import com.socialmap.yy.travelbox.chat.util.PreferenceConstants;

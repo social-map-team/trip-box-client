@@ -18,14 +18,14 @@ import android.widget.EditText;
 
 import com.socialmap.yy.travelbox.MainActivity;
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.TbsClient;
-import com.socialmap.yy.travelbox.call.SOSFragmentCallBack;
+import com.socialmap.yy.travelbox.utils.TbsClient;
+import com.socialmap.yy.travelbox.SOSFragmentCallBack;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.socialmap.yy.travelbox.TbsClient.getInstance;
+import static com.socialmap.yy.travelbox.utils.TbsClient.getInstance;
 
 /**
  * Created by gxyzw_000 on 2015/3/7.

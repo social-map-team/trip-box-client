@@ -1,12 +1,9 @@
 package com.socialmap.yy.travelbox;
 
-import android.app.Service;
-import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Debug;
-import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -25,7 +22,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -45,35 +41,46 @@ import com.baidu.mapapi.search.poi.PoiDetailSearchOption;
 import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
+import com.socialmap.yy.travelbox.account.MessageActivity;
+import com.socialmap.yy.travelbox.account.NearbyActivity;
+import com.socialmap.yy.travelbox.account.ProfileActivity;
 import com.socialmap.yy.travelbox.arclibrary.ArcMenu;
-import com.socialmap.yy.travelbox.call.SOSFragmentCallBack;
 import com.socialmap.yy.travelbox.fragment.SOSCDialogFragment;
 import com.socialmap.yy.travelbox.fragment.SOSDialogFragment;
-import com.socialmap.yy.travelbox.listener.MyOrientationListener;
-import com.socialmap.yy.travelbox.service.AccountService;
+import com.socialmap.yy.travelbox.schedule.ScheduleActivity;
+import com.socialmap.yy.travelbox.schedule.ScheduleLocalActivity;
+import com.socialmap.yy.travelbox.team.AllTeamActivity;
 
 
-public class MainActivity extends FragmentActivity implements SOSFragmentCallBack,OnGetPoiSearchResultListener {
-    MapView mMapView = null;
-    public LocationClient mLocationClient;
+public class MainActivity extends FragmentActivity implements SOSFragmentCallBack, OnGetPoiSearchResultListener {
+    // 点散菜单
+    private static final int[] ITEM_DRAWABLES = {
+            R.drawable.composer_thought,
+            R.drawable.composer_camera,
+            R.drawable.composer_with,
+            R.drawable.composer_sleep,
+            R.drawable.composer_place
+    };
+    public LocationClient     mLocationClient;
     public MyLocationListener mMyLocationListener;
+    public TextView           mLocationResult, logMsg;
+    public int sosnum = 0;
+    private BitmapDescriptor mCurrentMarker;
+    private MapView mMapView   = null;
+    private boolean isFirstLoc = true;// 是否是第一次定位
     private BaiduMap mBaiduMap;
-    public TextView mLocationResult,logMsg;
-    boolean isFirstLoc = true;// 是否是第一次定位
     private boolean isRequest = false;//手动触发定位请求
-    BitmapDescriptor mCurrentMarker;
     private ImageButton localbutton;
-    private String  mainlocation="上海";
+    private String mainlocation = "上海";
     // 自定义定位图标
-    private BitmapDescriptor mIconLocation;
-    private MyOrientationListener myOrientationListener;
-    private float mCurrentX;
+    private BitmapDescriptor                     mIconLocation;
+    private MyOrientationListener                myOrientationListener;
+    private float                                mCurrentX;
     private MyLocationConfiguration.LocationMode mLocationMode;
     private PoiSearch mPoiSearch = null;
     private EditText find;
 
-    // Service
-    private AccountService.MyBinder binder;
+    /*private AccountService.MyBinder binder;
     private ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -84,21 +91,20 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         public void onServiceDisconnected(ComponentName name) {
 
         }
-    };
+    };*/
 
-    private static final int[] ITEM_DRAWABLES = { R.drawable.composer_thought, R.drawable.composer_camera,
-             R.drawable.composer_with,R.drawable.composer_sleep,R.drawable.composer_place };
-    public int sosnum=0   ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SDKInitializer.initialize(getApplicationContext());
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+        // Main界面进入动画效果，先注释了
+        // overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
         setContentView(R.layout.activity_main);
-       //poi检索
+
+        //poi检索
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(this);
-
 
         //初始化百度地图
         mLocationClient = new LocationClient(this.getApplicationContext());
@@ -108,29 +114,26 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         mCurrentMarker = null;
         mBaiduMap.setMyLocationEnabled(true);
 
-         mLocationResult = (TextView)findViewById(R.id.local);
+        mLocationResult = (TextView) findViewById(R.id.local);
         mLocationResult = new TextView(this.getApplicationContext());
 
-       // mLocationResult = new LocationResult(this.getApplicationContext());
-
-
-
+        // mLocationResult = new LocationResult(this.getApplicationContext());
 
 
         //放缩地图
-        MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(19);
+        MapStatusUpdate u = MapStatusUpdateFactory.zoomTo(17);
         mBaiduMap.animateMapStatus(u);
 
 
         //定位SDK
         mMyLocationListener = new MyLocationListener();
         mLocationClient = new LocationClient(this);
-        mLocationClient.registerLocationListener( mMyLocationListener);
+        mLocationClient.registerLocationListener(mMyLocationListener);
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        //option.setOpenGps(true);// 开启GPS
+        //option.setOpenGps(true);    // 开启GPS
         option.setCoorType("bd09ll"); // 编码有三种,gcj02  bd09   bd0911
-        option.setScanSpan(2000);//这个是设置定位间隔时间，单位ms
+        option.setScanSpan(2000);     //这个是设置定位间隔时间，单位ms
         option.setAddrType("all");
         mLocationClient.setLocOption(option);
         //定义指向图标
@@ -143,32 +146,31 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
 
 
         myOrientationListener
-                .setOnOrientationListener(new MyOrientationListener.OnOrientationListener()
-                {
+                .setOnOrientationListener(new MyOrientationListener.OnOrientationListener() {
                     @Override
-                    public void onOrientationChanged(float x)
-                    {
+                    public void onOrientationChanged(float x) {
                         mCurrentX = x;
                     }
                 });
 
 
         //手动定位
-        /**  selfloc = (ImageButton)findViewById(R.id.locationself);
+        /*
+        selfloc = (ImageButton)findViewById(R.id.locationself);
          View.OnClickListener onClickListener = new View.OnClickListener(){
-        @Override
-        public void onClick(View view) {
+        @Override public void onClick(View view) {
         if (view.equals(selfloc)) {
         requestLocation();}
         }
         };
-         selfloc.setOnClickListener(onClickListener);**/  //TODO 方法一
+         selfloc.setOnClickListener(onClickListener);
+         */
+        //TODO 方法一?
 
-//TODO 方法二
-       ImageButton localbutton = (ImageButton) findViewById(R.id.locationself);
+        //TODO 方法二?
+        ImageButton localbutton = (ImageButton) findViewById(R.id.locationself);
 
-               localbutton.setOnClickListener(new View.OnClickListener() {
-
+        localbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 requestLocation();
@@ -176,93 +178,70 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         });
 
 
-
-
-
+        // Main界面上的SOS按钮
         ImageButton sos1 = (ImageButton) findViewById(R.id.sos);
+        sos1.setOnClickListener(new Button.OnClickListener() {
+            //创建监听
+            public void onClick(View v) {
+                if (sosnum == 0) {
+                    //SOSDialogFragment sos = new SOSDialogFragment();
+                    SOSDialogFragment sos = new SOSDialogFragment(mainlocation);
 
-
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
-
-
-
-        ArcMenu arcMenu2 = (ArcMenu) findViewById(R.id.arc_menu_2);
-
-        initArcMenu(arcMenu2, ITEM_DRAWABLES);
-
-
-
-
-        find = (EditText)findViewById(R.id.find);
-
-        //PoiNearbySearchOption pso= new PoiNearbySearchOption().location( mMyLocationListener.ll1).radius(100).pageCapacity(20).keyword(find.getText().toString());
-
-        find.setOnKeyListener(new View.OnKeyListener() {
-
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (KeyEvent.KEYCODE_ENTER == keyCode && event.getAction() == KeyEvent.ACTION_DOWN) {
-                    PoiNearbySearchOption pso= new PoiNearbySearchOption().location( mMyLocationListener.ll1).radius(1000).pageCapacity(10).keyword(find.getText().toString());
-                    mPoiSearch.searchNearby(pso);
-                    Log.v("附近",mMyLocationListener.ll1.toString());
-                    Log.v("附近1",mPoiSearch.toString());
-
+                    // Supply num input as an argument.
+                    sos.show(getFragmentManager(), "SOSDialog");
+                } else {
+                    SOSCDialogFragment sosc = new SOSCDialogFragment();
+                    sosc.show(getFragmentManager(), "SOSCDialog");
 
                 }
-                return false;
-
             }
         });
 
+        // 隐藏一进入MainActivity的软键盘
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
+                | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_UNSPECIFIED);
 
+        // 点散菜单
+        ArcMenu arcMenu2 = (ArcMenu) findViewById(R.id.arc_menu_2);
+        initArcMenu(arcMenu2, ITEM_DRAWABLES);
 
-
-
-
+        // Main界面上的搜索框，用于POI搜索
+        find = (EditText) findViewById(R.id.find);
+        /*PoiNearbySearchOption pso = new PoiNearbySearchOption()
+                .location( mMyLocationListener.ll1)
+                .radius(100)
+                .pageCapacity(20)
+                .keyword(find.getText().toString());*/
+        find.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (KeyEvent.KEYCODE_ENTER == keyCode && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    PoiNearbySearchOption pso = new PoiNearbySearchOption()
+                            .location(mMyLocationListener.ll1)
+                            .radius(1000)
+                            .pageCapacity(10)
+                            .keyword(find.getText().toString());
+                    mPoiSearch.searchNearby(pso);
+                    Log.v("附近", mMyLocationListener.ll1.toString());
+                    Log.v("附近1", mPoiSearch.toString());
+                }
+                return false;
+            }
+        });
 
         //Log.v("习习蛤蛤3",mLocationResult.getText().toString());
-
         //mainlocation=mLocationResult.getText().toString();
         //Log.v("蛤蛤2",mainlocation);
 
-
-        sos1.setOnClickListener(new Button.OnClickListener(){//创建监听
-            public void onClick(View v) {
-                        if(sosnum==0){
-                        //SOSDialogFragment sos = new SOSDialogFragment();
-                          //
-
-                                SOSDialogFragment sos = new SOSDialogFragment(mainlocation);
-
-                                // Supply num input as an argument.
-                                sos.show(getFragmentManager(), "SOSDialog");
-                            }
-                        else {
-                            SOSCDialogFragment sosc = new SOSCDialogFragment();
-                            sosc.show(getFragmentManager(), "SOSCDialog");
-
-                        }
-                    }
-                });
-
-
-
-
-                //绑定账户服务
-        bindService(new Intent("com.socialmap.yy.travelbox.ACCOUNT_SERVICE"),
+        //绑定账户服务
+        /*bindService(new Intent("com.socialmap.yy.travelbox.ACCOUNT_SERVICE"),
                 conn,
-                Service.BIND_AUTO_CREATE);
-
-
-
+                Service.BIND_AUTO_CREATE);*/
     }
 
 
-
-
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
         // 开启定位
         mBaiduMap.setMyLocationEnabled(true);
@@ -281,14 +260,15 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         mMapView.onDestroy();
         mMapView = null;
         mPoiSearch.destroy();
-
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
         mMapView.onResume();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -297,104 +277,30 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
-
         // 停止定位
         mBaiduMap.setMyLocationEnabled(false);
         mLocationClient.stop();
         // 停止方向传感器
         myOrientationListener.stop();
-
     }
 
-
-
-
-
-    // 定位监听
-    public class MyLocationListener implements BDLocationListener {
-        private LatLng ll1;
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-
-
-            if (location == null || mMapView == null)
-                return;
-            MyLocationData locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
-                    .direction(mCurrentX)
-                    .latitude(location.getLatitude())
-                    .longitude(location.getLongitude())
-                    .build();
-            mBaiduMap.setMyLocationData(locData);
-            if (isFirstLoc|| isRequest) {
-                isFirstLoc = false;
-                isRequest = false;
-                LatLng ll = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                ll1=ll;
-                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
-                mBaiduMap.animateMapStatus(u);
-            }
-
-            // 设置自定义图标
-            MyLocationConfiguration config = new MyLocationConfiguration(
-                    mLocationMode, true, mIconLocation);
-            mBaiduMap.setMyLocationConfigeration(config);
-
-
-
-            //Receive Location
-            StringBuffer sb = new StringBuffer(256);
-            sb.append("time : ");
-            sb.append(location.getTime());
-            sb.append("\nerror code : ");
-            sb.append(location.getLocType());
-            sb.append("\nlatitude : ");
-            sb.append(location.getLatitude());
-            sb.append("\nlontitude : ");
-            sb.append(location.getLongitude());
-            sb.append("\nradius : ");
-            sb.append(location.getRadius());
-            if (location.getLocType() == BDLocation.TypeGpsLocation){
-                sb.append("\nspeed : ");
-                sb.append(location.getSpeed());
-                sb.append("\nsatellite : ");
-                sb.append(location.getSatelliteNumber());
-                sb.append("\ndirection : ");
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
-                sb.append(location.getDirection());
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
-
-                sb.append("\noperationers : ");
-                sb.append(location.getOperators());
-            }
-            logMsg(sb.toString());  //TODO 这就是把经纬度传出来的代码
-            //Log.v("习习蛤蛤1",mLocationResult.getText().toString());
-            Log.i("BaiduLocationApiDem", sb.toString());
+    //TODO 这个就是接收经纬度的。
+    public void logMsg(String str) {
+        try {
+            //if (mLocationResult != null)
+            mLocationResult.setText(str);
+            //TODO locationresult就是定位结果，log里面也能查到。这里用的是TEXTVIEW显示，而我们需要的是服务器
+            mainlocation = mLocationResult.getText().toString();
+            //Log.v("习习蛤蛤2",mLocationResult.getText().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
-        //TODO 这个就是接收经纬度的。对应的是189行
-     public void logMsg(String str) {
-         try {
-         //if (mLocationResult != null)
-             mLocationResult.setText(str);  //TODO locationresult就是定位结果，log里面也能查到。这里用的是TEXTVIEW显示，而我们需要的是服务器
-             mainlocation=mLocationResult.getText().toString();
-             //Log.v("习习蛤蛤2",mLocationResult.getText().toString());
-         } catch (Exception e) {
-         e.printStackTrace();
-         }
-         }
 
-
-        public void onReceivePoi(BDLocation poiLocation) {
-        }
-
+    public void onReceivePoi(BDLocation poiLocation) {
+    }
 
     /**
      * 手动请求定位的方法
@@ -402,14 +308,13 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
     public void requestLocation() {
         isRequest = true;
 
-        if(mLocationClient != null && mLocationClient.isStarted()){
+        if (mLocationClient != null && mLocationClient.isStarted()) {
             mLocationClient.requestLocation();
 
-        }else{
+        } else {
             Log.d("log", "locClient is null or not started");
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -417,108 +322,99 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         return true;
     }
 
-
-
-    //主界面中菜单点击事件响应
+    //菜单
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.action_my_schedule:
+            case R.id.action_my_schedule: // 日程
                 startActivity(new Intent(this, ScheduleLocalActivity.class));
                 break;
-            case R.id.action_nearby:
+            case R.id.action_nearby: // 附近
                 Intent intent = new Intent(this, NearbyActivity.class);
                 intent.putExtra("mainlocal", mainlocation);
                 startActivity(intent);
                 break;
-            case R.id.action_account:
+            case R.id.action_account: // 我
                 Intent intent1 = new Intent(this, ProfileActivity.class);
                 intent1.putExtra("mainlocal", mainlocation);
                 startActivity(intent1);
                 break;
-            case R.id.action_message:
+            case R.id.action_message: // 消息
                 startActivity(new Intent(this, MessageActivity.class));
                 break;
-            case R.id.action_allteam:
+            case R.id.action_allteam: // 团队
                 startActivity(new Intent(this, AllTeamActivity.class));
                 break;
-            case R.id.action_debug:
+            case R.id.action_debug: // 调试
                 startActivity(new Intent(this, DebugActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-
-
-
-//TODO SOS
-
+    /**
+     * 初始化点散菜单
+     * @param menu
+     * @param itemDrawables
+     */
     private void initArcMenu(ArcMenu menu, int[] itemDrawables) {
         final int itemCount = itemDrawables.length;
         for (int i = 0; i < itemCount; i++) {
             ImageView item = new ImageView(this);
             item.setImageResource(itemDrawables[i]);
-
             final int position = i;
             menu.addItem(item, new View.OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
                     choose(position);
-                   // Toast.makeText(MainActivity.this, "position:" + position, Toast.LENGTH_SHORT).show();
-
+                    // Toast.makeText(MainActivity.this, "position:" + position, Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
 
-
-   public void choose(int position) {
-       switch (position) {
-           case 0:
-               startActivity(new Intent(this, MessageActivity.class));
-               break;
-           case 1:
-               startActivity(new Intent(this, ScheduleActivity.class));
-               break;
-           case 2:
-               Intent intent1 = new Intent(this, ProfileActivity.class);
-               intent1.putExtra("mainlocal", mainlocation);
-               startActivity(intent1);
-               break;
-           case 3:
-               startActivity(new Intent(this, AllTeamActivity.class));
-               break;
-           case 4:
-               Intent intent = new Intent(this, NearbyActivity.class);
-               Log.v("蛤蛤3",mainlocation);
-               intent.putExtra("mainlocal", mainlocation);
-               startActivity(intent);
-               break;
-       }
-   }
+    /**
+     * 点撒菜单选择
+     *
+     * @param position
+     */
+    public void choose(int position) {
+        switch (position) {
+            case 0: // News
+                startActivity(new Intent(this, MessageActivity.class));
+                break;
+            case 1: // 日程
+                startActivity(new Intent(this, ScheduleActivity.class));
+                break;
+            case 2: // 我（个人资料）
+                Intent intent1 = new Intent(this, ProfileActivity.class);
+                intent1.putExtra("mainlocal", mainlocation);
+                startActivity(intent1);
+                break;
+            case 3: // 团队
+                startActivity(new Intent(this, AllTeamActivity.class));
+                break;
+            case 4: // 附近
+                Intent intent = new Intent(this, NearbyActivity.class);
+                //Log.v("蛤蛤3", mainlocation);
+                intent.putExtra("mainlocal", mainlocation);
+                startActivity(intent);
+                break;
+        }
+    }
 
     @Override
     public void callbackFun1(Bundle arg) {
-
-            sosnum=0;
+        sosnum = 0;
     }
 
     @Override
     public void callbackFun2(Bundle arg) {
-
-        sosnum=sosnum+1;
+        sosnum = sosnum + 1;
     }
 
-
-
-
-
-
-
-
+    // 下面是百度地图 OnGetPoiSearchResultListener 接口实现
     public void onGetPoiResult(PoiResult result) {
         if (result == null
                 || result.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
@@ -536,7 +432,6 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
             return;
         }
         if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {
-
             // 当输入关键字在本市没有找到，但在其他城市找到时，返回包含该关键字信息的城市列表
             String strInfo = "在";
             for (CityInfo cityInfo : result.getSuggestCityList()) {
@@ -559,7 +454,6 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         }
     }
 
-
     private class MyPoiOverlay extends PoiOverlay {
 
         public MyPoiOverlay(BaiduMap baiduMap) {
@@ -578,19 +472,76 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         }
     }
 
+    // 百度地图：定位监听
+    public class MyLocationListener implements BDLocationListener {
+        private LatLng ll1;
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
 
 
+            if (location == null || mMapView == null)
+                return;
+            MyLocationData locData = new MyLocationData.Builder()
+                    .accuracy(location.getRadius())
+                    .direction(mCurrentX)
+                    .latitude(location.getLatitude())
+                    .longitude(location.getLongitude())
+                    .build();
+            mBaiduMap.setMyLocationData(locData);
+            if (isFirstLoc || isRequest) {
+                isFirstLoc = false;
+                isRequest = false;
+                LatLng ll = new LatLng(location.getLatitude(),
+                        location.getLongitude());
+                ll1 = ll;
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+                mBaiduMap.animateMapStatus(u);
+            }
+
+            // 设置自定义图标
+            MyLocationConfiguration config = new MyLocationConfiguration(
+                    mLocationMode, true, mIconLocation);
+            mBaiduMap.setMyLocationConfigeration(config);
 
 
+            //Receive Location
+            StringBuffer sb = new StringBuffer(256);
+            sb.append("time : ");
+            sb.append(location.getTime());
+            sb.append("\nerror code : ");
+            sb.append(location.getLocType());
+            sb.append("\nlatitude : ");
+            sb.append(location.getLatitude());
+            sb.append("\nlontitude : ");
+            sb.append(location.getLongitude());
+            sb.append("\nradius : ");
+            sb.append(location.getRadius());
+            if (location.getLocType() == BDLocation.TypeGpsLocation) {
+                sb.append("\nspeed : ");
+                sb.append(location.getSpeed());
+                sb.append("\nsatellite : ");
+                sb.append(location.getSatelliteNumber());
+                sb.append("\ndirection : ");
+                sb.append("\naddr : ");
+                sb.append(location.getAddrStr());
+                sb.append(location.getDirection());
+            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
+                sb.append("\naddr : ");
+                sb.append(location.getAddrStr());
 
+                sb.append("\noperationers : ");
+                sb.append(location.getOperators());
+            }
+            logMsg(sb.toString());  //TODO 这就是把经纬度传出来的代码
+            //Log.v("习习蛤蛤1",mLocationResult.getText().toString());
+            Log.i("BaiduLocationApiDem", sb.toString());
 
+            SharedPreferences sp = getSharedPreferences("publiclocal", Context.MODE_WORLD_READABLE);
 
-
-
-
-
-
-
-
-
+            SharedPreferences.Editor editor = getSharedPreferences("publiclocal", Context.MODE_WORLD_WRITEABLE).edit();
+            editor.putString("local", mainlocation);
+            editor.commit();
+        }
+    }
 }
