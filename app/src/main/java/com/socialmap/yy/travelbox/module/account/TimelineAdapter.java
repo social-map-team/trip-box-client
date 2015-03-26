@@ -1,30 +1,30 @@
 package com.socialmap.yy.travelbox.module.account;
 
 
-        import android.content.Context;
-        import android.util.Log;
-        import android.view.LayoutInflater;
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-        import com.socialmap.yy.travelbox.R;
+import com.socialmap.yy.travelbox.R;
 
-        import java.util.List;
-import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
 
 public class TimelineAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Map<String, Object>> list;
+    private List<HashMap<String, Object>> list;
     private LayoutInflater inflater;
 
-    public TimelineAdapter(Context context, List<Map<String, Object>> list) {
+    public TimelineAdapter(Context context, List<HashMap<String, Object>> list) {
         super();
         this.context = context;
         this.list = list;
     }
+
 
     @Override
     public int getCount() {
@@ -82,17 +82,6 @@ public class TimelineAdapter extends BaseAdapter {
         public TextView show_time;
         public TextView local;
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

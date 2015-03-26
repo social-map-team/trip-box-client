@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.socialmap.yy.travelbox.R;
+import com.socialmap.yy.travelbox.utils.TbsClient;
+
+import java.io.UnsupportedEncodingException;
+
+import static com.socialmap.yy.travelbox.utils.TbsClient.getInstance;
 
 /**
  * Created by gxyzw_000 on 2015/3/20.
@@ -20,23 +26,14 @@ import com.socialmap.yy.travelbox.R;
 public class TeamCreateActivity extends Activity {
 
     private static String TAG = "HelloPreference";
-
-    private EditText team_name;
-
-    private EditText team_man;
-
-    private EditText  team_local;
-
-    private EditText  team_data;
-
-    private EditText  team_other;
-
-    private TextView team_status;
-    private Button submit ;
-
-
     Context mContext = null;
-
+    private EditText team_name;
+    private EditText team_man;
+    private EditText team_local;
+    private EditText team_data;
+    private EditText team_other;
+    private TextView team_status;
+    private Button submit;
     private String contentsex = " ";
     private int genderIndex = 0;
 
@@ -45,44 +42,38 @@ public class TeamCreateActivity extends Activity {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
 
-     setContentView(R.layout.activity_team_create);
-
-
-
+        setContentView(R.layout.activity_team_create);
 
 
         team_name = (EditText) findViewById(R.id.team_name);
         team_man = (EditText) findViewById(R.id.team_man);
         team_local = (EditText) findViewById(R.id.team_local);
-        team_data = (EditText)findViewById(R.id.team_data);
+        team_data = (EditText) findViewById(R.id.team_data);
         team_other = (EditText) findViewById(R.id.team_other);
         team_status = (TextView) findViewById(R.id.team_status);
         submit = (Button) findViewById(R.id.submit);
 
 
-
         SharedPreferences sp = getSharedPreferences("team", Context.MODE_WORLD_READABLE);
 
-        String content = sp.getString("teamname","");
+        String content = sp.getString("teamname", "");
         team_name.setText(content);
 
-        String content1 = sp.getString("teamman","");
+        String content1 = sp.getString("teamman", "");
         team_man.setText(content1);
 
-        String content2 = sp.getString("teamlocal","");
+        String content2 = sp.getString("teamlocal", "");
         team_local.setText(content2);
 
 
-        String content3 = sp.getString("teamdata","");
+        String content3 = sp.getString("teamdata", "");
         team_data.setText(content3);
 
-        String content4 = sp.getString("teamother","");
+        String content4 = sp.getString("teamother", "");
         team_other.setText(content4);
 
-        String content5 = sp.getString("teamstatus","");
+        String content5 = sp.getString("teamstatus", "");
         team_status.setText(content5);
-
-
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -92,9 +83,6 @@ public class TeamCreateActivity extends Activity {
                 submit();
             }
         });
-
-
-
 
 
         team_status.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +99,7 @@ public class TeamCreateActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(TeamCreateActivity.this, "状态为：" + sex[which], Toast.LENGTH_SHORT).show();
-                        genderIndex  = which;
+                        genderIndex = which;
                     }
                 });
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -132,14 +120,7 @@ public class TeamCreateActivity extends Activity {
         });
 
 
-}
-
-
-
-
-
-
-
+    }
 
 
     public void onStop() {
@@ -153,26 +134,34 @@ public class TeamCreateActivity extends Activity {
         editor.putString("teamlocal", team_local.getText().toString());
         editor.putString("teamdata", team_data.getText().toString());
         editor.putString("teamother", team_other.getText().toString());
-        editor.putString("teamstatus",  team_status.getText().toString());
-
+        editor.putString("teamstatus", team_status.getText().toString());
 
 
         editor.commit();
     }
 
 
-
-
-
-
     private void submit() {
 
+        getInstance()
+                .request(" /api/team", "post"
 
+                )
+                .execute(new TbsClient.Callback() {
+                    @Override
+                    public void onFinished(TbsClient.ServerResponse response) {
+                        try {
+                            String content = new String(response.getContent(), "UTF-8");
+                            Log.i("yy", response.getStatusCode() + "\n" + content);
+
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
 
     }
-
-
-
 
 
 }

@@ -10,9 +10,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,18 +25,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.socialmap.yy.travelbox.R;
+import com.socialmap.yy.travelbox.model.History;
+import com.socialmap.yy.travelbox.model.HistoryData;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+/**
+ * 关于格式问题，提几点建议：
+ * 1. historyActivity -> HistoryActivity
+ * 2. TimelineAdapter 你写成一个外部类，如果这个类仅仅是HistoryActivity使用，那么请写成HistoryActivity的内部类
+ * 3. 缩进对齐很重要
+ * 4. 没用的TODO删掉
+ */
 
 public class FootprintActivity extends Activity {
     public String profilelocal;
@@ -50,23 +53,29 @@ public class FootprintActivity extends Activity {
     private ListView listView;
     private TimelineAdapter timelineAdapter;
     private List<Map<String, Object>> dataSource;
+    private ArrayList<HashMap<String, Object>> historylist = new ArrayList<HashMap<String, Object>>();
+    private HistoryData HD;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_list);
 
+
+        HD = new HistoryData(this);
+        historylist = HD.getUserList();
+
         listView = (ListView) this.findViewById(R.id.listview);
         listView.setDividerHeight(0);
-        dataSource = getData();
-        timelineAdapter = new TimelineAdapter(this, dataSource);
+        //     dataSource = getData();
+        timelineAdapter = new TimelineAdapter(this, historylist);
         listView.setAdapter(timelineAdapter);
 
 
         Intent intent = this.getIntent();
 
         profilelocal = intent.getStringExtra("profilelocal");
-        Log.v("腊肉", profilelocal);
         //   historylocal = profilelocal;
 
         inputLocal = (TextView) this.findViewById(R.id.local);
@@ -130,6 +139,7 @@ public class FootprintActivity extends Activity {
                                             map.put("show_time", "");
                                             map.put("local", "");
 
+
                                             dataSource.set(currentPosition, map);
                                             Log.w("yy", String.valueOf(currentPosition));
 
@@ -182,6 +192,18 @@ public class FootprintActivity extends Activity {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        historylist = HD.getUserList();
+
+
+        timelineAdapter = new TimelineAdapter(this, historylist);
+        listView.setAdapter(timelineAdapter);
+
+    }
+
+/*
     private List<Map<String, Object>> getData() {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
@@ -190,20 +212,10 @@ public class FootprintActivity extends Activity {
         map.put("show_time", "10.1");
         map.put("local", "常州");
         list.add(map);
-
-
-        // FIXME 下面的代码读取的map没有title，show_time，local三个字段，会出现bug
-        /*map = new HashMap<String, Object>();
-        try {
-            map=Read_Data();
-        }
-        catch (Throwable  e){
-            Log.e("1","");
-        }
-        list.add(map);*/
-
         return list;
     }
+*/
+
 
     //创建actionbar设置一个增加按钮
     @Override
@@ -213,35 +225,6 @@ public class FootprintActivity extends Activity {
         return true;
     }
 
-    public void Write_Data(HashMap map) throws Throwable {
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-        objectOutputStream.writeObject(map);
-        SharedPreferences sharedPreferences = getSharedPreferences("history", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        sharedPreferences = getSharedPreferences(String.valueOf(i), Activity.MODE_PRIVATE);
-        String historyString = new String(Base64.encode(byteArrayOutputStream.toByteArray(), Base64.DEFAULT));
-        editor.putString("history1", historyString);
-        editor.commit();
-
-        objectOutputStream.close();
-
-    }
-
-    public HashMap Read_Data() throws Throwable {
-
-        SharedPreferences sharedPreferences = getSharedPreferences("history", Activity.MODE_PRIVATE);
-        String mobilesString = sharedPreferences.getString(String.valueOf(i), "");
-        byte[] mobileBytes = Base64.decode(mobilesString.getBytes(), Base64.DEFAULT);
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(mobileBytes);
-        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-        HashMap map = (HashMap) objectInputStream.readObject();
-
-        objectInputStream.close();
-        return map;
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -304,12 +287,12 @@ public class FootprintActivity extends Activity {
                                             // SharedPreferences sp =historyActivity.this.getSharedPreferences("history", Context.MODE_WORLD_READABLE);
 
 
-                                            try {
-                                                Write_Data(map);
-                                                i = i + 1;
-                                            } catch (Throwable e) {
-                                                Log.e("2", "");
-                                            }
+                                            History hi = new History();
+                                            hi.setLocal(str);
+                                            hi.setShow_time(str2);
+                                            hi.setTitle(str3);
+
+                                            HD.addNew(hi);
 
 
                                             dataSource.add(0, map);
@@ -340,13 +323,6 @@ public class FootprintActivity extends Activity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    public class MobileInfo implements Serializable {
-        //该类实现Serializable接口， 以启用其序列化功能
-        private static final long serialVersionUID = 1L;
-        public String name;
-        public String infoString;
     }
 }
 

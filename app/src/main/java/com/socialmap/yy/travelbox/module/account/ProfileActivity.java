@@ -21,21 +21,19 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.module.settings.SettingTabActivity;
 import com.socialmap.yy.travelbox.listview.PullToZoomListView;
+import com.socialmap.yy.travelbox.module.settings.SettingTabActivity;
 
 
-public class ProfileActivity extends Activity  {
-    ImageButton friends,LocationManager,Settings,history;
-    ImageView button;
-
+public class ProfileActivity extends Activity {
     private static final int XSPEED_MIN = 200;
     private static final int XDISTANCE_MIN = 150;
+    ImageButton friends, LocationManager, Settings, history;
+    ImageView button;
+    PullToZoomListView listView;
     private float xDown;
     private float xMove;
     private VelocityTracker mVelocityTracker;
-
-    PullToZoomListView listView;
     private String[] adapterData;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -50,7 +48,7 @@ public class ProfileActivity extends Activity  {
     private String birthday;
     private String num;
     private String email;
-    private  String location ;
+    private String location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,24 +63,23 @@ public class ProfileActivity extends Activity  {
         String email = sp.getString("email", " ");
 
 
-
         setContentView(R.layout.activity_profile1);
-        listView = (PullToZoomListView)findViewById(R.id.listview);
-        adapterData = new String[] {
-                "用户名："+username,
-                "真实姓名："+realname,
-                "性别："+gender,
-                "生日："+birthday,
-                "联系电话:"+num,
-                "联系邮箱:"+email
+        listView = (PullToZoomListView) findViewById(R.id.listview);
+        adapterData = new String[]{
+                "用户名：" + username,
+                "真实姓名：" + realname,
+                "性别：" + gender,
+                "生日：" + birthday,
+                "联系电话:" + num,
+                "联系邮箱:" + email
         };
 
         listView.setAdapter(new ArrayAdapter<String>(ProfileActivity.this,
                 android.R.layout.simple_list_item_1, adapterData));
         listView.getHeaderView().setImageResource(R.drawable.splash01);
         listView.getHeaderView().setScaleType(ImageView.ScaleType.CENTER_CROP);
-        button = (ImageView)findViewById(R.id.avatar_wrapper);
-        button.setOnClickListener(new ImageButton.OnClickListener(){
+        button = (ImageView) findViewById(R.id.avatar_wrapper);
+        button.setOnClickListener(new ImageButton.OnClickListener() {
             //TODO 跳转
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -130,36 +127,27 @@ public class ProfileActivity extends Activity  {
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-       // if (savedInstanceState == null) {
-         //   selectItem(0);
-       // }
-
-
+        // if (savedInstanceState == null) {
+        //   selectItem(0);
+        // }
 
 
         Intent intent = this.getIntent();
 
-        String  mainlocal = intent.getStringExtra("mainlocal");
+        String mainlocal = intent.getStringExtra("mainlocal");
         //location =mainlocal;
 
         if (mainlocal.contains("市")) {
-                location = mainlocal.substring(mainlocal.indexOf("addr : ") + 7, mainlocal.indexOf("op"));
-        }
-        else{
+            location = mainlocal.substring(mainlocal.indexOf("addr : ") + 7, mainlocal.indexOf("op"));
+        } else {
             location = " ";
 
         }
 
 
-
-
-
-
-
         //  RelativeLayout ll = (RelativeLayout) findViewById(R.id.ll);
         // ll.setOnTouchListener(this);
     }
-
 
 
     @Override
@@ -186,7 +174,7 @@ public class ProfileActivity extends Activity  {
             return true;
         }
         // Handle action buttons
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_pic:
                 // create intent to perform web search for this planet
                 listView.getHeaderView().setImageResource(R.drawable.tesla);
@@ -197,36 +185,10 @@ public class ProfileActivity extends Activity  {
         }
     }
 
-    /* The click listner for ListView in the navigation drawer */
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //selectItem(position);
-            if (position == 0){
-                Intent intent = new Intent();
-                intent.setClass(ProfileActivity.this, com.socialmap.yy.travelbox.module.chat.activity.MainActivity.class);
-                startActivity(intent);
-            }
-            if (position == 1){
-                Intent intent = new Intent();
-                intent.putExtra("profilelocal",location );
-                intent.setClass(ProfileActivity.this,FootprintActivity.class);
-                startActivity(intent);
-            }
-            if (position == 2){
-                Intent intent = new Intent();
-                intent.setClass(ProfileActivity.this,LocationManagerActivity.class);
-                startActivity(intent);
-            }
-            if (position == 3){
-                Intent intent = new Intent();
-                intent.setClass(ProfileActivity.this,SettingTabActivity.class);
-                startActivity(intent);
-            }
-
-
-
-        }
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
     }
 
 
@@ -259,22 +221,6 @@ public class ProfileActivity extends Activity  {
 
 */
 
-
-
-
-
-
-
-
-
-
-
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
-    }
-
     /**
      * When using the ActionBarDrawerToggle, you must call it during
      * onPostCreate() and onConfigurationChanged()...
@@ -292,6 +238,37 @@ public class ProfileActivity extends Activity  {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    /* The click listner for ListView in the navigation drawer */
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            //selectItem(position);
+            if (position == 0) {
+                Intent intent = new Intent();
+                intent.setClass(ProfileActivity.this, com.socialmap.yy.travelbox.module.chat.activity.MainActivity.class);
+                startActivity(intent);
+            }
+            if (position == 1) {
+                Intent intent = new Intent();
+                intent.putExtra("profilelocal", location);
+                intent.setClass(ProfileActivity.this, FootprintActivity.class);
+                startActivity(intent);
+            }
+            if (position == 2) {
+                Intent intent = new Intent();
+                intent.setClass(ProfileActivity.this, LocationManagerActivity.class);
+                startActivity(intent);
+            }
+            if (position == 3) {
+                Intent intent = new Intent();
+                intent.setClass(ProfileActivity.this, SettingTabActivity.class);
+                startActivity(intent);
+            }
+
+
+        }
     }
 
 

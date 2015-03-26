@@ -37,13 +37,13 @@ import com.baidu.mapapi.search.poi.PoiSearch;
 import com.socialmap.yy.travelbox.App;
 import com.socialmap.yy.travelbox.DebugActivity;
 import com.socialmap.yy.travelbox.R;
-import com.socialmap.yy.travelbox.ui.arclibrary.ArcMenu;
+import com.socialmap.yy.travelbox.model.Location;
 import com.socialmap.yy.travelbox.module.account.MessageActivity;
 import com.socialmap.yy.travelbox.module.account.NearbyActivity;
 import com.socialmap.yy.travelbox.module.account.ProfileActivity;
-import com.socialmap.yy.travelbox.module.schedule.ScheduleActivity;
 import com.socialmap.yy.travelbox.module.schedule.ScheduleLocalActivity;
 import com.socialmap.yy.travelbox.module.team.AllTeamActivity;
+import com.socialmap.yy.travelbox.ui.arclibrary.ArcMenu;
 
 
 public class MainActivity extends FragmentActivity implements SOSFragmentCallBack {
@@ -141,9 +141,11 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         find.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Location loc = ((App) getApplication()).getCurrentLocation();
                 if (KeyEvent.KEYCODE_ENTER == keyCode && event.getAction() == KeyEvent.ACTION_DOWN) {
                     PoiNearbySearchOption pso = new PoiNearbySearchOption()
-                            .location(new LatLng(31.325053, 118.413145))
+                            .location(new LatLng(loc.getLatitude(), loc.getLongitude()))
+                                    // TODO POI 使用地图当前位置
                             .radius(1000)
                             .pageCapacity(10)
                             .keyword(find.getText().toString());
@@ -364,7 +366,7 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
                 startActivity(new Intent(this, MessageActivity.class));
                 break;
             case 1: // 日程
-                startActivity(new Intent(this, ScheduleActivity.class));
+                startActivity(new Intent(this, ScheduleLocalActivity.class));
                 break;
             case 2: // 我（个人资料）
                 Intent intent1 = new Intent(this, ProfileActivity.class);
