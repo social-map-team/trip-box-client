@@ -256,6 +256,9 @@ public class MainActivity extends FragmentActivity implements SOSFragmentCallBac
         // 开启方向传感器
         // FIXME 这个方向传感器非常费电，暂且关闭
         // mOrientationListener.start();
+
+        // 定位到当前位置
+        ((App) getApplication()).locationClient.requestLocation();
     }
 
     @Override
