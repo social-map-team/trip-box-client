@@ -1,178 +1,167 @@
 package com.socialmap.yy.travelbox.module.account;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
+import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
-import com.socialmap.yy.travelbox.module.main.MainActivity;
 import com.socialmap.yy.travelbox.R;
+import com.socialmap.yy.travelbox.module.main.MainActivity;
 import com.socialmap.yy.travelbox.utils.TbsClient;
 
-import java.io.UnsupportedEncodingException;
 
-
+/**
+ * 注册分两步
+ * 第一步，用户输入手机后，确认没有被注册，然后服务器会给该号码发送验证短信
+ * 为了调试方便，验证码固定位1234
+ * 当用户正确输入了验证码以后，便可以设置密码，完成账户注册
+ */
 public class RegisterActivity extends Activity {
 
-
-
-    EditText edtext;
-    EditText edpwd;
-    EditText edpwd2;
-    //TbsClient TbsClient;
-    Button test;
-    Handler handler = new Handler();
-    //新建一个线程对象
-    private Thread mThread;
-
-    protected void onCreate(Bundle savedInstanceState)
-
-    {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_register);
-        Button btnsub=(Button)findViewById(R.id.register);
-        edtext=(EditText)findViewById(R.id.telnum);
-        edpwd=(EditText)findViewById(R.id.password);
-        edpwd2=(EditText)findViewById(R.id.password2);
-        test=(Button)findViewById(R.id.test);
-       btnsub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        getFragmentManager().beginTransaction().replace(R.id.container, new Step1()).commit();
+    }
 
-                setUser();
-            }
-        });
+    public static class Step1 extends Fragment {
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View root = inflater.inflate(R.layout.activity_register_step1, container, false);
+            final LinearLayout vcodeWrapper = (LinearLayout) root.findViewById(R.id.vcode_wrapper);
+            final EditText phone = (EditText) root.findViewById(R.id.phone);
+            final EditText vcode = (EditText) root.findViewById(R.id.vcode);
+            final Button next = (Button) root.findViewById(R.id.next);
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (vcodeWrapper.getVisibility() == View.GONE) {
+                        // 当用户输入手机号后，第一次点击注册按钮
+                        // 检查该手机号有没有被注册
+                        TbsClient.getInstance()
+                                .request("/check/existence", "get", "phone", phone.getText())
+                                .execute(new TbsClient.Callback() {
+                                    @Override
+                                    public void onFinished(TbsClient.ServerResponse response) {
+                                        if (response.getBoolean()) {
+                                            // 电话号码已存在
+                                            // FIXME 奇怪的错误：错误提示框内不显示文字
+                                            phone.setError(getString(R.string.err_phone_exist));
+                                            Toast.makeText(getActivity(), "该号码已被注册，由于上面提示框内不显示文字，只好弹个Toast", Toast.LENGTH_LONG).show();
+                                        } else {
+                                            // 电话号码不存在
+                                            TbsClient.getInstance()
+                                                    .request("/register/vcode", "get")
+                                                    .execute(new TbsClient.Callback() {
+                                                        @Override
+                                                        public void onFinished(TbsClient.ServerResponse response) {
+                                                            if (response.getBoolean()) {
+                                                                // 服务器已成功发送验证码
+                                                                vcodeWrapper.setVisibility(View.VISIBLE);
+                                                                Toast.makeText(getActivity(), "验证码已发送，请注意查收", Toast.LENGTH_LONG).show();
+                                                            } else {
+                                                                // TODO 服务器发送验证码失败
+                                                                Toast.makeText(getActivity(), "服务器验证码发送失败", Toast.LENGTH_LONG).show();
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    }
+                                });
+                    } else {
+                        // 检查输入的验证码是否正确
+                        TbsClient.getInstance()
+                                .request("/register/vcode", "post",
+                                        "vcode", vcode.getText()
+                                )
+                                .execute(new TbsClient.Callback() {
+                                    @Override
+                                    public void onFinished(TbsClient.ServerResponse response) {
+                                        if (response.getBoolean()) {
+                                            // 验证码正确，进入下一步：设置密码
+                                            Fragment step2 = new Step2();
+                                            Bundle args = new Bundle();
+                                            args.putString("phone", phone.getText().toString());
+                                            step2.setArguments(args);
 
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TbsClient.getInstance(RegisterActivity.this)
-                        .request("/api/user/profile", "get"
-                        ).execute(new TbsClient.Callback() {
-                    @Override
-                    public void onFinished(TbsClient.ServerResponse response) {
-                        try {
-                            String content = new String(response.getContent(), "UTF-8");
-                            Log.i("yy", response.getStatusCode() + "\n" + content);
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
+                                            getFragmentManager()
+                                                    .beginTransaction()
+                                                    .replace(R.id.container, step2)
+                                                    .commit();
+                                        } else {
+                                            // 验证码错误
+                                            vcode.setError(getString(R.string.err_vcode_wrong));
+                                        }
+                                    }
+                                });
                     }
-                });
-            }
-        });
+                }
+            });
+            return root;
+        }
     }
 
-    private void setUser()
+    public static class Step2 extends Fragment {
 
-    {
-        if(edtext.getText().toString().length()<=0||edpwd.getText().toString().length()<=0||edpwd2.getText().toString().length()<=0)
-
-        {
-            Toast.makeText(this, "用户名或密码不能为空", Toast.LENGTH_LONG).show();
-            return;
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View root = inflater.inflate(R.layout.activity_register_step2, container, false);
+            final EditText password = (EditText) root.findViewById(R.id.password);
+            final Switch show = (Switch) root.findViewById(R.id.show);
+            final Button register = (Button) root.findViewById(R.id.register);
+            show.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    } else {
+                        password.setInputType(InputType.TYPE_CLASS_TEXT |
+                                InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    }
+                }
+            });
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String phone = getArguments().getString("phone", "");
+                    TbsClient.getInstance()
+                            .request("/register", "post",
+                                    "phone", phone,
+                                    "password", password.getText(),
+                                    "username", phone
+                            )
+                            .execute(new TbsClient.Callback() {
+                                @Override
+                                public void onFinished(TbsClient.ServerResponse response) {
+                                    if (response.is2xx()) {
+                                        // 注册成功, 跳转到登陆界面
+                                        Toast.makeText(getActivity(), "注册成功", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                                        getActivity().finish();
+                                    } else {
+                                        // TODO 注册失败
+                                        Toast.makeText(getActivity(), "注册失败，返回主界面", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(getActivity(), MainActivity.class));
+                                        getActivity().finish();
+                                    }
+                                }
+                            });
+                }
+            });
+            return root;
         }
-
-       /* if(edtext.getText().toString().length()>0)
-        {
-            String sql="select * from user where userid=?";
-            Cursor cursor=dbHelper.getWritableDatabase().rawQuery(sql, new String[]{edtext.getText().toString()});
-            if(cursor.moveToFirst())
-            {
-                Toast.makeText(this, "用户名已经存在", Toast.LENGTH_LONG).show();
-                return;
-            }
-        }
-*/
-
-        if(!edpwd.getText().toString().equals(edpwd2.getText().toString()))
-        {
-            Toast.makeText(this, "两次输入的密码不同", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-
-        if(true)
-        //TODO 检查是否重名的操作
-        {
-            new Thread(new Runnable(){
-                       public void run(){
-                           TbsClient.getInstance(RegisterActivity.this)
-                                   .request("/api/user/register", "post",
-                                           "username",     edtext.getText(),
-                                           "password",     edpwd.getText()
-                                   ).execute(new TbsClient.Callback() {
-                                                 @Override
-                                                 public void onFinished(TbsClient.ServerResponse response) {
-                                                     try {
-                                                         String content = new String(response.getContent(), "UTF-8");
-                                                         Log.i("yy", response.getStatusCode() + "\n" + content);
-                                                     } catch (UnsupportedEncodingException e) {
-                                                         e.printStackTrace();
-                                                     }
-                                                 }
-                                             }
-
-
-                           );
-                       }
-                   }
-           ).start();
-
-
-
-
-
-
-
-
-
-
-
-
-
-            Toast.makeText(this, "用户注册成功", Toast.LENGTH_LONG).show();
-            Intent intent=new Intent();
-            intent.setClass(this, MainActivity.class);
-            startActivity(intent);
-
-        }
-
-        else
-        {
-            Toast.makeText(this, "用户注册失败", Toast.LENGTH_LONG).show();
-        }
-
-
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 

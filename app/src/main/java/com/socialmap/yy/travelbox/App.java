@@ -16,12 +16,11 @@ import com.socialmap.yy.travelbox.model.User;
  */
 public class App extends Application {
 
+    public final String serverHostName = "192.168.1.102";
+    public final int serverPort = 8080;
     public LocationClient locationClient = null;
-
     private Location currentLocation; // 注意这不是当前是实时位置，这里记录用户上一次Main界面点击定位按钮所得到的位置
-
     private boolean login;
-
     private User currentUser;
 
     public Location getCurrentLocation() {

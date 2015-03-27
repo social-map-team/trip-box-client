@@ -28,7 +28,7 @@ public class WelcomeActivity extends Activity {
         TbsClient.init(this);
 
         TextView textView = (TextView) findViewById(R.id.welcome_title);
-        Typeface typeFace = Typeface.createFromAsset(getAssets(),"fonts/Sketch Gothic School.ttf");
+        Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/Sketch Gothic School.ttf");
         textView.setTypeface(typeFace);
 
         //Load background image

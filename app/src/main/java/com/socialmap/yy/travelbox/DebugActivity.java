@@ -1,14 +1,14 @@
 package com.socialmap.yy.travelbox;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.socialmap.yy.travelbox.data.DBHelper;
+import com.socialmap.yy.travelbox.module.account.RegisterActivity;
 
 import org.apache.commons.io.IOUtils;
 
@@ -110,6 +110,13 @@ public class DebugActivity extends Activity {
         });
 
         updateLocStatus();
+
+        findViewById(R.id.quick_register).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DebugActivity.this, RegisterActivity.class));
+            }
+        });
 
 
     }

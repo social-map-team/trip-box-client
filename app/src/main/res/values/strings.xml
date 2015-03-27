@@ -55,10 +55,6 @@
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
 
 
-
-
-
-
     <string-array name="seven_days">
         <item>And the Spirit of God moved upon the face of the waters. And God said, Let there be light: and there was light. And God saw the light, that it was good: and God divided the light from the darkness. And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day. </item>
         <item>And God said, “Let there be a rāqîa between the waters to separate water from water.” So God made the rāqîa and separated the water under the vault from the water above it, and it was so, and God called the rāqîa “heavens”, and there was evening, and there was morning—the second day.</item>
@@ -68,9 +64,6 @@
         <item>And God said, Let the earth bring forth the living creature after his kind, cattle, and creeping thing, and beast of the earth after his kind: and it was so. And God made the beast of the earth after his kind, and cattle after their kind, and every thing that creepeth upon the earth after his kind: and God saw that it was good. And God said, Let us make man in our image, after our likeness: and let them have dominion over the fish of the sea, and over the fowl of the air, and over the cattle, and over all the earth, and over every creeping thing that creepeth upon the earth. So God created man in his own image, in the image of God created he him; male and female created he them. And God blessed them, and God said unto them, Be fruitful, and multiply, and replenish the earth, and subdue it: and have dominion over the fish of the sea, and over the fowl of the air, and over every living thing that moveth upon the earth. And God said, Behold, I have given you every herb bearing seed, which is upon the face of all the earth, and every tree, in the which is the fruit of a tree yielding seed; to you it shall be for meat. And to every beast of the earth, and to every fowl of the air, and to every thing that creepeth upon the earth, wherein there is life, I have given every green herb for meat: and it was so. And God saw every thing that he had made, and, behold, it was very good. And the evening and the morning were the sixth day.</item>
         <item>Thus the heavens and the earth were finished, and all the host of them. And on the seventh day God ended his work which he had made; and he rested on the seventh day from all his work which he had made. And God blessed the seventh day, and sanctified it: because that in it he had rested from all his work which God created and made. </item>
     </string-array>
-
-
-
 
 
     <string name="net_error_tip">当前网络不可用，请检查你的网络设置</string>
@@ -190,7 +183,7 @@
     <string name="chat_send_photo">发送图片</string>
     <string name="chat_send">发送</string>
     <string name="AddContact_SpinnerPrompt">选择分组</string>
-     <string name="exit_dialog_msg">退出后不会删除任何历史数据，下次登录依然可以使用本帐号</string>
+    <string name="exit_dialog_msg">退出后不会删除任何历史数据，下次登录依然可以使用本帐号</string>
     <string name="login_help_information">Tips:帐号由ID+@+服务器组成!：shu@192.168.1.100</string>
     <string name="coverview_tip">上滑可关闭此界面</string>
     <string name="info_accounts">使用TLS加密</string>
@@ -207,6 +200,6 @@
     <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
     <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
 
-
-
+    <string name="err_phone_exist">该手机号码已被注册</string>
+    <string name="err_vcode_wrong">验证码有误</string>
 </resources>

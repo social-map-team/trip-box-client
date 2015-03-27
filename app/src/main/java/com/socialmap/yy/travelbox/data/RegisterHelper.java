@@ -1,4 +1,4 @@
-package com.socialmap.yy.travelbox.module.account;
+package com.socialmap.yy.travelbox.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.widget.Toast;
 /**
  * Created by gxyzw_000 on 2015/1/12.
  */
+@Deprecated
 public class RegisterHelper extends SQLiteOpenHelper {
 
 
@@ -20,17 +21,15 @@ public class RegisterHelper extends SQLiteOpenHelper {
     public static final String UerPwd = "userpwd";
 
 
-
-
     public static final String CREATE_Register = "CREATE TABLE IF NOT EXISTS "
 
-                           + TB_NAME + " ("
+            + TB_NAME + " ("
 
-                            + ID + "INTEGER PRIMARY KEY,"
+            + ID + "INTEGER PRIMARY KEY,"
 
-                          + NAME + "VARCHAR,"
+            + NAME + "VARCHAR,"
 
-                            + UerPwd + " VARCHAR)";
+            + UerPwd + " VARCHAR)";
     private Context mContext;
 
     public RegisterHelper(Context context, String name, SQLiteDatabase.CursorFactory
@@ -40,7 +39,7 @@ public class RegisterHelper extends SQLiteOpenHelper {
     }
 
     @Override
-        public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_Register);
         Toast.makeText(mContext, "Create succeeded", Toast.LENGTH_SHORT).show();
     }
@@ -65,23 +64,6 @@ public class RegisterHelper extends SQLiteOpenHelper {
             return false;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

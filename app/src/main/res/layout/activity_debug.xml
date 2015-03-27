@@ -4,27 +4,33 @@
               android:orientation="vertical">
 
     <Button
+        android:id="@+id/reset_local_schedule_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="重置本地日程数据"
-        android:id="@+id/reset_local_schedule_data"/>
+        android:text="重置本地日程数据"/>
 
     <TextView
+        android:id="@+id/loc_status"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/loc_status"/>
+        android:layout_height="wrap_content"/>
 
     <Button
+        android:id="@+id/start_loc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="开启定位服务"
-        android:id="@+id/start_loc"/>
+        android:text="开启定位服务"/>
 
     <Button
+        android:id="@+id/stop_loc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="关闭定位服务"
-        android:id="@+id/stop_loc"/>
+        android:text="关闭定位服务"/>
+
+    <Button
+        android:id="@+id/quick_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="快速注册"/>
 
 
 </LinearLayout>

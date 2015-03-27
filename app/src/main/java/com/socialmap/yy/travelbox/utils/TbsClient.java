@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.socialmap.yy.travelbox.App;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.NameValuePair;
@@ -44,21 +46,43 @@ public class TbsClient {
     public HttpHost server;
     public HttpClientContext context;
 
+    /**
+     * 请使用getInstance来获得TasClient的实例
+     */
     private TbsClient() {
         init();
     }
 
+    /**
+     * TbsClient在使用之前务必初始化传入一个Activity
+     * 这样TbsClient才能将回调代码放到主线程中执行
+     *
+     * @param activity
+     */
     public static void init(Activity activity) {
         TbsClient.activity = activity;
         instance = new TbsClient();
     }
 
+    @Deprecated
+    public static TbsClient getInstance(Activity activity) {
+        if (instance == null) {
+            throw new RuntimeException("TbsClient未初始化");
+        }
+        TbsClient.activity = activity;
+        return instance;
+    }
+
     /**
-     * 当服务器地址发生变化时手动刷新
+     * 使用这个函数来获取TbsClient的实例
+     *
+     * @return
      */
-    public static void refresh() {
-        if (instance != null)
-            instance.init();
+    public static TbsClient getInstance() {
+        if (instance == null) {
+            throw new RuntimeException("TbsClient未初始化");
+        }
+        return instance;
     }
 
     /**
@@ -72,24 +96,16 @@ public class TbsClient {
             instance.init(username, password);
     }
 
-    public static TbsClient getInstance(Activity activity) {
-        if (instance == null) {
-            throw new RuntimeException("TbsClient未初始化");
-        }
-        TbsClient.activity = activity;
-        return instance;
-    }
-
-    public static TbsClient getInstance() {
-        if (instance == null) {
-            throw new RuntimeException("TbsClient未初始化");
-        }
-        return instance;
-    }
-
+    /**
+     * 用于初始化一个使用Digest验证的客户端
+     * Digest客户端也可以访问不需要Digest验证的API
+     *
+     * @param username
+     * @param password
+     */
     private void init(String username, String password) {
-        String host = "192.168.1.103";
-        int port = 8080;
+        String host = ((App) activity.getApplication()).serverHostName;
+        int port = ((App) activity.getApplication()).serverPort;
         server = new HttpHost(host, port, "http");
 
         CredentialsProvider provider = new BasicCredentialsProvider();
@@ -98,7 +114,9 @@ public class TbsClient {
                 new UsernamePasswordCredentials(username, password)
         );
 
-        client = HttpClients.custom().setDefaultCredentialsProvider(provider).build();
+        client = HttpClients.custom()
+                .setDefaultCredentialsProvider(provider)
+                .build();
 
         AuthCache cache = new BasicAuthCache();
         DigestScheme digest = new DigestScheme();
@@ -110,13 +128,15 @@ public class TbsClient {
         context.setAuthCache(cache);
     }
 
+    /**
+     * 用于初始化一个普通的TbsClient
+     */
     private void init() {
-        String host = "192.168.1.103";
-        int port = 8080;
+        String host = ((App) activity.getApplication()).serverHostName;
+        int port = ((App) activity.getApplication()).serverPort;
         server = new HttpHost(host, port, "http");
 
         client = HttpClients.createDefault();
-
         context = HttpClientContext.create();
     }
 
@@ -166,46 +186,54 @@ public class TbsClient {
     }
 
     private String buildUrlParams(Object[] params) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < params.length; i += 2) {
-            String key = params[i].toString();
-            String value = null;
-            if (params[i + 1].getClass().isArray()) {
-                Object[] array = (Object[]) params[i + 1];
-                value = array[0].toString();
-                for (int j = 1; j < array.length; j++) {
-                    value = value + "," + array[j];
+        try {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < params.length; i += 2) {
+                String key = params[i].toString();
+                String value = null;
+                if (params[i + 1].getClass().isArray()) {
+                    Object[] array = (Object[]) params[i + 1];
+                    value = array[0].toString();
+                    for (int j = 1; j < array.length; j++) {
+                        value = value + "," + array[j];
+                    }
+                } else {
+                    value = params[i + 1].toString();
                 }
-            } else {
-                value = params[i + 1].toString();
-            }
 
-            builder.append(encode(key)).append("=").append(encode(value));
-            if (i + 2 < params.length) {
-                builder.append("&");
+                builder.append(encode(key)).append("=").append(encode(value));
+                if (i + 2 < params.length) {
+                    builder.append("&");
+                }
             }
+            return builder.toString();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("TbsClient的request方法参数要成双成对");
         }
-        return builder.toString();
     }
 
     private List<NameValuePair> buildEntityParams(Object[] params) {
-        List<NameValuePair> r = new ArrayList<>();
-        for (int i = 0; i < params.length; i += 2) {
-            String key = params[i].toString();
-            String value = null;
-            if (params[i + 1].getClass().isArray()) {
-                Object[] array = (Object[]) params[i + 1];
-                value = array[0].toString();
-                for (int j = 1; j < array.length; j++) {
-                    value = value + "," + array[j];
+        try {
+            List<NameValuePair> r = new ArrayList<>();
+            for (int i = 0; i < params.length; i += 2) {
+                String key = params[i].toString();
+                String value = null;
+                if (params[i + 1].getClass().isArray()) {
+                    Object[] array = (Object[]) params[i + 1];
+                    value = array[0].toString();
+                    for (int j = 1; j < array.length; j++) {
+                        value = value + "," + array[j];
+                    }
+                } else {
+                    value = params[i + 1].toString();
                 }
-            } else {
-                value = params[i + 1].toString();
-            }
 
-            r.add(new BasicNameValuePair(key, value));
+                r.add(new BasicNameValuePair(key, value));
+            }
+            return r;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("TbsClient的request方法参数要成双成对");
         }
-        return r;
     }
 
     private TbsClientRequest get(String uri, Object[] params) {
@@ -315,6 +343,13 @@ public class TbsClient {
             }
             return "";
         }
+
+        public boolean getBoolean() {
+            if (getString().equals("true")) {
+                return true;
+            }
+            return false;
+        }
     }
 
     public static class Error {
@@ -357,7 +392,11 @@ public class TbsClient {
                 public void run() {
 
                     try {
+                        // 1秒钟没有反应即为超时
+                        request.getParams().setParameter("http.socket.timeout", 1000);
+
                         CloseableHttpResponse response = client.execute(server, request, context);
+
                         ServerResponse resp = new ServerResponse();
                         resp.setStatusCode(response.getStatusLine().getStatusCode());
                         if (response.getEntity().getContentType() != null) {
